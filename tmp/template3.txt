@@ -1,7 +1,0 @@
-{
-    label: "WBTC",
-    data: WBTC,
-    fill: true,
-    backgroundColor: "rgba(aaa, bbb, ccc, 0.2)",
-    borderColor: "rgba(aaa, bbb, ccc, 1)"
-},

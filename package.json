@@ -1,8 +1,8 @@
 {
-  "name": "aave-dashboards",
+  "name": "dfk-report",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://aave-dashboards.vercel.app/",
+  "homepage": "https://dfk-report.vercel.app",
   "dependencies": {
     "@babel/core": "7.14.2",
     "axios": "^0.21.4",
@@ -20,7 +20,8 @@
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
-    "reactstrap": "8.9.0"
+    "reactstrap": "8.9.0",
+    "snowflake-sdk": "^1.6.6"
   },
   "scripts": {
     "start": "react-scripts start",
