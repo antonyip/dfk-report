@@ -1,0 +1,17 @@
+ENJ as (
+  select
+  date(block_hour) as ddate, 
+  reserve_name,
+  coalesce(sum(atoken_price) / count(atoken_price),0) as ENJ_price,
+  coalesce(sum(total_liquidity_usd) / count(total_liquidity_usd),0) as ENJ_total_liquidity_usd,
+  coalesce(sum(total_stable_debt_usd) / count(total_stable_debt_usd),0) as ENJ_total_stable_debt_usd,
+  coalesce(sum(total_variable_debt_usd) / count(total_variable_debt_usd),0) as ENJ_total_variable_debt_usd,
+  coalesce(sum(supply_rate ) / count(supply_rate),0) as ENJ_supply_rate,
+  coalesce(sum(BORROW_RATE_STABLE) / count(BORROW_RATE_STABLE),0) as ENJ_BORROW_RATE_STABLE,
+  coalesce(sum(BORROW_RATE_VARIABLE) / count(BORROW_RATE_VARIABLE),0) as ENJ_BORROW_RATE_VARIABLE,
+  coalesce(sum(UTILIZATION_RATE) / count(UTILIZATION_RATE),0) as ENJ_UTILIZATION_RATE
+  from A
+  where reserve_name='ENJ'
+  group by 1,2
+  order by ddate asc
+),

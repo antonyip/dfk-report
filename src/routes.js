@@ -1,118 +1,86 @@
-// @material-ui/icons
-import Dashboard from "@material-ui/icons/Dashboard";
-import Person from "@material-ui/icons/Person";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import BubbleChart from "@material-ui/icons/BubbleChart";
-import LocationOn from "@material-ui/icons/LocationOn";
-import Notifications from "@material-ui/icons/Notifications";
-import Unarchive from "@material-ui/icons/Unarchive";
-import Language from "@material-ui/icons/Language";
-import Register from "@material-ui/icons/GroupAdd";
-import Login from "@material-ui/icons/LockOpen";
-// core components/views for Admin layout
-import DashboardPage from "views/Dashboard/Dashboard.jsx";
-import UserProfile from "views/UserProfile/UserProfile.jsx";
-import TableList from "views/TableList/TableList.jsx";
-import Typography from "views/Typography/Typography.jsx";
-import Icons from "views/Icons/Icons.jsx";
-import Maps from "views/Maps/Maps.jsx";
-import NotificationsPage from "views/Notifications/Notifications.jsx";
-import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.jsx";
-// core components/views for RTL layout
-import RTLPage from "views/RTLPage/RTLPage.jsx";
-// core components/views for Auth layout
-import LoginPage from "views/Pages/LoginPage.jsx";
-import RegisterPage from "views/Pages/RegisterPage.jsx";
+/*!
 
-const dashboardRoutes = [
+=========================================================
+* Paper Dashboard React - v1.3.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+
+* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+import Dashboard from "views/Dashboard.js";
+import Notifications from "views/Notifications.js";
+import Icons from "views/Icons.js";
+import Typography from "views/Typography.js";
+import TableList from "views/Tables.js";
+
+import UserPage from "views/User.js";
+import UpgradeToPro from "views/Upgrade.js";
+import AAVE_9 from "views/AAVE_9.js";
+import AAVE_10 from "views/AAVE_10.js";
+import AAVE_11 from "views/AAVE_11.js";
+import AAVE_12 from "views/AAVE_12.js";
+import Curve_Free from "views/Curve_Free.js";
+import OxSisyphus from "views/OxSisyphus.js"
+
+var routes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: Dashboard,
-    component: DashboardPage,
-    layout: "/admin"
+    path: "/aave_9",
+    name: "AAVE 9",
+    icon: "nc-icon nc-chart-bar-32",
+    component: AAVE_9,
+    layout: "/admin",
   },
   {
-    path: "/user",
-    name: "User Profile",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
-    component: UserProfile,
-    layout: "/admin"
+    path: "/aave_10",
+    name: "AAVE 10",
+    icon: "nc-icon nc-chart-bar-32",
+    component: AAVE_10,
+    layout: "/admin",
   },
   {
-    path: "/table",
-    name: "Table List",
-    rtlName: "قائمة الجدول",
-    icon: "content_paste",
-    component: TableList,
-    layout: "/admin"
+    path: "/aave_11",
+    name: "AAVE 11",
+    icon: "nc-icon nc-chart-bar-32",
+    component: AAVE_11,
+    layout: "/admin",
   },
   {
-    path: "/typography",
-    name: "Typography",
-    rtlName: "طباعة",
-    icon: LibraryBooks,
-    component: Typography,
-    layout: "/admin"
+    path: "/aave_12",
+    name: "AAVE 12",
+    icon: "nc-icon nc-chart-bar-32",
+    component: AAVE_12,
+    layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Icons",
-    rtlName: "الرموز",
-    icon: BubbleChart,
-    component: Icons,
-    layout: "/admin"
+    path: "/curve_free",
+    name: "Curve Free Square",
+    icon: "nc-icon nc-chart-bar-32",
+    component: Curve_Free,
+    layout: "/admin",
   },
   {
-    path: "/maps",
-    name: "Maps",
-    rtlName: "خرائط",
-    icon: LocationOn,
-    component: Maps,
-    layout: "/admin"
+    path: "/OxSisyphus",
+    name: "OpenSea Raw Data",
+    icon: "nc-icon nc-chart-bar-32",
+    component: OxSisyphus,
+    layout: "/admin",
   },
   {
-    path: "/notifications",
-    name: "Notifications",
-    rtlName: "إخطارات",
-    icon: Notifications,
-    component: NotificationsPage,
-    layout: "/admin"
+    pro: true,
+    path: "/fakePath",
+    name: "Powered By Flipside",
+    icon: "nc-icon nc-spaceship",
+    component: AAVE_9,
+    layout: "/admin",
   },
-  {
-    path: "/upgrade-to-pro",
-    name: "Upgrade To PRO",
-    rtlName: "التطور للاحترافية",
-    icon: Unarchive,
-    component: UpgradeToPro,
-    layout: "/admin"
-  },
-  {
-    path: "/rtl-page",
-    name: "RTL Support",
-    rtlName: "پشتیبانی از راست به چپ",
-    icon: Language,
-    component: RTLPage,
-    layout: "/rtl"
-  },
-  {
-    path: "/login-page",
-    name: "Login Page",
-    rtlName: "پشتیبانی از راست به چپ",
-    icon: Login,
-    component: LoginPage,
-    layout: "/auth"
-  },
-  {
-    path: "/register-page",
-    name: "Register Page",
-    rtlName: "پشتیبانی از راست به چپ",
-    icon: Register,
-    component: RegisterPage,
-    layout: "/auth"
-  }
 ];
-
-export default dashboardRoutes;
+export default routes;
