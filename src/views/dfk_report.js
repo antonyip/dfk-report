@@ -25,53 +25,16 @@ import {
 } from "reactstrap";
 import classnames from 'classnames';
 
-function TotalValueLocked() {
-
-  const [error, setError] = useState();
-  const [errorData, setErrorData] = useState();
-  const [loading, setLoading] = useState();
-
-  const [csv, setCSV] = useState({});
-  var csvText = String();
-
-    useEffect( () => {
-      axios.get("https://api.flipsidecrypto.com/api/v2/queries/397d754a-5f73-4071-bcb5-ad5439dea98d/data/latest")
-      .then( response => {
-        setCSV(response.data);
-      }).catch(error => {
-        setError(true);
-        setErrorData(error);
-        console.log(error);
-      }).finally(() => {
-        setLoading(false);
-      })
-    } , []);
-  
-    if (error) return <div>{errorData}</div>;
-    if (loading) return <div>Loading...</div>;
-
-    for (let i = 0; i < csv.length; i++) {
-      csvText = csvText.concat(csv[i].DATE.toString(),",", csv[i].ETH_VOLUME.toString(),",", csv[i].PROJECT_NAME.toString(),",", csv[i].USD_VOLUME.toString(),";")
-    }
-    
-  /*
-    {
-      "DATE": "2021-09-27T00:00:00Z",
-      "ETH_VOLUME": 0.36879999999999996,
-      "PROJECT_NAME": "Rabbit_College_Club",
-      "USD_VOLUME": 1144.5356953636842
-    }
-  */
-    
-    return (<>
-      <div className="content">
-        {csvText}
-      </div>
-    </>)
+var snowflake = require('snowflake-sdk');
+var connection = snowflake.createConnection( {
+  account: process.env.SNOWFLAKE_ACCOUNT,
+  username: process.env.SNOWFLAKE_USERNAME,
+  password: process.env.SNOWFLAKE_PASSWORD
   }
+  );
+var connection_ID;
 
-  
-function Curve_Free() {
+function Dfk_Report() {
 
   const [activeTab, setActiveTab] = useState('1');
 
@@ -79,12 +42,25 @@ function Curve_Free() {
     if(activeTab !== tab) setActiveTab(tab);
   }
 
+  connection.connect( 
+    function(err, conn) {
+        if (err) {
+            console.error('Unable to connect: ' + err.message);
+            } 
+        else {
+            console.log('Successfully connected to Snowflake.');
+            // Optional: store the connection ID.
+            connection_ID = conn.getId();
+            }
+        }
+    );
+
   return (
     <>
       <div className="content">
         <TabContent activeTab={activeTab}>
           <TabPane tabId='1'>
-            <TotalValueLocked></TotalValueLocked>
+            
           </TabPane>
         </TabContent>
       </div>
@@ -92,4 +68,4 @@ function Curve_Free() {
   );
 }
 
-export default Curve_Free;
+export default Dfk_Report;
