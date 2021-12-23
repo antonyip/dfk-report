@@ -59,7 +59,7 @@ function Dfk_Report() {
   }
 
   useEffect(async () => {
-    const result = await axios.get("http://dfkreport.antonyip.com/quest-rewards?q=0x0ba43bae4613e03492e4c17af3b014b6c3202b9d")
+    const result = await axios.get("https://dfkreport.antonyip.com/quest-rewards?q=0x0ba43bae4613e03492e4c17af3b014b6c3202b9d")
     .then( res => {
       setQuestData(res);
     })
