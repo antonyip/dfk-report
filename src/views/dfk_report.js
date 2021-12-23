@@ -25,15 +25,6 @@ import {
 } from "reactstrap";
 import classnames from 'classnames';
 
-var snowflake = require('snowflake-sdk');
-var connection = snowflake.createConnection( {
-  account: process.env.SNOWFLAKE_ACCOUNT,
-  username: process.env.SNOWFLAKE_USERNAME,
-  password: process.env.SNOWFLAKE_PASSWORD
-  }
-  );
-var connection_ID;
-
 function Dfk_Report() {
 
   const [activeTab, setActiveTab] = useState('1');
@@ -42,25 +33,12 @@ function Dfk_Report() {
     if(activeTab !== tab) setActiveTab(tab);
   }
 
-  connection.connect( 
-    function(err, conn) {
-        if (err) {
-            console.error('Unable to connect: ' + err.message);
-            } 
-        else {
-            console.log('Successfully connected to Snowflake.');
-            // Optional: store the connection ID.
-            connection_ID = conn.getId();
-            }
-        }
-    );
-
   return (
     <>
       <div className="content">
         <TabContent activeTab={activeTab}>
           <TabPane tabId='1'>
-            
+            hello world
           </TabPane>
         </TabContent>
       </div>
