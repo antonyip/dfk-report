@@ -23,55 +23,133 @@ import {
   TabContent,
   TabPane,
   Table,
-  Row
+  Row,
+  Col,
+  Input
 } from "reactstrap";
 import classnames from 'classnames';
 
-function QuestRewards(props){
+function QuestRewardRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CONTRACT_NAME}</Col><Col>{props.VALUE}</Col><Col>{props.VALUE_USD}</Col></Row>);
+}
 
+function QuestRewardsPage(props){
 
-  //console.log('a');
-  if (props.data == '')
+  if (props.data === '')
     return (<div>Loading...</div>);
 
-  var html = "<div>";
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CONTRACT_NAME</Col><Col>VALUE</Col><Col>VALUE_USD</Col></Row>
+  var rows = [];
   props.data.data.forEach(element => {
-    html += "<div>";
-    //console.log(element);
-    html += element.BLOCK_TIMESTAMP;
-    html += "</div>";
-  });
-  html += "</div>";
-  
-  return (
-    <div><div>hello from quest rewards</div> {html} </div>
-    );
+    rows.push(
+      <QuestRewardRows
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      CONTRACT_NAME={element.CONTRACT_NAME}
+      VALUE={element.VALUE}
+      VALUE_USD="0"
+      ></QuestRewardRows>
+      )
+    });
 
+  return (
+    <>
+    <h1>Quest rewards</h1>
+    <Table>
+      {rowHeaders}
+      {rows}
+    </Table>
+    </>
+  );
 }
+
+function SwapsRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.FROM_TOKEN}</Col><Col>{props.FROM_AMOUNT}</Col><Col>{props.TO_TOKEN}</Col><Col>{props.TO_AMOUNT}</Col><Col>{props.VALUE_USD}</Col></Row>);
+}
+
+function SwapsPage(props){
+
+  if (props.data === '')
+    return (<div>Loading...</div>);
+
+  //{"BLOCK_TIMESTAMP":"2021-12-20 08:03:08.000","POOL_NAME":"1USDC-WONE LP","AMOUNT0IN":0.216536,"AMOUNT1IN":0
+  //,"AMOUNT0OUT":0,"AMOUNT1OUT":0.9924816137,"TOKEN0":"0x985458e523db3d53125813ed68c274899e9dfab4","TOKEN0_NAME":"USD Coin"
+  //,"TOKEN0_SYMBOL":"1USDC","TOKEN1":"0xcf664087a5bb0237a0bad6742852ec6c8d69a27a","TOKEN1_NAME":"Wrapped ONE","TOKEN1_SYMBOL":"WONE"}
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>FROM_TOKEN</Col><Col>FROM_AMOUNT</Col><Col>TO_TOKEN</Col><Col>TO_AMOUNT</Col><Col>VALUE_USD</Col></Row>
+  var rows = [];
+  props.data.data.forEach(element => {
+    rows.push(
+      <SwapsRows
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      FROM_TOKEN={ element.AMOUNT0IN > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME}
+      TO_TOKEN={ element.AMOUNT0OUT > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME}
+      FROM_AMOUNT={ element.AMOUNT0IN + element.AMOUNT1IN }
+      TO_AMOUNT={ element.AMOUNT0OUT + element.AMOUNT1OUT }
+      VALUE_USD="0"
+      ></SwapsRows>
+      )
+    });
+
+  return (
+    <>
+    <h1>Dex Swaps</h1>
+    <Table>
+      {rowHeaders}
+      {rows}
+    </Table>
+    </>
+  );
+}
+
+
 
 function Dfk_Report() {
 
   const [activeTab, setActiveTab] = useState('1');
   const [questData, setQuestData] = useState('');
+  const [swapData, setSwapData] = useState('');
+  const [searchText, setSearchText] = useState("0x0ba43bae4613e03492e4c17af3b014b6c3202b9d");
+  const [searchActivatedQuest, setSearchActivatedQuest] = useState(0);
+  const [searchActivatedSwaps, setSearchActivatedSwaps] = useState(0);
+
+  const triggerSearch = e => {
+    if (e.key === 'Enter')
+    {
+      console.log("Search Triggered");
+      setSearchActivatedQuest(1);
+      setSearchActivatedSwaps(1);
+      setQuestData('');
+      setSwapData('');
+    }
+  }
 
   const toggle = tab => {
     if(activeTab !== tab) setActiveTab(tab);
   }
 
-  useEffect(async () => {
-    const result = await axios.get("https://dfkreport.antonyip.com/quest-rewards?q=0x0ba43bae4613e03492e4c17af3b014b6c3202b9d")
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/quest-rewards?q=" + searchText )
     .then( res => {
       setQuestData(res);
+      setSearchActivatedQuest(0);
     })
-  }, []);
+  }, [searchActivatedQuest]);
+
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/token-swaps?q=" + searchText )
+    .then( res => {
+      setSwapData(res);
+      setSearchActivatedSwaps(0);
+    })
+  }, [searchActivatedSwaps]);
   
   return (
     <>
       <div className="content">
+        <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value) }}></Input>
         <TabContent activeTab={activeTab}>
           <TabPane tabId='1'>
-            hello world
-            <QuestRewards data={questData}></QuestRewards>
+            <QuestRewardsPage data={questData}></QuestRewardsPage>
+            <SwapsPage data={swapData}></SwapsPage>
           </TabPane>
         </TabContent>
       </div>
