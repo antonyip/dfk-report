@@ -150,6 +150,55 @@ function ItemsPage(props){
   );
 }
 
+function HeroRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.TOKEN_ID}</Col><Col>{props.JEWELS_COST}</Col><Col>{props.BOUGHT}</Col><Col>{props.VALUE_USD}</Col></Row>);
+}
+
+function HeroPage(props){
+
+  if (props.dataBuy === '' || props.dataSold === '')
+    return (<Row>Loading...</Row>);
+
+  if (props.dataBuy === 'error' || props.dataSold === 'error')
+    return (<Row>Error Loading Address...</Row>);
+//[{"BLOCK_TIMESTAMP":"2021-12-22 23:03:21.000","TX_ID":"0x719556da488b79ae4cc3fc575bd1c9b81388dcdece3edd70892b2ecc3a99d4cc","JEWELS_PAID":41,"TOKEN_ID":77012}]
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_ID</Col><Col>JEWELS_COST</Col><Col>BOUGHT/SOLD</Col><Col>VALUE_USD</Col></Row>
+  var rows = [];
+  props.dataBuy.data.forEach(element => {
+    rows.push(
+      <HeroRows
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      TOKEN_ID={ element.TOKEN_ID }
+      JEWELS_COST={ element.JEWELS_PAID }
+      BOUGHT="BOUGHT"
+      VALUE_USD="0"
+      ></HeroRows>
+      )
+    });
+
+    props.dataSold.data.forEach(element => {
+      rows.push(
+        <HeroRows
+        BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+        TOKEN_ID={ element.TOKEN_ID }
+        JEWELS_COST={ element.JEWELS_PAID }
+        BOUGHT="SOLD"
+        VALUE_USD="0"
+        ></HeroRows>
+        )
+      });
+
+  return (
+    <>
+    <h1>Hero Trades</h1>
+    <Table>
+      {rowHeaders}
+      {rows}
+    </Table>
+    </>
+  );
+}
+
 
 function Dfk_Report() {
 
@@ -165,6 +214,12 @@ function Dfk_Report() {
   const [itemData, setItemData] = useState('');
   const [searchActivatedItems, setSearchActivatedItems] = useState(0);
 
+  const [heroSoldData, setHeroSoldData] = useState('');
+  const [searchActivatedHeroSold, setSearchActivatedHeroSold] = useState(0);
+
+  const [heroBuyData, setHeroBuyData] = useState('');
+  const [searchActivatedHeroBuy, setSearchActivatedHeroBuy] = useState(0);
+
   const triggerSearch = e => {
     if (e.key === 'Enter')
     {
@@ -172,9 +227,13 @@ function Dfk_Report() {
       setSearchActivatedQuest(1);
       setSearchActivatedSwaps(1);
       setSearchActivatedItems(1);
+      setSearchActivatedHeroSold(1);
+      setSearchActivatedHeroBuy(1);
       setQuestData('');
       setSwapData('');
       setItemData('');
+      setHeroSoldData('');
+      setHeroBuyData('');
     }
   }
 
@@ -215,6 +274,7 @@ function Dfk_Report() {
     // eslint-disable-next-line
   }, [searchActivatedSwaps]);
 
+  // item-txs
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/item-txs?q=" + searchText )
     .then( res => {
@@ -230,6 +290,40 @@ function Dfk_Report() {
     })
     // eslint-disable-next-line
   }, [searchActivatedItems]);
+
+  // hero-buy
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/hero-buy?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setHeroBuyData('error');
+      }
+      else
+      {
+        setHeroBuyData(res);
+      }
+      setSearchActivatedHeroBuy(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedItems]);
+
+  // hero-sold
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/hero-sold?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setHeroSoldData('error');
+      }
+      else
+      {
+        setHeroSoldData(res);
+      }
+      setSearchActivatedHeroSold(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedItems]);
   
   return (
     <>
@@ -240,6 +334,7 @@ function Dfk_Report() {
             <QuestRewardsPage data={questData}></QuestRewardsPage>
             <SwapsPage data={swapData}></SwapsPage>
             <ItemsPage data={itemData}></ItemsPage>
+            <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData}></HeroPage>
           </TabPane>
         </TabContent>
       </div>
