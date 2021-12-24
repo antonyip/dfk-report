@@ -30,6 +30,10 @@ import routes from "routes.js";
 
 var ps;
 
+function Unused(props) {
+  return <></>
+}
+
 function Dashboard(props) {
   const [backgroundColor, setBackgroundColor] = React.useState("black");
   const [activeColor, setActiveColor] = React.useState("info");
@@ -51,12 +55,15 @@ function Dashboard(props) {
     mainPanel.current.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [location]);
+  
   const handleActiveClick = (color) => {
     setActiveColor(color);
   };
   const handleBgClick = (color) => {
     setBackgroundColor(color);
   };
+
+  
   return (
     <div className="wrapper">
       <Sidebar
@@ -79,6 +86,7 @@ function Dashboard(props) {
           })}
         </Switch>
         <Footer fluid />
+        <Unused a={handleActiveClick} b={handleBgClick}></Unused>
       </div>
       {/* <FixedPlugin
         bgColor={backgroundColor}

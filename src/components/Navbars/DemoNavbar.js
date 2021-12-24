@@ -17,26 +17,17 @@
 
 */
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
-  Collapse,
   Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  Input,
 } from "reactstrap";
 
 import routes from "routes.js";
+
+function Unused(props) {
+  return <></>
+}
 
 function Header(props) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -173,7 +164,8 @@ function Header(props) {
             </NavItem>
           </Nav>
         </Collapse> */}
-      </Container> 
+        <Unused a={toggle} b={dropdownToggle} c={getBrand} d={openSidebar}></Unused>
+      </Container>
     </Navbar>
   );
 }

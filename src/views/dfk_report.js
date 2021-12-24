@@ -27,7 +27,10 @@ import {
   Col,
   Input
 } from "reactstrap";
-import classnames from 'classnames';
+
+function Unused(props) {
+  return <></>
+}
 
 function QuestRewardRows(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CONTRACT_NAME}</Col><Col>{props.VALUE}</Col><Col>{props.VALUE_USD}</Col></Row>);
@@ -100,16 +103,58 @@ function SwapsPage(props){
   );
 }
 
+function ItemRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.FROM_TOKEN}</Col><Col>{props.FROM_AMOUNT}</Col><Col>{props.TO_TOKEN}</Col><Col>{props.TO_AMOUNT}</Col><Col>{props.VALUE_USD}</Col></Row>);
+}
+
+function ItemsPage(props){
+
+  if (props.data === '')
+    return (<div>Loading...</div>);
+
+    //{"BLOCK_TIMESTAMP":"2021-12-22 23:20:42.000","TX_ID":"0x5b75eb4a6743e9cf86aaf9ab0930650941e98240f45bb39d6ebf7af0f861d564"
+    //,"FROM_TOKEN":"Bloater","FROM_AMOUNT":1,"FROM_SYMBOL":"DFKBLOATER"
+    //,"TO_TOKEN":"Gold","TO_AMOUNT":2.5,"TO_SYMBOL":"DFKGOLD","AMOUNT_USD":0},
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>FROM_TOKEN</Col><Col>FROM_AMOUNT</Col><Col>TO_TOKEN</Col><Col>TO_AMOUNT</Col><Col>VALUE_USD</Col></Row>
+  var rows = [];
+  props.data.data.forEach(element => {
+    rows.push(
+      <ItemRows
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      FROM_TOKEN={ element.FROM_TOKEN }
+      TO_TOKEN={ element.TO_TOKEN }
+      FROM_AMOUNT={ element.FROM_AMOUNT }
+      TO_AMOUNT={ element.TO_AMOUNT }
+      VALUE_USD={ element.AMOUNT_USD }
+      ></ItemRows>
+      )
+    });
+
+  return (
+    <>
+    <h1>Item Trades</h1>
+    <Table>
+      {rowHeaders}
+      {rows}
+    </Table>
+    </>
+  );
+}
 
 
 function Dfk_Report() {
 
   const [activeTab, setActiveTab] = useState('1');
-  const [questData, setQuestData] = useState('');
-  const [swapData, setSwapData] = useState('');
   const [searchText, setSearchText] = useState("0x0ba43bae4613e03492e4c17af3b014b6c3202b9d");
+
+  const [questData, setQuestData] = useState('');
   const [searchActivatedQuest, setSearchActivatedQuest] = useState(0);
+  
+  const [swapData, setSwapData] = useState('');
   const [searchActivatedSwaps, setSearchActivatedSwaps] = useState(0);
+
+  const [itemData, setItemData] = useState('');
+  const [searchActivatedItems, setSearchActivatedItems] = useState(0);
 
   const triggerSearch = e => {
     if (e.key === 'Enter')
@@ -117,8 +162,10 @@ function Dfk_Report() {
       console.log("Search Triggered");
       setSearchActivatedQuest(1);
       setSearchActivatedSwaps(1);
+      setSearchActivatedItems(1);
       setQuestData('');
       setSwapData('');
+      setItemData('');
     }
   }
 
@@ -132,6 +179,7 @@ function Dfk_Report() {
       setQuestData(res);
       setSearchActivatedQuest(0);
     })
+    // eslint-disable-next-line
   }, [searchActivatedQuest]);
 
   useEffect( () => {
@@ -140,7 +188,17 @@ function Dfk_Report() {
       setSwapData(res);
       setSearchActivatedSwaps(0);
     })
+    // eslint-disable-next-line
   }, [searchActivatedSwaps]);
+
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/item-txs?q=" + searchText )
+    .then( res => {
+      setItemData(res);
+      setSearchActivatedItems(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedItems]);
   
   return (
     <>
@@ -150,9 +208,11 @@ function Dfk_Report() {
           <TabPane tabId='1'>
             <QuestRewardsPage data={questData}></QuestRewardsPage>
             <SwapsPage data={swapData}></SwapsPage>
+            <ItemsPage data={itemData}></ItemsPage>
           </TabPane>
         </TabContent>
       </div>
+      <Unused a={toggle}></Unused>
     </>
   );
 }
