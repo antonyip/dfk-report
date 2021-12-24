@@ -39,7 +39,10 @@ function QuestRewardRows(props){
 function QuestRewardsPage(props){
 
   if (props.data === '')
-    return (<div>Loading...</div>);
+    return (<Row>Loading...</Row>);
+
+  if (props.data === 'error')
+    return (<Row>Error Loading Address...</Row>);
 
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CONTRACT_NAME</Col><Col>VALUE</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
@@ -72,7 +75,10 @@ function SwapsRows(props){
 function SwapsPage(props){
 
   if (props.data === '')
-    return (<div>Loading...</div>);
+    return (<Row>Loading...</Row>);
+
+  if (props.data === 'error')
+    return (<Row>Error Loading Address...</Row>);
 
   //{"BLOCK_TIMESTAMP":"2021-12-20 08:03:08.000","POOL_NAME":"1USDC-WONE LP","AMOUNT0IN":0.216536,"AMOUNT1IN":0
   //,"AMOUNT0OUT":0,"AMOUNT1OUT":0.9924816137,"TOKEN0":"0x985458e523db3d53125813ed68c274899e9dfab4","TOKEN0_NAME":"USD Coin"
@@ -110,7 +116,10 @@ function ItemRows(props){
 function ItemsPage(props){
 
   if (props.data === '')
-    return (<div>Loading...</div>);
+    return (<Row>Loading...</Row>);
+
+  if (props.data === 'error')
+    return (<Row>Error Loading Address...</Row>);
 
     //{"BLOCK_TIMESTAMP":"2021-12-22 23:20:42.000","TX_ID":"0x5b75eb4a6743e9cf86aaf9ab0930650941e98240f45bb39d6ebf7af0f861d564"
     //,"FROM_TOKEN":"Bloater","FROM_AMOUNT":1,"FROM_SYMBOL":"DFKBLOATER"
@@ -176,7 +185,14 @@ function Dfk_Report() {
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/quest-rewards?q=" + searchText )
     .then( res => {
-      setQuestData(res);
+      if (res.data === 'Invalid User Address!')
+      {
+        setQuestData('error');
+      }
+      else
+      {
+        setQuestData(res);
+      }
       setSearchActivatedQuest(0);
     })
     // eslint-disable-next-line
@@ -185,7 +201,15 @@ function Dfk_Report() {
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/token-swaps?q=" + searchText )
     .then( res => {
-      setSwapData(res);
+      if (res.data === 'Invalid User Address!')
+      {
+        setSwapData('error');
+      }
+      else
+      {
+        setSwapData(res);  
+      }
+      
       setSearchActivatedSwaps(0);
     })
     // eslint-disable-next-line
@@ -194,7 +218,14 @@ function Dfk_Report() {
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/item-txs?q=" + searchText )
     .then( res => {
-      setItemData(res);
+      if (res.data === 'Invalid User Address!')
+      {
+        setItemData('error');
+      }
+      else
+      {
+        setItemData(res);
+      }
       setSearchActivatedItems(0);
     })
     // eslint-disable-next-line
