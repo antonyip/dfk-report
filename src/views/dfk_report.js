@@ -20,15 +20,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 // reactstrap components
 import {
-  TabContent,
-  TabPane,
-  Table,
   Row,
   Col,
   Input,
   Collapse,
-  Button
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
 } from "reactstrap";
+
 
 function QuestRewardRows(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CONTRACT_NAME}</Col><Col>{props.VALUE}</Col><Col>{props.VALUE_USD}</Col></Row>);
@@ -39,10 +40,10 @@ function QuestRewardsPage(props){
   const [toggle1, setToggle1] = useState(true);
 
   if (props.data === '')
-    return (<Row>Loading Quest Data...</Row>);
+    return (<Card><CardBody>Loading Quest Data...</CardBody></Card>);
 
   if (props.data === 'error')
-    return (<Row>Error Loading Address...</Row>);
+    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
 //{"BLOCK_TIMESTAMP":"2021-12-08 03:28:27.000","ETH_CONTRACT_ADDRESS":"0x24ea0d436d3c2602fbfefbe6a16bbc304c963d04"
 //,"CONTRACT_NAME":"Serendale_Gaia Tears","FROM_ADDRESS":"0x0000000000000000000000000000000000000000"
 //,"TO_ADDRESS":"0x7ad760d9402df0f78786ca0b323a911cb1b6ee41","L.EVENT_INPUTS:VALUE":4,"CALCULATED_VALUE":4
@@ -63,15 +64,15 @@ function QuestRewardsPage(props){
     });
 
   return (
-    <Table>
-    <h1>Quest Rewards <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Card>
+    <CardHeader>Quest Rewards <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardBody>
     <Collapse isOpen={toggle1}>
-      <Table>
         {rowHeaders}
         {rows}
-      </Table>
     </Collapse>
-    </Table>
+    </CardBody>
+    </Card>
   );
 }
 
@@ -84,10 +85,10 @@ function SwapsPage(props){
   const [toggle1, setToggle1] = useState(true);
 
   if (props.data === '')
-    return (<Row>Loading Market Trade Data...</Row>);
+    return (<Card><CardBody>Loading Market Trade Data...</CardBody></Card>);
 
   if (props.data === 'error')
-    return (<Row>Error Loading Address...</Row>);
+    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
 
   /*
   {"BLOCK_TIMESTAMP":"2021-12-19 06:24:38.000","POOL_NAME":"JEWEL-WONE LP","AMOUNT0IN":0,"AMOUNT1IN":100,"AMOUNT0OUT":2.023784523,"AMOUNT1OUT":0
@@ -112,15 +113,15 @@ function SwapsPage(props){
     });
 
   return (
-    <Table>
-    <h1>Market Trades <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Card>
+    <CardHeader>Market Trades <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardBody>
     <Collapse isOpen={toggle1}>
-    <Table>
       {rowHeaders}
       {rows}
-    </Table>
     </Collapse>
-    </Table>
+    </CardBody>
+    </Card>
   );
 }
 
@@ -132,10 +133,10 @@ function ItemsPage(props){
   const [toggle1, setToggle1] = useState(true);
 
   if (props.data === '')
-    return (<Row>Loading Items Data...</Row>);
+    return (<Card><CardBody>Loading Items Data...</CardBody></Card>);
 
   if (props.data === 'error')
-    return (<Row>Error Loading Address...</Row>);
+    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
 
     //{"BLOCK_TIMESTAMP":"2021-12-22 23:20:42.000","TX_ID":"0x5b75eb4a6743e9cf86aaf9ab0930650941e98240f45bb39d6ebf7af0f861d564"
     //,"FROM_TOKEN":"Bloater","FROM_AMOUNT":1,"FROM_SYMBOL":"DFKBLOATER"
@@ -158,15 +159,15 @@ function ItemsPage(props){
     });
 
   return (
-    <Table>
-    <h1>Items <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Card>
+    <CardHeader>Items <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardBody>
     <Collapse isOpen={toggle1}>
-    <Table>
       {rowHeaders}
       {rows}
-    </Table>
     </Collapse>
-    </Table>
+    </CardBody>
+    </Card>
   );
 }
 
@@ -182,10 +183,10 @@ function BankPage(props){
   const [toggle1, setToggle1] = useState(true);
 
   if (props.dataDeposit === '' || props.dataWithdraw === '')
-    return (<Row>Loading Banking Data...</Row>);
+    return (<Card><CardBody>Loading Banking Data...</CardBody></Card>);
 
   if (props.dataDeposit === 'error' || props.dataWithdraw === 'error')
-    return (<Row>Error Loading Address...</Row>);
+    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
 
     /*
     {"BLOCK_TIMESTAMP":"2021-12-20 08:04:37.000","TX_ID":"0xed27c496f5f8905695a677e3d3270e93035f97f1abb2dbbe696faab585051a86"
@@ -225,21 +226,25 @@ function BankPage(props){
     });
 
   return (
-    <Table>
-    <h1>Banking <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Card>
+    <CardHeader>Banking <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
     <Collapse isOpen={toggle1}>
-    <h2>Deposits</h2>
-    <Table>
+    <CardHeader>Deposits</CardHeader>
+    <Card>
+    <CardBody>
       {rowHeaders}
       {rows}
-    </Table>
-    <h2>Withdraws</h2>
-    <Table>
+      </CardBody>
+    </Card>
+    <CardHeader>Withdraws</CardHeader>
+    <Card>
+      <CardBody>
       {rowHeaders2}
       {rows2}
-    </Table>
+      </CardBody>
+    </Card>
     </Collapse>
-    </Table>
+    </Card>
   );
 }
 
@@ -255,10 +260,10 @@ function HeroSummonPage(props){
   const [toggle1, setToggle1] = useState(true);
 
   if (props.dataCrystal === '' || props.dataHero === '')
-    return (<Row>Loading Summon Data...</Row>);
+    return (<Card><CardBody>Loading Summon Data...</CardBody></Card>);
 
   if (props.dataCrystal === 'error' || props.dataHero === 'error')
-    return (<Row>Error Loading Address...</Row>);
+    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
 
     /*
     {"BLOCK_TIMESTAMP":"2021-12-08 06:55:34.000","CRYSTAL_ID":"0x000000000000000000000000000000000000000000000000000000000000c6fc"
@@ -312,21 +317,25 @@ function HeroSummonPage(props){
     });
     
   return (
-    <Table>
-    <h1>Summons <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Card>
+    <CardHeader>Summons <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
     <Collapse isOpen={toggle1}>
-    <h2>Summon Crystal</h2>
-    <Table>
+    <CardHeader>Summon Crystal</CardHeader>
+    <Card>
+    <CardBody>
       {rowHeaders}
       {rows}
-    </Table>
-    <h2>Trade Crystal for Hero</h2>
-    <Table>
+    </CardBody>
+    </Card>
+    <CardHeader>Trade Crystal for Hero</CardHeader>
+    <Card>
+    <CardBody>
       {rowHeaders2}
       {rows2}
-    </Table>
+    </CardBody>
+    </Card>
     </Collapse>
-    </Table>
+    </Card>
   );
 }
 
@@ -339,10 +348,10 @@ function HeroPage(props){
   const [toggle1, setToggle1] = useState(true);
 
   if (props.dataBuy === '' || props.dataSold === '')
-    return (<Row>Loading Heros Data...</Row>);
+    return (<Card><CardBody>Loading Heros Data...</CardBody></Card>);
 
   if (props.dataBuy === 'error' || props.dataSold === 'error')
-    return (<Row>Error Loading Address...</Row>);
+    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
 //[{"BLOCK_TIMESTAMP":"2021-12-22 23:03:21.000"
 //,"TX_ID":"0x719556da488b79ae4cc3fc575bd1c9b81388dcdece3edd70892b2ecc3a99d4cc"
 //,"JEWELS_PAID":41,"TOKEN_ID":77012}]
@@ -380,21 +389,27 @@ function HeroPage(props){
       });
 
   return (
-    <Table>
-    <h1>Heroes <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Card>
+    <CardHeader>Heroes <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardBody>
     <Collapse isOpen={toggle1}>
-    <h2>Hero Bought</h2>
-    <Table>
+    <Card>
+    <CardHeader>Hero Bought</CardHeader>
+    <CardBody>
       {rowHeaders}
       {rows}
-    </Table>
-    <h2>Hero Sold</h2>
-    <Table> 
+    </CardBody>
+    </Card>
+    <Card>
+    <CardHeader>Hero Sold</CardHeader>
+    <CardBody> 
       {rowHeaders}
       {rowsSold}
-    </Table>
+    </CardBody>
+    </Card>
     </Collapse>
-    </Table>
+    </CardBody>
+    </Card>
   );
 }
 
@@ -610,17 +625,15 @@ function Dfk_Report() {
   
   return (
       <div className="content">
-        <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value) }}></Input>
-        <TabContent activeTab='1'>
-          <TabPane tabId='1'>
-            <QuestRewardsPage data={questData}></QuestRewardsPage>
-            <SwapsPage data={swapData}></SwapsPage>
-            <ItemsPage data={itemData}></ItemsPage>
-            <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} ></BankPage>
-            <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData}></HeroPage>
-            <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData}></HeroSummonPage>
-          </TabPane>
-        </TabContent>
+        <CardHeader>
+          <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value) }}></Input>
+        </CardHeader>
+        <QuestRewardsPage data={questData}></QuestRewardsPage>
+        <SwapsPage data={swapData}></SwapsPage>
+        <ItemsPage data={itemData}></ItemsPage>
+        <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} ></BankPage>
+        <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData}></HeroPage>
+        <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData}></HeroSummonPage>
       </div>
   );
 }
