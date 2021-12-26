@@ -62,7 +62,7 @@ function QuestRewardsPage(props){
 
   return (
     <>
-    <h1>Quest rewards</h1>
+    <h1>Quest Rewards</h1>
     <Table>
       {rowHeaders}
       {rows}
@@ -78,7 +78,7 @@ function SwapsRows(props){
 function SwapsPage(props){
 
   if (props.data === '')
-    return (<Row>Loading Dex Swap Data...</Row>);
+    return (<Row>Loading Market Trade Data...</Row>);
 
   if (props.data === 'error')
     return (<Row>Error Loading Address...</Row>);
@@ -105,7 +105,7 @@ function SwapsPage(props){
 
   return (
     <>
-    <h1>Dex Swaps</h1>
+    <h1>Market Trades</h1>
     <Table>
       {rowHeaders}
       {rows}
@@ -146,10 +146,77 @@ function ItemsPage(props){
 
   return (
     <>
-    <h1>Item Trades</h1>
+    <h1>Items</h1>
     <Table>
       {rowHeaders}
       {rows}
+    </Table>
+    </>
+  );
+}
+
+function BankRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.JEWEL_IN}</Col><Col>{props.XJEWEL_OUT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+}
+
+function BankRows2(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.XJEWEL_IN}</Col><Col>{props.JEWEL_OUT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+}
+
+function BankPage(props){
+
+  if (props.dataDeposit === '' || props.dataWithdraw === '')
+    return (<Row>Loading Banking Data...</Row>);
+
+  if (props.dataDeposit === 'error' || props.dataWithdraw === 'error')
+    return (<Row>Error Loading Address...</Row>);
+
+    /*
+    {"BLOCK_TIMESTAMP":"2021-12-20 08:04:37.000","TX_ID":"0xed27c496f5f8905695a677e3d3270e93035f97f1abb2dbbe696faab585051a86"
+    ,"JEWEL_IN":0.04563048279,"XJEWEL_OUT":0.02788210816,"AMOUNT_USD":0.5612889832}
+    */
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>JEWEL_IN</Col><Col>XJEWEL_OUT</Col><Col>AMOUNT_USD</Col></Row>
+  var rows = [];
+  props.dataDeposit.data.forEach(element => {
+    rows.push(
+      <BankRows
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      JEWEL_IN={ element.JEWEL_IN }
+      XJEWEL_OUT={ element.XJEWEL_OUT }
+      AMOUNT_USD={ element.AMOUNT_USD }
+      ></BankRows>
+      )
+    });
+
+    /*
+    [{"BLOCK_TIMESTAMP":"2021-12-22 22:45:47.000","TX_ID":"0x879855de258fa4a08522433e1cdabc59923f2ebbc6d092cea6b3e223daa6557c"
+    ,"XJEWEL_IN":0.001639404922,"JEWEL_OUT":0.001,"AMOUNT_USD":0.01312701974}]
+    */
+  var rowHeaders2 = <Row><Col>BLOCK_TIMESTAMP</Col><Col>XJEWEL_IN</Col><Col>JEWEL_OUT</Col><Col>AMOUNT_USD</Col></Row>
+  var rows2 = [];
+  props.dataWithdraw.data.forEach(element => {
+    rows2.push(
+      <BankRows2
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      XJEWEL_IN={ element.XJEWEL_IN }
+      JEWEL_OUT={ element.JEWEL_OUT }
+      AMOUNT_USD={ element.AMOUNT_USD }
+      ></BankRows2>
+      )
+    });
+
+  return (
+    <>
+    <h1>Banking</h1>
+    <h2>Deposits</h2>
+    <Table>
+      {rowHeaders}
+      {rows}
+    </Table>
+    <h2>Withdraws</h2>
+    <Table>
+      {rowHeaders2}
+      {rows2}
     </Table>
     </>
   );
@@ -201,7 +268,12 @@ function HeroPage(props){
 
   return (
     <>
-    <h1>Hero Trades</h1>
+    <h1>Heroes</h1>
+    <h2>Hero Summons</h2>
+    <Table>
+      {rowHeaders}
+      <p>TODO...</p>
+    </Table>
     <h2>Hero Bought</h2>
     <Table>
       {rowHeaders}
@@ -237,6 +309,12 @@ function Dfk_Report() {
   const [heroBuyData, setHeroBuyData] = useState('');
   const [searchActivatedHeroBuy, setSearchActivatedHeroBuy] = useState(0);
 
+  const [bankingTxData, setBankingTxData] = useState('');
+  const [searchActivatedBankingTxData, setSearchActivatedBankingTxData] = useState(0);
+  
+  const [bankingTxData2, setBankingTxData2] = useState('');
+  const [searchActivatedBankingTxData2, setSearchActivatedBankingTxData2] = useState(0);
+
   const triggerSearch = e => {
     if (e.key === 'Enter')
     {
@@ -246,11 +324,15 @@ function Dfk_Report() {
       setSearchActivatedItems(1);
       setSearchActivatedHeroSold(1);
       setSearchActivatedHeroBuy(1);
+      setSearchActivatedBankingTxData(1);
+      setSearchActivatedBankingTxData2(1);
       setQuestData('');
       setSwapData('');
       setItemData('');
       setHeroSoldData('');
       setHeroBuyData('');
+      setBankingTxData('');
+      setBankingTxData2('');
     }
   }
 
@@ -323,7 +405,7 @@ function Dfk_Report() {
       setSearchActivatedHeroBuy(0);
     })
     // eslint-disable-next-line
-  }, [searchActivatedItems]);
+  }, [searchActivatedHeroBuy]);
 
   // hero-sold
   useEffect( () => {
@@ -340,7 +422,41 @@ function Dfk_Report() {
       setSearchActivatedHeroSold(0);
     })
     // eslint-disable-next-line
-  }, [searchActivatedItems]);
+  }, [searchActivatedHeroSold]);
+
+  // bank-deposit
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/bank-deposit?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setBankingTxData('error');
+      }
+      else
+      {
+        setBankingTxData(res);
+      }
+      setSearchActivatedBankingTxData(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedBankingTxData]);
+
+  // bank-withdraw
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/bank-withdraw?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setBankingTxData2('error');
+      }
+      else
+      {
+        setBankingTxData2(res);
+      }
+      setSearchActivatedBankingTxData2(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedBankingTxData2]);
   
   return (
     <>
@@ -351,6 +467,7 @@ function Dfk_Report() {
             <QuestRewardsPage data={questData}></QuestRewardsPage>
             <SwapsPage data={swapData}></SwapsPage>
             <ItemsPage data={itemData}></ItemsPage>
+            <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} ></BankPage>
             <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData}></HeroPage>
           </TabPane>
         </TabContent>
