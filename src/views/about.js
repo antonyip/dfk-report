@@ -25,7 +25,7 @@ return (
         <Table>
           <Col>Most things here are experimental.. If I won the grand price, I would probably be able to finish the whole site in about ~3 months</Col>
           <Col>The whole site consists of 3 parts..</Col>
-          <Col>1. snowflake database</Col>
+          <Col>1. snowflake database - Part of MetricsDAO</Col>
           <Col>2. nodejs endpoint (https://dfkreport.antonyip.com)</Col>
           <Col>3. this frontend webpage</Col>
         </Table>
@@ -37,6 +37,9 @@ return (
         <CardBody>
           <Table>
             <Col>Seeds/LP Stuffs</Col>
+            <Col>Harvests</Col>
+            <Col>Item TX USD Prices</Col>
+            <Col>Level ups</Col>
           </Table>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
@@ -46,15 +49,16 @@ return (
       <Card>
         <CardBody>
           <Table>
-            <Col>HERO SUMMONING COSTS</Col>
+            <Col>LP/Seeds</Col>
+            <Col>Summon Rental Income</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
-            <Col>historical Gaia Tears price</Col>
-            <Col>historical rune prices</Col>
+            <Col>better historical Gaia Tears price</Col>
+            <Col>better historical rune prices</Col>
             <Col>automation to update database tables</Col>
             <Col>documentation</Col>
             <Col>testing framework</Col>
             <Col>development framework</Col>
-          </Table>Gaia Tears
+          </Table>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>

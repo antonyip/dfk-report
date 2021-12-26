@@ -30,10 +30,6 @@ import {
   Button
 } from "reactstrap";
 
-function Unused(props) {
-  return <></>
-}
-
 function QuestRewardRows(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CONTRACT_NAME}</Col><Col>{props.VALUE}</Col><Col>{props.VALUE_USD}</Col></Row>);
 }
@@ -53,9 +49,11 @@ function QuestRewardsPage(props){
 //,"TX_ID":"0x457ce826b25a8f45b6ab02dc87bb1bed52b0e3c0ffbbe8e98bdfd40c68db7031","AMOUNT_USD":0.7923936523}
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CONTRACT_NAME</Col><Col>VALUE</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
+  var id = 0;
   props.data.data.forEach(element => {
+    ++id;
     rows.push(
-      <QuestRewardRows
+      <QuestRewardRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       CONTRACT_NAME={element.CONTRACT_NAME}
       VALUE={element.CALCULATED_VALUE}
@@ -65,7 +63,7 @@ function QuestRewardsPage(props){
     });
 
   return (
-    <>
+    <Table>
     <h1>Quest Rewards <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
     <Collapse isOpen={toggle1}>
       <Table>
@@ -73,7 +71,7 @@ function QuestRewardsPage(props){
         {rows}
       </Table>
     </Collapse>
-    </>
+    </Table>
   );
 }
 
@@ -98,9 +96,11 @@ function SwapsPage(props){
   */
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>FROM_TOKEN</Col><Col>FROM_AMOUNT</Col><Col>TO_TOKEN</Col><Col>TO_AMOUNT</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
+  var id = 0;
   props.data.data.forEach(element => {
+    ++id;
     rows.push(
-      <SwapsRows
+      <SwapsRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       FROM_TOKEN={ element.AMOUNT0IN > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME}
       TO_TOKEN={ element.AMOUNT0OUT > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME}
@@ -112,7 +112,7 @@ function SwapsPage(props){
     });
 
   return (
-    <>
+    <Table>
     <h1>Market Trades <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
     <Collapse isOpen={toggle1}>
     <Table>
@@ -120,7 +120,7 @@ function SwapsPage(props){
       {rows}
     </Table>
     </Collapse>
-    </>
+    </Table>
   );
 }
 
@@ -142,9 +142,11 @@ function ItemsPage(props){
     //,"TO_TOKEN":"Gold","TO_AMOUNT":2.5,"TO_SYMBOL":"DFKGOLD","AMOUNT_USD":0},
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>FROM_TOKEN</Col><Col>FROM_AMOUNT</Col><Col>TO_TOKEN</Col><Col>TO_AMOUNT</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
+  var id = 0;
   props.data.data.forEach(element => {
+    ++id;
     rows.push(
-      <ItemRows
+      <ItemRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       FROM_TOKEN={ element.FROM_TOKEN }
       TO_TOKEN={ element.TO_TOKEN }
@@ -156,7 +158,7 @@ function ItemsPage(props){
     });
 
   return (
-    <>
+    <Table>
     <h1>Items <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
     <Collapse isOpen={toggle1}>
     <Table>
@@ -164,7 +166,7 @@ function ItemsPage(props){
       {rows}
     </Table>
     </Collapse>
-    </>
+    </Table>
   );
 }
 
@@ -191,9 +193,11 @@ function BankPage(props){
     */
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>JEWEL_IN</Col><Col>XJEWEL_OUT</Col><Col>AMOUNT_USD</Col></Row>
   var rows = [];
+  var id = 0;
   props.dataDeposit.data.forEach(element => {
+    ++id;
     rows.push(
-      <BankRows
+      <BankRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       JEWEL_IN={ element.JEWEL_IN }
       XJEWEL_OUT={ element.XJEWEL_OUT }
@@ -209,8 +213,9 @@ function BankPage(props){
   var rowHeaders2 = <Row><Col>BLOCK_TIMESTAMP</Col><Col>XJEWEL_IN</Col><Col>JEWEL_OUT</Col><Col>AMOUNT_USD</Col></Row>
   var rows2 = [];
   props.dataWithdraw.data.forEach(element => {
+    ++id;
     rows2.push(
-      <BankRows2
+      <BankRows2 key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       XJEWEL_IN={ element.XJEWEL_IN }
       JEWEL_OUT={ element.JEWEL_OUT }
@@ -220,7 +225,7 @@ function BankPage(props){
     });
 
   return (
-    <>
+    <Table>
     <h1>Banking <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
     <Collapse isOpen={toggle1}>
     <h2>Deposits</h2>
@@ -234,7 +239,7 @@ function BankPage(props){
       {rows2}
     </Table>
     </Collapse>
-    </>
+    </Table>
   );
 }
 
@@ -263,12 +268,13 @@ function HeroSummonPage(props){
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CRYSTAL_ID</Col><Col>TEARS_AMOUNT</Col><Col>JEWEL_AMOUNT</Col><Col>AMOUNT_USD</Col></Row>
   var rows = [];
   var dataSearch = [];
+  var id = 0;
   props.dataCrystal.data.forEach(element => {
 
     dataSearch.push([element.CRYSTAL_ID, element.AMOUNT_USD]);
-
+    ++id;
     rows.push(
-      <CrystalRows
+      <CrystalRows key={id}
       BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
       CRYSTAL_ID={ parseInt(element.CRYSTAL_ID,16) }
       TEARS_AMOUNT={ element.TEARS_AMOUNT }
@@ -294,8 +300,9 @@ function HeroSummonPage(props){
     {
       amount_usd = lookup[1];
     }
+    ++id;
     rows2.push(
-      <HeroSummonRows
+      <HeroSummonRows key={id}
       BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
       CRYSTAL_ID={ parseInt(element.CRYSTAL_ID,16) }
       HERO_ID={ element.HERO_ID }
@@ -305,7 +312,7 @@ function HeroSummonPage(props){
     });
     
   return (
-    <>
+    <Table>
     <h1>Summons <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
     <Collapse isOpen={toggle1}>
     <h2>Summon Crystal</h2>
@@ -319,7 +326,7 @@ function HeroSummonPage(props){
       {rows2}
     </Table>
     </Collapse>
-    </>
+    </Table>
   );
 }
 
@@ -342,9 +349,11 @@ function HeroPage(props){
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_ID</Col><Col>JEWELS_COST</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   var rowsSold = [];
+  var id = 0;
   props.dataBuy.data.forEach(element => {
+    ++id;
     rows.push(
-      <HeroRows
+      <HeroRows key={id}
       BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
       TOKEN_ID={ element.TOKEN_ID }
       JEWELS_COST={ element.JEWELS_PAID }
@@ -358,8 +367,9 @@ function HeroPage(props){
 //,"TOKENID":"0x000000000000000000000000000000000000000000000000000000000000e86b"
 //,"AMOUNT_USD":1058.460472665}
     props.dataSold.data.forEach(element => {
+      ++id;
       rowsSold.push(
-        <HeroRows
+        <HeroRows key={id}
         BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
         TOKEN_ID={ parseInt(element.TOKENID) }
         JEWELS_COST={ element.AMOUNT }
@@ -370,7 +380,7 @@ function HeroPage(props){
       });
 
   return (
-    <div className="content">
+    <Table>
     <h1>Heroes <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
     <Collapse isOpen={toggle1}>
     <h2>Hero Bought</h2>
@@ -384,14 +394,14 @@ function HeroPage(props){
       {rowsSold}
     </Table>
     </Collapse>
-    </div>
+    </Table>
   );
 }
 
 
 function Dfk_Report() {
 
-  const [activeTab, setActiveTab] = useState('1');
+  //const [activeTab, setActiveTab] = useState('1');
   const [searchText, setSearchText] = useState("0x0ba43bae4613e03492e4c17af3b014b6c3202b9d");
 
   const [questData, setQuestData] = useState('');
@@ -444,10 +454,6 @@ function Dfk_Report() {
       setHeroSummonData('');
       setCrystalSummonData('');
     }
-  }
-
-  const toggle = tab => {
-    if(activeTab !== tab) setActiveTab(tab);
   }
 
   useEffect( () => {
@@ -603,10 +609,9 @@ function Dfk_Report() {
   }, [searchActivatedHeroSummonData]);
   
   return (
-    <>
       <div className="content">
         <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value) }}></Input>
-        <TabContent activeTab={activeTab}>
+        <TabContent activeTab='1'>
           <TabPane tabId='1'>
             <QuestRewardsPage data={questData}></QuestRewardsPage>
             <SwapsPage data={swapData}></SwapsPage>
@@ -617,8 +622,6 @@ function Dfk_Report() {
           </TabPane>
         </TabContent>
       </div>
-      <Unused a={toggle}></Unused>
-    </>
   );
 }
 
