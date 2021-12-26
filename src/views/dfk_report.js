@@ -446,28 +446,36 @@ function Dfk_Report() {
   const [crystalSummonData, setCrystalSummonData] = useState('');
   const [searchActivatedCrystalSummonData, setSearchActivatedCrystalSummonData] = useState(0);
 
+  const triggerSearchFinal = e => {
+    console.log("Search Triggered");
+    setSearchActivatedQuest(1);
+    setSearchActivatedSwaps(1);
+    setSearchActivatedItems(1);
+    setSearchActivatedHeroSold(1);
+    setSearchActivatedHeroBuy(1);
+    setSearchActivatedBankingTxData(1);
+    setSearchActivatedBankingTxData2(1);
+    setSearchActivatedHeroSummonData(1);
+    setSearchActivatedCrystalSummonData(1);
+    setQuestData('');
+    setSwapData('');
+    setItemData('');
+    setHeroSoldData('');
+    setHeroBuyData('');
+    setBankingTxData('');
+    setBankingTxData2('');
+    setHeroSummonData('');
+    setCrystalSummonData('');
+  }
+  
+  const triggerSearchButton = e => {
+    triggerSearchFinal();
+  }
+
   const triggerSearch = e => {
     if (e.key === 'Enter')
     {
-      console.log("Search Triggered");
-      setSearchActivatedQuest(1);
-      setSearchActivatedSwaps(1);
-      setSearchActivatedItems(1);
-      setSearchActivatedHeroSold(1);
-      setSearchActivatedHeroBuy(1);
-      setSearchActivatedBankingTxData(1);
-      setSearchActivatedBankingTxData2(1);
-      setSearchActivatedHeroSummonData(1);
-      setSearchActivatedCrystalSummonData(1);
-      setQuestData('');
-      setSwapData('');
-      setItemData('');
-      setHeroSoldData('');
-      setHeroBuyData('');
-      setBankingTxData('');
-      setBankingTxData2('');
-      setHeroSummonData('');
-      setCrystalSummonData('');
+      triggerSearchFinal();
     }
   }
 
@@ -626,7 +634,8 @@ function Dfk_Report() {
   return (
       <div className="content">
         <CardHeader>
-          <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value) }}></Input>
+          <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>
+          <Button onClick={triggerSearchButton}>Search!</Button>
         </CardHeader>
         <QuestRewardsPage data={questData}></QuestRewardsPage>
         <SwapsPage data={swapData}></SwapsPage>

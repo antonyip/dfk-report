@@ -31,6 +31,19 @@ return (
         </Table>
         <CardFooter>... nothing else is here...</CardFooter>
       </Card>
+
+      <CardHeader>Features... FRONTEND</CardHeader>
+      <Card>
+        <CardBody>
+          <Table>
+            <Col>Seeds/LP Stuffs</Col>
+            <Col>Harvests</Col>
+            <Col>Item TX USD Prices</Col>
+            <Col>Level ups</Col>
+          </Table>
+        </CardBody>
+        <CardFooter>... wish i had more time...</CardFooter>
+      </Card>
       
       <CardHeader>Incomplete Features... FRONTEND</CardHeader>
       <Card>
@@ -40,6 +53,7 @@ return (
             <Col>Harvests</Col>
             <Col>Item TX USD Prices</Col>
             <Col>Level ups</Col>
+            <Col>Sum of columns</Col>
           </Table>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
