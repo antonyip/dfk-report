@@ -39,11 +39,14 @@ function QuestRewardRows(props){
 function QuestRewardsPage(props){
 
   if (props.data === '')
-    return (<Row>Loading...</Row>);
+    return (<Row>Loading Quest Data...</Row>);
 
   if (props.data === 'error')
     return (<Row>Error Loading Address...</Row>);
-
+//{"BLOCK_TIMESTAMP":"2021-12-08 03:28:27.000","ETH_CONTRACT_ADDRESS":"0x24ea0d436d3c2602fbfefbe6a16bbc304c963d04"
+//,"CONTRACT_NAME":"Serendale_Gaia Tears","FROM_ADDRESS":"0x0000000000000000000000000000000000000000"
+//,"TO_ADDRESS":"0x7ad760d9402df0f78786ca0b323a911cb1b6ee41","L.EVENT_INPUTS:VALUE":4,"CALCULATED_VALUE":4
+//,"TX_ID":"0x457ce826b25a8f45b6ab02dc87bb1bed52b0e3c0ffbbe8e98bdfd40c68db7031","AMOUNT_USD":0.7923936523}
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CONTRACT_NAME</Col><Col>VALUE</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   props.data.data.forEach(element => {
@@ -51,8 +54,8 @@ function QuestRewardsPage(props){
       <QuestRewardRows
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       CONTRACT_NAME={element.CONTRACT_NAME}
-      VALUE={element.VALUE}
-      VALUE_USD="0"
+      VALUE={element.CALCULATED_VALUE}
+      VALUE_USD={element.AMOUNT_USD}
       ></QuestRewardRows>
       )
     });
@@ -75,14 +78,16 @@ function SwapsRows(props){
 function SwapsPage(props){
 
   if (props.data === '')
-    return (<Row>Loading...</Row>);
+    return (<Row>Loading Dex Swap Data...</Row>);
 
   if (props.data === 'error')
     return (<Row>Error Loading Address...</Row>);
 
-  //{"BLOCK_TIMESTAMP":"2021-12-20 08:03:08.000","POOL_NAME":"1USDC-WONE LP","AMOUNT0IN":0.216536,"AMOUNT1IN":0
-  //,"AMOUNT0OUT":0,"AMOUNT1OUT":0.9924816137,"TOKEN0":"0x985458e523db3d53125813ed68c274899e9dfab4","TOKEN0_NAME":"USD Coin"
-  //,"TOKEN0_SYMBOL":"1USDC","TOKEN1":"0xcf664087a5bb0237a0bad6742852ec6c8d69a27a","TOKEN1_NAME":"Wrapped ONE","TOKEN1_SYMBOL":"WONE"}
+  /*
+  {"BLOCK_TIMESTAMP":"2021-12-19 06:24:38.000","POOL_NAME":"JEWEL-WONE LP","AMOUNT0IN":0,"AMOUNT1IN":100,"AMOUNT0OUT":2.023784523,"AMOUNT1OUT":0
+  ,"TOKEN0_ADDRESS":"0x72cb10c6bfa5624dd07ef608027e366bd690048f","TOKEN0_NAME":"Jewels","TOKEN0_SYMBOL":"JEWEL"
+  ,"TOKEN1_ADDRESS":"0xcf664087a5bb0237a0bad6742852ec6c8d69a27a","TOKEN1_NAME":"Wrapped ONE","TOKEN1_SYMBOL":"WONE","AMOUNT_USD":20.804260373}
+  */
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>FROM_TOKEN</Col><Col>FROM_AMOUNT</Col><Col>TO_TOKEN</Col><Col>TO_AMOUNT</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   props.data.data.forEach(element => {
@@ -93,7 +98,7 @@ function SwapsPage(props){
       TO_TOKEN={ element.AMOUNT0OUT > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME}
       FROM_AMOUNT={ element.AMOUNT0IN + element.AMOUNT1IN }
       TO_AMOUNT={ element.AMOUNT0OUT + element.AMOUNT1OUT }
-      VALUE_USD="0"
+      VALUE_USD={ element.AMOUNT_USD }
       ></SwapsRows>
       )
     });
@@ -116,7 +121,7 @@ function ItemRows(props){
 function ItemsPage(props){
 
   if (props.data === '')
-    return (<Row>Loading...</Row>);
+    return (<Row>Loading Items Data...</Row>);
 
   if (props.data === 'error')
     return (<Row>Error Loading Address...</Row>);
@@ -157,7 +162,7 @@ function HeroRows(props){
 function HeroPage(props){
 
   if (props.dataBuy === '' || props.dataSold === '')
-    return (<Row>Loading...</Row>);
+    return (<Row>Loading Heros Data...</Row>);
 
   if (props.dataBuy === 'error' || props.dataSold === 'error')
     return (<Row>Error Loading Address...</Row>);
@@ -166,6 +171,7 @@ function HeroPage(props){
 //,"JEWELS_PAID":41,"TOKEN_ID":77012}]
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_ID</Col><Col>JEWELS_COST</Col><Col>BOUGHT/SOLD</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
+  var rowsSold = [];
   props.dataBuy.data.forEach(element => {
     rows.push(
       <HeroRows
@@ -182,10 +188,10 @@ function HeroPage(props){
 //,"TOKENID":"0x000000000000000000000000000000000000000000000000000000000000e86b"
 //,"AMOUNT_USD":1058.460472665}
     props.dataSold.data.forEach(element => {
-      rows.push(
+      rowsSold.push(
         <HeroRows
         BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
-        TOKEN_ID={ element.TOKENID }
+        TOKEN_ID={ parseInt(element.TOKENID) }
         JEWELS_COST={ element.AMOUNT }
         BOUGHT="SOLD"
         VALUE_USD={ element.AMOUNT_USD }
@@ -196,9 +202,15 @@ function HeroPage(props){
   return (
     <>
     <h1>Hero Trades</h1>
+    <h2>Hero Bought</h2>
     <Table>
       {rowHeaders}
       {rows}
+    </Table>
+    <h2>Hero Sold</h2>
+    <Table>
+      {rowHeaders}
+      {rowsSold}
     </Table>
     </>
   );

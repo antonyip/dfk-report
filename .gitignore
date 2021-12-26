@@ -1,6 +1,7 @@
 # Logs
 logs
 scraper/
+.env
 *.log
 npm-debug.log*
 yarn-debug.log*

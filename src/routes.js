@@ -25,6 +25,7 @@ import TableList from "views/Tables.js";
 */
 
 import dfk_report from "views/dfk_report.js";
+import backend from "views/backend.js";
 
 var routes = [
   {
@@ -32,6 +33,13 @@ var routes = [
     name: "Report Generator",
     icon: "nc-icon nc-chart-bar-32",
     component: dfk_report,
+    layout: "/admin",
+  },
+  {
+    path: "/backend",
+    name: "Backend",
+    icon: "nc-icon nc-chart-bar-32",
+    component: backend,
     layout: "/admin",
   },
   {
