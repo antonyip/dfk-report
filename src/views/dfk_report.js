@@ -161,7 +161,9 @@ function HeroPage(props){
 
   if (props.dataBuy === 'error' || props.dataSold === 'error')
     return (<Row>Error Loading Address...</Row>);
-//[{"BLOCK_TIMESTAMP":"2021-12-22 23:03:21.000","TX_ID":"0x719556da488b79ae4cc3fc575bd1c9b81388dcdece3edd70892b2ecc3a99d4cc","JEWELS_PAID":41,"TOKEN_ID":77012}]
+//[{"BLOCK_TIMESTAMP":"2021-12-22 23:03:21.000"
+//,"TX_ID":"0x719556da488b79ae4cc3fc575bd1c9b81388dcdece3edd70892b2ecc3a99d4cc"
+//,"JEWELS_PAID":41,"TOKEN_ID":77012}]
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_ID</Col><Col>JEWELS_COST</Col><Col>BOUGHT/SOLD</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   props.dataBuy.data.forEach(element => {
@@ -171,19 +173,22 @@ function HeroPage(props){
       TOKEN_ID={ element.TOKEN_ID }
       JEWELS_COST={ element.JEWELS_PAID }
       BOUGHT="BOUGHT"
-      VALUE_USD="0"
+      VALUE_USD={ element.AMOUNT_USD }
       ></HeroRows>
       )
     });
-
+//{"BLOCK_TIMESTAMP":"2021-12-09 15:42:12.000","AMOUNT":144.375,"BUYER":"0x25c4bb26f5651e125c46b8092a81c6167d24f02f"
+//,"TX_ID":"0x4bcb39ac48cdbd95c3ea7d64773384c63f18564d4b53a13e233c59435424e761"
+//,"TOKENID":"0x000000000000000000000000000000000000000000000000000000000000e86b"
+//,"AMOUNT_USD":1058.460472665}
     props.dataSold.data.forEach(element => {
       rows.push(
         <HeroRows
         BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
-        TOKEN_ID={ element.TOKEN_ID }
-        JEWELS_COST={ element.JEWELS_PAID }
+        TOKEN_ID={ element.TOKENID }
+        JEWELS_COST={ element.AMOUNT }
         BOUGHT="SOLD"
-        VALUE_USD="0"
+        VALUE_USD={ element.AMOUNT_USD }
         ></HeroRows>
         )
       });
