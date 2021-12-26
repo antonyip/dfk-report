@@ -238,6 +238,92 @@ function BankPage(props){
   );
 }
 
+function CrystalRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CRYSTAL_ID}</Col><Col>{props.TEARS_AMOUNT}</Col><Col>{props.JEWEL_AMOUNT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+}
+
+function HeroSummonRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CRYSTAL_ID}</Col><Col>{props.HERO_ID}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+}
+
+function HeroSummonPage(props){
+  const [toggle1, setToggle1] = useState(true);
+
+  if (props.dataCrystal === '' || props.dataHero === '')
+    return (<Row>Loading Summon Data...</Row>);
+
+  if (props.dataCrystal === 'error' || props.dataHero === 'error')
+    return (<Row>Error Loading Address...</Row>);
+
+    /*
+    {"BLOCK_TIMESTAMP":"2021-12-08 06:55:34.000","CRYSTAL_ID":"0x000000000000000000000000000000000000000000000000000000000000c6fc"
+    ,"TEARS_AMOUNT":80,"JEWEL_AMOUNT":66,"TX_ID":"0xebe9bbe07918be8e926b64e16bb06278514ac7b30fe80a7357c7295b6dd40861"
+    ,"JEWEL_AMOUNT_USD":470.422191199,"TEAR_AMOUNT_USD":32.05944,"AMOUNT_USD":502.481631199}
+    */
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CRYSTAL_ID</Col><Col>TEARS_AMOUNT</Col><Col>JEWEL_AMOUNT</Col><Col>AMOUNT_USD</Col></Row>
+  var rows = [];
+  var dataSearch = [];
+  props.dataCrystal.data.forEach(element => {
+
+    dataSearch.push([element.CRYSTAL_ID, element.AMOUNT_USD]);
+
+    rows.push(
+      <CrystalRows
+      BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
+      CRYSTAL_ID={ parseInt(element.CRYSTAL_ID,16) }
+      TEARS_AMOUNT={ element.TEARS_AMOUNT }
+      JEWEL_AMOUNT={ element.JEWEL_AMOUNT }
+      AMOUNT_USD={ element.AMOUNT_USD }
+      ></CrystalRows>
+      )
+    });
+  
+
+    //console.log(dataSearch);
+    /*
+    {"TX_ID":"0x22273d84b67218c7f28504588035d87b7593c4326f413bdda9a90d424bc01d21","HERO_ID":60215
+    ,"CRYSTAL_ID":"0x000000000000000000000000000000000000000000000000000000000000c6fc","BLOCK_TIMESTAMP":"2021-12-08 06:56:08.000"
+    */
+  var rowHeaders2 = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CRYSTAL_ID</Col><Col>HERO_ID</Col><Col>AMOUNT_USD</Col></Row>
+  var rows2 = [];
+    
+  props.dataHero.data.forEach(element => {
+    var lookup = dataSearch.find( x => x[0] === element.CRYSTAL_ID)
+    var amount_usd = 0;
+    if (lookup !== undefined)
+    {
+      amount_usd = lookup[1];
+    }
+    rows2.push(
+      <HeroSummonRows
+      BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
+      CRYSTAL_ID={ parseInt(element.CRYSTAL_ID,16) }
+      HERO_ID={ element.HERO_ID }
+      AMOUNT_USD={ amount_usd }
+      ></HeroSummonRows>
+      )
+    });
+    
+  return (
+    <>
+    <h1>Summons <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Collapse isOpen={toggle1}>
+    <h2>Summon Crystal</h2>
+    <Table>
+      {rowHeaders}
+      {rows}
+    </Table>
+    <h2>Trade Crystal for Hero</h2>
+    <Table>
+      {rowHeaders2}
+      {rows2}
+    </Table>
+    </Collapse>
+    </>
+  );
+}
+
+
 function HeroRows(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.TOKEN_ID}</Col><Col>{props.JEWELS_COST}</Col><Col>{props.VALUE_USD}</Col></Row>);
 }
@@ -259,7 +345,7 @@ function HeroPage(props){
   props.dataBuy.data.forEach(element => {
     rows.push(
       <HeroRows
-      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
       TOKEN_ID={ element.TOKEN_ID }
       JEWELS_COST={ element.JEWELS_PAID }
       BOUGHT="BOUGHT"
@@ -284,14 +370,9 @@ function HeroPage(props){
       });
 
   return (
-    <>
+    <div className="content">
     <h1>Heroes <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
     <Collapse isOpen={toggle1}>
-    <h2>Hero Summons</h2>
-    <Table>
-      {rowHeaders}
-      <p>TODO...</p>
-    </Table>
     <h2>Hero Bought</h2>
     <Table>
       {rowHeaders}
@@ -303,7 +384,7 @@ function HeroPage(props){
       {rowsSold}
     </Table>
     </Collapse>
-    </>
+    </div>
   );
 }
 
@@ -334,6 +415,12 @@ function Dfk_Report() {
   const [bankingTxData2, setBankingTxData2] = useState('');
   const [searchActivatedBankingTxData2, setSearchActivatedBankingTxData2] = useState(0);
 
+  const [heroSummonData, setHeroSummonData] = useState('');
+  const [searchActivatedHeroSummonData, setSearchActivatedHeroSummonData] = useState(0);
+
+  const [crystalSummonData, setCrystalSummonData] = useState('');
+  const [searchActivatedCrystalSummonData, setSearchActivatedCrystalSummonData] = useState(0);
+
   const triggerSearch = e => {
     if (e.key === 'Enter')
     {
@@ -345,6 +432,8 @@ function Dfk_Report() {
       setSearchActivatedHeroBuy(1);
       setSearchActivatedBankingTxData(1);
       setSearchActivatedBankingTxData2(1);
+      setSearchActivatedHeroSummonData(1);
+      setSearchActivatedCrystalSummonData(1);
       setQuestData('');
       setSwapData('');
       setItemData('');
@@ -352,6 +441,8 @@ function Dfk_Report() {
       setHeroBuyData('');
       setBankingTxData('');
       setBankingTxData2('');
+      setHeroSummonData('');
+      setCrystalSummonData('');
     }
   }
 
@@ -476,6 +567,40 @@ function Dfk_Report() {
     })
     // eslint-disable-next-line
   }, [searchActivatedBankingTxData2]);
+
+  // crystal-summon
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/crystal-summon?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setCrystalSummonData('error');
+      }
+      else
+      {
+        setCrystalSummonData(res);
+      }
+      setSearchActivatedCrystalSummonData(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedCrystalSummonData]);
+
+  // hero-summon
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/hero-summon?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setHeroSummonData('error');
+      }
+      else
+      {
+        setHeroSummonData(res);
+      }
+      setSearchActivatedHeroSummonData(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedHeroSummonData]);
   
   return (
     <>
@@ -488,6 +613,7 @@ function Dfk_Report() {
             <ItemsPage data={itemData}></ItemsPage>
             <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} ></BankPage>
             <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData}></HeroPage>
+            <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData}></HeroSummonPage>
           </TabPane>
         </TabContent>
       </div>
