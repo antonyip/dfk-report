@@ -37,13 +37,13 @@ function QuestRewardRows(props){
 
 function QuestRewardsPage(props){
 
-  const [toggle1, setToggle1] = useState(true);
+  const [toggle1, setToggle1] = useState(false);
 
   if (props.data === '')
     return (<Card><CardBody>Loading Quest Data...</CardBody></Card>);
 
   if (props.data === 'error')
-    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
 //{"BLOCK_TIMESTAMP":"2021-12-08 03:28:27.000","ETH_CONTRACT_ADDRESS":"0x24ea0d436d3c2602fbfefbe6a16bbc304c963d04"
 //,"CONTRACT_NAME":"Serendale_Gaia Tears","FROM_ADDRESS":"0x0000000000000000000000000000000000000000"
 //,"TO_ADDRESS":"0x7ad760d9402df0f78786ca0b323a911cb1b6ee41","L.EVENT_INPUTS:VALUE":4,"CALCULATED_VALUE":4
@@ -58,14 +58,21 @@ function QuestRewardsPage(props){
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       CONTRACT_NAME={element.CONTRACT_NAME}
       VALUE={element.CALCULATED_VALUE}
-      VALUE_USD={element.AMOUNT_USD}
+      VALUE_USD={(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)}
       ></QuestRewardRows>
       )
     });
 
+  if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
   return (
     <Card>
-    <CardHeader>Quest Rewards <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardHeader>
+    <Row>
+      <Col xs='10'>Quest Rewards - List of all tranasactions related to obtaining Quest Rewards.</Col>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+    </Row>
+     </CardHeader>
     <CardBody>
     <Collapse isOpen={toggle1}>
         {rowHeaders}
@@ -82,13 +89,13 @@ function SwapsRows(props){
 
 function SwapsPage(props){
 
-  const [toggle1, setToggle1] = useState(true);
+  const [toggle1, setToggle1] = useState(false);
 
   if (props.data === '')
     return (<Card><CardBody>Loading Market Trade Data...</CardBody></Card>);
 
   if (props.data === 'error')
-    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
 
   /*
   {"BLOCK_TIMESTAMP":"2021-12-19 06:24:38.000","POOL_NAME":"JEWEL-WONE LP","AMOUNT0IN":0,"AMOUNT1IN":100,"AMOUNT0OUT":2.023784523,"AMOUNT1OUT":0
@@ -107,14 +114,21 @@ function SwapsPage(props){
       TO_TOKEN={ element.AMOUNT0OUT > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME}
       FROM_AMOUNT={ element.AMOUNT0IN + element.AMOUNT1IN }
       TO_AMOUNT={ element.AMOUNT0OUT + element.AMOUNT1OUT }
-      VALUE_USD={ element.AMOUNT_USD }
+      VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></SwapsRows>
       )
     });
 
+  if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
   return (
     <Card>
-    <CardHeader>Market Trades <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardHeader>
+    <Row>
+      <Col xs='10'>Market Trades - List of all tranasactions related to buying and selling tokens.</Col>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+    </Row>
+    </CardHeader>
     <CardBody>
     <Collapse isOpen={toggle1}>
       {rowHeaders}
@@ -130,13 +144,13 @@ function ItemRows(props){
 }
 
 function ItemsPage(props){
-  const [toggle1, setToggle1] = useState(true);
+  const [toggle1, setToggle1] = useState(false);
 
   if (props.data === '')
     return (<Card><CardBody>Loading Items Data...</CardBody></Card>);
 
   if (props.data === 'error')
-    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
 
     //{"BLOCK_TIMESTAMP":"2021-12-22 23:20:42.000","TX_ID":"0x5b75eb4a6743e9cf86aaf9ab0930650941e98240f45bb39d6ebf7af0f861d564"
     //,"FROM_TOKEN":"Bloater","FROM_AMOUNT":1,"FROM_SYMBOL":"DFKBLOATER"
@@ -153,14 +167,21 @@ function ItemsPage(props){
       TO_TOKEN={ element.TO_TOKEN }
       FROM_AMOUNT={ element.FROM_AMOUNT }
       TO_AMOUNT={ element.TO_AMOUNT }
-      VALUE_USD={ element.AMOUNT_USD }
+      VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></ItemRows>
       )
     });
 
+  if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
   return (
     <Card>
-    <CardHeader>Items <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardHeader>    
+    <Row>
+      <Col xs='10'>Items - List of all tranasactions related to buying and from the gold shop.</Col>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+    </Row>
+    </CardHeader>
     <CardBody>
     <Collapse isOpen={toggle1}>
       {rowHeaders}
@@ -180,13 +201,13 @@ function BankRows2(props){
 }
 
 function BankPage(props){
-  const [toggle1, setToggle1] = useState(true);
+  const [toggle1, setToggle1] = useState(false);
 
   if (props.dataDeposit === '' || props.dataWithdraw === '')
     return (<Card><CardBody>Loading Banking Data...</CardBody></Card>);
 
   if (props.dataDeposit === 'error' || props.dataWithdraw === 'error')
-    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
 
     /*
     {"BLOCK_TIMESTAMP":"2021-12-20 08:04:37.000","TX_ID":"0xed27c496f5f8905695a677e3d3270e93035f97f1abb2dbbe696faab585051a86"
@@ -202,7 +223,7 @@ function BankPage(props){
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       JEWEL_IN={ element.JEWEL_IN }
       XJEWEL_OUT={ element.XJEWEL_OUT }
-      AMOUNT_USD={ element.AMOUNT_USD }
+      AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></BankRows>
       )
     });
@@ -220,14 +241,21 @@ function BankPage(props){
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
       XJEWEL_IN={ element.XJEWEL_IN }
       JEWEL_OUT={ element.JEWEL_OUT }
-      AMOUNT_USD={ element.AMOUNT_USD }
+      AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></BankRows2>
       )
     });
+    if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+    if (rows2.length === 0) rows2.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
 
   return (
     <Card>
-    <CardHeader>Banking <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardHeader>
+    <Row>
+      <Col xs='10'>Banking - List of all tranasactions related to the bank.</Col>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+    </Row>
+    </CardHeader>
     <Collapse isOpen={toggle1}>
     <CardHeader>Deposits</CardHeader>
     <Card>
@@ -257,13 +285,13 @@ function HeroSummonRows(props){
 }
 
 function HeroSummonPage(props){
-  const [toggle1, setToggle1] = useState(true);
+  const [toggle1, setToggle1] = useState(false);
 
   if (props.dataCrystal === '' || props.dataHero === '')
     return (<Card><CardBody>Loading Summon Data...</CardBody></Card>);
 
   if (props.dataCrystal === 'error' || props.dataHero === 'error')
-    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
 
     /*
     {"BLOCK_TIMESTAMP":"2021-12-08 06:55:34.000","CRYSTAL_ID":"0x000000000000000000000000000000000000000000000000000000000000c6fc"
@@ -276,7 +304,7 @@ function HeroSummonPage(props){
   var id = 0;
   props.dataCrystal.data.forEach(element => {
 
-    dataSearch.push([element.CRYSTAL_ID, element.AMOUNT_USD]);
+    dataSearch.push([element.CRYSTAL_ID, (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)]);
     ++id;
     rows.push(
       <CrystalRows key={id}
@@ -284,7 +312,7 @@ function HeroSummonPage(props){
       CRYSTAL_ID={ parseInt(element.CRYSTAL_ID,16) }
       TEARS_AMOUNT={ element.TEARS_AMOUNT }
       JEWEL_AMOUNT={ element.JEWEL_AMOUNT }
-      AMOUNT_USD={ element.AMOUNT_USD }
+      AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></CrystalRows>
       )
     });
@@ -316,9 +344,17 @@ function HeroSummonPage(props){
       )
     });
     
+    if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+    if (rows2.length === 0) rows2.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
   return (
     <Card>
-    <CardHeader>Summons <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardHeader>
+      <Row>
+      <Col xs='10'>Summons - List of all tranasactions for summoning heroes.</Col>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      </Row>
+    </CardHeader>
     <Collapse isOpen={toggle1}>
     <CardHeader>Summon Crystal</CardHeader>
     <Card>
@@ -345,13 +381,13 @@ function HeroRows(props){
 }
 
 function HeroPage(props){
-  const [toggle1, setToggle1] = useState(true);
+  const [toggle1, setToggle1] = useState(false);
 
   if (props.dataBuy === '' || props.dataSold === '')
     return (<Card><CardBody>Loading Heros Data...</CardBody></Card>);
 
   if (props.dataBuy === 'error' || props.dataSold === 'error')
-    return (<Card><CardBody>Error Loading Address...</CardBody></Card>);
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
 //[{"BLOCK_TIMESTAMP":"2021-12-22 23:03:21.000"
 //,"TX_ID":"0x719556da488b79ae4cc3fc575bd1c9b81388dcdece3edd70892b2ecc3a99d4cc"
 //,"JEWELS_PAID":41,"TOKEN_ID":77012}]
@@ -367,7 +403,7 @@ function HeroPage(props){
       TOKEN_ID={ element.TOKEN_ID }
       JEWELS_COST={ element.JEWELS_PAID }
       BOUGHT="BOUGHT"
-      VALUE_USD={ element.AMOUNT_USD }
+      VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></HeroRows>
       )
     });
@@ -383,14 +419,22 @@ function HeroPage(props){
         TOKEN_ID={ parseInt(element.TOKENID) }
         JEWELS_COST={ element.AMOUNT }
         BOUGHT="SOLD"
-        VALUE_USD={ element.AMOUNT_USD }
+        VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
         ></HeroRows>
         )
       });
 
+      if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+      if (rowsSold.length === 0) rowsSold.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
   return (
     <Card>
-    <CardHeader>Heroes <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></CardHeader>
+    <CardHeader>
+      <Row>
+      <Col xs='10'>Heroes - List of all tranasactions for buying and selling heroes.</Col>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      </Row>
+    </CardHeader>
     <CardBody>
     <Collapse isOpen={toggle1}>
     <Card>
@@ -631,11 +675,68 @@ function Dfk_Report() {
     // eslint-disable-next-line
   }, [searchActivatedHeroSummonData]);
   
+  const downloadFile = ({ data, fileName, fileType }) => {
+    const blob = new Blob([data], { type: fileType })
+  
+    const a = document.createElement('a')
+    a.download = fileName
+    a.href = window.URL.createObjectURL(blob)
+    const clickEvt = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    })
+    a.dispatchEvent(clickEvt)
+    a.remove()
+  }
+  
+  // const exportToJson = e => {
+  //   e.preventDefault()
+  //   downloadFile({
+  //     data: JSON.stringify(usersData.users),
+  //     fileName: 'users.json',
+  //     fileType: 'text/json',
+  //   })
+  // }
+  
+  const exportToCsv = e => {
+    e.preventDefault()
+  
+    // Headers for each column
+    let headers = ['BLOCK_TIMESTAMP,FROM_TOKEN,FROM_AMOUNT,TO_TOKEN,TO_AMOUNT,AMOUNT_USD']
+    
+    // Convert users data to a csv
+    /*
+    let usersCsv = itemData.data.reduce((acc, user) => {
+      const { id, name, surname, age } = user
+      acc.push([id, name, surname, age].join(','))
+      return acc
+    }, [])
+    */
+    /* 
+    return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.FROM_TOKEN}</Col><Col>{props.FROM_AMOUNT}</Col>
+    <Col>{props.TO_TOKEN}</Col><Col>{props.TO_AMOUNT}</Col><Col>{props.VALUE_USD}</Col></Row>)
+    */
+    let usersCsv = []
+    itemData.data.forEach( element => {
+      usersCsv.push([element.BLOCK_TIMESTAMP, element.FROM_TOKEN, element.FROM_AMOUNT, element.TO_TOKEN, element.TO_AMOUNT, element.AMOUNT_USD].join(','))
+    });
+  
+    downloadFile({
+      data: [...headers, ...usersCsv].join('\n'),
+      fileName: 'all_records.csv',
+      fileType: 'text/csv',
+    })
+  }
+
   return (
       <div className="content">
         <CardHeader>
+          Enter your address and press enter to see a summary of your wallet...
           <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>
           <Button onClick={triggerSearchButton}>Search!</Button>
+          <Button onClick={exportToCsv} disabled={false}>TODO:Download All Records</Button>
+          
         </CardHeader>
         <QuestRewardsPage data={questData}></QuestRewardsPage>
         <SwapsPage data={swapData}></SwapsPage>

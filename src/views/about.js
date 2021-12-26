@@ -8,39 +8,57 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  //CardTitle,
-  Table,
+  CardTitle,
   //Row,
   Col,
 } from "reactstrap";
 
 function ExternalSite() {
 return (
-  <div className="content">
-    <Col>
+  <div className="content">     
       <CardHeader>About me</CardHeader>
-      <Card>
-        
-        <CardBody>hello there, just an ordinary developer looking to build stuffs for fun..</CardBody>
-        <Table>
+      <Card>  
+        <CardBody>
+          <CardTitle>hello there, just an ordinary developer looking to build stuffs for fun..</CardTitle>
           <Col>Most things here are experimental.. If I won the grand price, I would probably be able to finish the whole site in about ~3 months</Col>
           <Col>The whole site consists of 3 parts..</Col>
           <Col>1. snowflake database - Part of MetricsDAO</Col>
           <Col>2. nodejs endpoint (https://dfkreport.antonyip.com)</Col>
           <Col>3. this frontend webpage</Col>
-        </Table>
+          </CardBody>
         <CardFooter>... nothing else is here...</CardFooter>
       </Card>
 
       <CardHeader>Features... FRONTEND</CardHeader>
       <Card>
         <CardBody>
-          <Table>
-            <Col>Seeds/LP Stuffs</Col>
-            <Col>Harvests</Col>
-            <Col>Item TX USD Prices</Col>
-            <Col>Level ups</Col>
-          </Table>
+            <Col>Quest Rewards</Col>
+            <Col>DEX Transactions</Col>
+            <Col>Item (DFKGOLD) Transactions</Col>
+            <Col>Banking/Staking Transactions</Col>
+            <Col>Hero Buys and Sells</Col>
+            <Col>Hero Summons</Col>
+        </CardBody>
+        <CardFooter>... wish i had more time...</CardFooter>
+      </Card>
+
+      <CardHeader>Features... BACKEND</CardHeader>
+      <Card>
+        <CardBody>
+          <Col>token-price-one - historical price of one</Col>
+          <Col>token-price-jewel - historical price of jewel</Col>
+          <Col>quest-rewards - </Col>
+          <Col>hero-buy - </Col>
+          <Col>hero-level-up - </Col>
+          <Col>hero-deposit - </Col>
+          <Col>hero-sold - </Col>
+          <Col>hero-summon - </Col>
+          <Col>crystal-summon - </Col>
+          <Col>bank-deposit - </Col>
+          <Col>bank-withdraw - </Col>
+          <Col>seeds-harvests - </Col>
+          <Col>token-swaps - </Col>
+          <Col>item-txs - </Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -48,13 +66,11 @@ return (
       <CardHeader>Incomplete Features... FRONTEND</CardHeader>
       <Card>
         <CardBody>
-          <Table>
             <Col>Seeds/LP Stuffs</Col>
             <Col>Harvests</Col>
             <Col>Item TX USD Prices</Col>
             <Col>Level ups</Col>
             <Col>Sum of columns</Col>
-          </Table>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -62,7 +78,6 @@ return (
       <CardHeader>Incomplete Features... BACKEND</CardHeader>
       <Card>
         <CardBody>
-          <Table>
             <Col>LP/Seeds</Col>
             <Col>Summon Rental Income</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
@@ -72,11 +87,13 @@ return (
             <Col>documentation</Col>
             <Col>testing framework</Col>
             <Col>development framework</Col>
-          </Table>
+            <Col>summary of total spent in amount_usd or other currencies</Col>
+            <Col>value_usd perhaps round it to 2 decimals</Col>
+            <Col>Download Report as CSV</Col>
+            <Col>use terra exchange rate to convert prices</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
-    </Col>
   </div>
   );
 }
