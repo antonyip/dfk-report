@@ -25,7 +25,9 @@ import {
   Table,
   Row,
   Col,
-  Input
+  Input,
+  Collapse,
+  Button
 } from "reactstrap";
 
 function Unused(props) {
@@ -37,6 +39,8 @@ function QuestRewardRows(props){
 }
 
 function QuestRewardsPage(props){
+
+  const [toggle1, setToggle1] = useState(true);
 
   if (props.data === '')
     return (<Row>Loading Quest Data...</Row>);
@@ -62,11 +66,13 @@ function QuestRewardsPage(props){
 
   return (
     <>
-    <h1>Quest Rewards</h1>
-    <Table>
-      {rowHeaders}
-      {rows}
-    </Table>
+    <h1>Quest Rewards <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Collapse isOpen={toggle1}>
+      <Table>
+        {rowHeaders}
+        {rows}
+      </Table>
+    </Collapse>
     </>
   );
 }
@@ -76,6 +82,8 @@ function SwapsRows(props){
 }
 
 function SwapsPage(props){
+
+  const [toggle1, setToggle1] = useState(true);
 
   if (props.data === '')
     return (<Row>Loading Market Trade Data...</Row>);
@@ -105,11 +113,13 @@ function SwapsPage(props){
 
   return (
     <>
-    <h1>Market Trades</h1>
+    <h1>Market Trades <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Collapse isOpen={toggle1}>
     <Table>
       {rowHeaders}
       {rows}
     </Table>
+    </Collapse>
     </>
   );
 }
@@ -119,6 +129,7 @@ function ItemRows(props){
 }
 
 function ItemsPage(props){
+  const [toggle1, setToggle1] = useState(true);
 
   if (props.data === '')
     return (<Row>Loading Items Data...</Row>);
@@ -146,11 +157,13 @@ function ItemsPage(props){
 
   return (
     <>
-    <h1>Items</h1>
+    <h1>Items <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Collapse isOpen={toggle1}>
     <Table>
       {rowHeaders}
       {rows}
     </Table>
+    </Collapse>
     </>
   );
 }
@@ -164,6 +177,7 @@ function BankRows2(props){
 }
 
 function BankPage(props){
+  const [toggle1, setToggle1] = useState(true);
 
   if (props.dataDeposit === '' || props.dataWithdraw === '')
     return (<Row>Loading Banking Data...</Row>);
@@ -207,7 +221,8 @@ function BankPage(props){
 
   return (
     <>
-    <h1>Banking</h1>
+    <h1>Banking <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Collapse isOpen={toggle1}>
     <h2>Deposits</h2>
     <Table>
       {rowHeaders}
@@ -218,15 +233,17 @@ function BankPage(props){
       {rowHeaders2}
       {rows2}
     </Table>
+    </Collapse>
     </>
   );
 }
 
 function HeroRows(props){
-  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.TOKEN_ID}</Col><Col>{props.JEWELS_COST}</Col><Col>{props.BOUGHT}</Col><Col>{props.VALUE_USD}</Col></Row>);
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.TOKEN_ID}</Col><Col>{props.JEWELS_COST}</Col><Col>{props.VALUE_USD}</Col></Row>);
 }
 
 function HeroPage(props){
+  const [toggle1, setToggle1] = useState(true);
 
   if (props.dataBuy === '' || props.dataSold === '')
     return (<Row>Loading Heros Data...</Row>);
@@ -236,7 +253,7 @@ function HeroPage(props){
 //[{"BLOCK_TIMESTAMP":"2021-12-22 23:03:21.000"
 //,"TX_ID":"0x719556da488b79ae4cc3fc575bd1c9b81388dcdece3edd70892b2ecc3a99d4cc"
 //,"JEWELS_PAID":41,"TOKEN_ID":77012}]
-  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_ID</Col><Col>JEWELS_COST</Col><Col>BOUGHT/SOLD</Col><Col>VALUE_USD</Col></Row>
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_ID</Col><Col>JEWELS_COST</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   var rowsSold = [];
   props.dataBuy.data.forEach(element => {
@@ -268,7 +285,8 @@ function HeroPage(props){
 
   return (
     <>
-    <h1>Heroes</h1>
+    <h1>Heroes <Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Collapse</Button></h1>
+    <Collapse isOpen={toggle1}>
     <h2>Hero Summons</h2>
     <Table>
       {rowHeaders}
@@ -280,10 +298,11 @@ function HeroPage(props){
       {rows}
     </Table>
     <h2>Hero Sold</h2>
-    <Table>
+    <Table> 
       {rowHeaders}
       {rowsSold}
     </Table>
+    </Collapse>
     </>
   );
 }
