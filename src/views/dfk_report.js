@@ -31,6 +31,7 @@ import {
   CardTitle,
   Spinner,
   CardSubtitle,
+  CardFooter,
 } from "reactstrap";
 
 function StandardHeader(props){
@@ -315,7 +316,9 @@ function BankPage(props){
       </CardBody>
     </Card>
     </Collapse>
+    <CardFooter></CardFooter>
     </Card>
+    
   );
 }
 
@@ -380,6 +383,7 @@ function HarvestPage(props){
       </CardBody>
     </Card>
     </Collapse>
+    <CardFooter></CardFooter>
     </Card>
   );
 }
@@ -442,6 +446,7 @@ function HeroLevelUpPage(props){
       {rows}
     </CardBody>
     </Collapse>
+    <CardFooter></CardFooter>
     </Card>
   );
 }
@@ -472,10 +477,12 @@ function HeroSummonPage(props){
   var rows = [];
   var dataSearch = [];
   var id = 0;
+  var totalUSD = 0;
   props.dataCrystal.data.forEach(element => {
 
     dataSearch.push([element.CRYSTAL_ID, (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)]);
     ++id;
+    totalUSD -= element.AMOUNT_USD;
     rows.push(
       <CrystalRows key={id}
       BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
@@ -524,7 +531,8 @@ function HeroSummonPage(props){
       <StandardHeader 
       TITLE="Summons"
       SUBTITLE="List of all tranasactions for summoning heroes."
-      PROFITS={-99}
+      PROFITS={totalUSD}
+      showUSD={true}
       ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
       </Row>
@@ -545,6 +553,7 @@ function HeroSummonPage(props){
     </CardBody>
     </Card>
     </Collapse>
+    <CardFooter></CardFooter>
     </Card>
   );
 }
@@ -569,8 +578,10 @@ function HeroPage(props){
   var rows = [];
   var rowsSold = [];
   var id = 0;
+  var totalUSD = 0
   props.dataBuy.data.forEach(element => {
     ++id;
+    totalUSD -= element.AMOUNT_USD;
     rows.push(
       <HeroRows key={id}
       BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
@@ -587,6 +598,7 @@ function HeroPage(props){
 //,"AMOUNT_USD":1058.460472665}
     props.dataSold.data.forEach(element => {
       ++id;
+      totalUSD += element.AMOUNT_USD;
       rowsSold.push(
         <HeroRows key={id}
         BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -608,13 +620,14 @@ function HeroPage(props){
       <StandardHeader 
       TITLE="Heroes"
       SUBTITLE="List of all tranasactions for buying and selling heroes."
-      PROFITS={-99}
+      PROFITS={totalUSD}
+      showUSD={true}
       ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
       </Row>
     </CardHeader>
-    <CardBody>
     <Collapse isOpen={toggle1}>
+    <CardBody>
     <Card>
     <CardHeader>Hero Bought</CardHeader>
     <CardBody>
@@ -629,8 +642,25 @@ function HeroPage(props){
       {rowsSold}
     </CardBody>
     </Card>
-    </Collapse>
     </CardBody>
+    </Collapse>
+    <CardFooter></CardFooter>
+    </Card>
+  );
+}
+
+function OverallPage()
+{
+  return (
+    <Card>
+    <CardHeader>
+      <CardTitle tag='h2'>Overall Account Status</CardTitle>
+      <CardSubtitle>A Summary of your account from yyyy-mm-dd to yyyy-mm-dd</CardSubtitle>
+    </CardHeader>
+    <CardBody>
+      Hello world...
+    </CardBody>
+    <CardFooter></CardFooter>
     </Card>
   );
 }
@@ -674,6 +704,8 @@ function Dfk_Report() {
   const [crystalSummonData, setCrystalSummonData] = useState('');
   const [searchActivatedCrystalSummonData, setSearchActivatedCrystalSummonData] = useState(0);
 
+  const [checkIfAllSearchAreDone, setCheckIfAllSearchAreDone] = useState(false);
+
   const triggerSearchFinal = e => {
     console.log("Search Triggered");
     setSearchActivatedQuest(1);
@@ -698,6 +730,37 @@ function Dfk_Report() {
     setHeroLevelData('');
     setCrystalSummonData('');
     setHarvestData('');
+    setCheckIfAllSearchAreDone(false);
+  }
+
+  const FuncCheckIfAllSearchAreDone = () =>
+  {
+    if (searchActivatedQuest !== 0) return false;
+    if (searchActivatedSwaps !== 0) return false;
+    if (searchActivatedItems !== 0) return false;
+    if (searchActivatedHeroSold !== 0) return false;
+    if (searchActivatedHeroBuy !== 0) return false;
+    if (searchActivatedBankingTxData !== 0) return false;
+    if (searchActivatedHarvestData !== 0) return false;
+    if (searchActivatedBankingTxData2 !== 0) return false;
+    if (searchActivatedHeroLevelData !== 0) return false;
+    if (searchActivatedHeroSummonData !== 0) return false;
+    if (searchActivatedCrystalSummonData !== 0) return false;
+    
+    if (questData === 'error' ) return false;
+    if (swapData === 'error' ) return false;
+    if (itemData === 'error' ) return false;
+    if (heroSoldData === 'error' ) return false;
+    if (heroBuyData === 'error' ) return false;
+    if (bankingTxData === 'error' ) return false;
+    if (harvestData === 'error' ) return false;
+    if (bankingTxData2 === 'error' ) return false;
+    if (heroLevelData === 'error' ) return false;
+    if (heroSummonData === 'error' ) return false;
+    if (crystalSummonData === 'error' ) return false;
+
+    setCheckIfAllSearchAreDone(true);
+    return true;
   }
   
   const triggerSearchButton = e => {
@@ -721,6 +784,7 @@ function Dfk_Report() {
       else
       {
         setQuestData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedQuest(0);
     })
@@ -736,7 +800,8 @@ function Dfk_Report() {
       }
       else
       {
-        setSwapData(res);  
+        setSwapData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       
       setSearchActivatedSwaps(0);
@@ -755,6 +820,7 @@ function Dfk_Report() {
       else
       {
         setItemData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedItems(0);
     })
@@ -772,6 +838,7 @@ function Dfk_Report() {
       else
       {
         setHeroBuyData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedHeroBuy(0);
     })
@@ -789,6 +856,7 @@ function Dfk_Report() {
       else
       {
         setHeroSoldData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedHeroSold(0);
     })
@@ -806,6 +874,7 @@ function Dfk_Report() {
       else
       {
         setHarvestData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedHarvestData(0);
     })
@@ -823,6 +892,7 @@ function Dfk_Report() {
       else
       {
         setBankingTxData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedBankingTxData(0);
     })
@@ -840,6 +910,7 @@ function Dfk_Report() {
       else
       {
         setBankingTxData2(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedBankingTxData2(0);
     })
@@ -857,6 +928,7 @@ function Dfk_Report() {
       else
       {
         setCrystalSummonData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedCrystalSummonData(0);
     })
@@ -874,6 +946,7 @@ function Dfk_Report() {
       else
       {
         setHeroLevelData(res);
+        FuncCheckIfAllSearchAreDone();
       }
       setSearchActivatedHeroLevelData(0);
     })
@@ -891,6 +964,7 @@ function Dfk_Report() {
         else
         {
           setHeroSummonData(res);
+          FuncCheckIfAllSearchAreDone();
         }
         setSearchActivatedHeroSummonData(0);
       })
@@ -954,12 +1028,13 @@ function Dfk_Report() {
   return (
       <div className="content">
         <CardHeader>
-          Enter your address and press enter to see a summary of your wallet...
+          <CardTitle tag='h2'>Enter your address and press enter to see a summary of your wallet...</CardTitle>
           <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>
           <Button onClick={triggerSearchButton}>Search!</Button>
-          <Button onClick={exportToCsv} disabled={false}>TODO:Download All Records</Button>
+          <Button onClick={exportToCsv} disabled={!checkIfAllSearchAreDone}>Download Generated Transcript</Button>
           
         </CardHeader>
+        <OverallPage></OverallPage>
         <QuestRewardsPage data={questData}></QuestRewardsPage>
         <SwapsPage data={swapData}></SwapsPage>
         <ItemsPage data={itemData}></ItemsPage>
