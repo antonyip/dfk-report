@@ -36,7 +36,7 @@ import {
 
 function StandardHeader(props){
   return (
-    <Col xs='10'>
+    <Col xs='8'>
       <Row>
       <Col xs='8'>
         <CardTitle tag='h2'>{props.TITLE}</CardTitle>
@@ -92,14 +92,15 @@ function QuestRewardsPage(props){
   return (
     <Card>
     <CardHeader>
-    <Row>
+    <Row xs='12'>
       <StandardHeader 
       TITLE="Quest Rewards"
       SUBTITLE="List of all tranasactions related to obtaining Quest Rewards."
       PROFITS={totalAmountUSD}
       showUSD={true}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(1) }>Download</Button></Col>
     </Row>
     </CardHeader>
     <CardBody>
@@ -110,6 +111,8 @@ function QuestRewardsPage(props){
     </CardBody>
     </Card>
   );
+
+  
 }
 
 function SwapsRows(props){
@@ -149,7 +152,7 @@ function SwapsPage(props){
     });
 
   if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-
+  
   return (
     <Card>
     <CardHeader>
@@ -159,7 +162,8 @@ function SwapsPage(props){
       SUBTITLE="List of all tranasactions related to trading on the Market/DEX."
       PROFITS={-99}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(2) }>Download</Button></Col>
     </Row>
     </CardHeader>
     <CardBody>
@@ -208,7 +212,7 @@ function ItemsPage(props){
     });
 
   if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-
+  
   return (
     <Card>
     <CardHeader>    
@@ -219,7 +223,8 @@ function ItemsPage(props){
       PROFITS={totalUSD}
       showUSD={true}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(3) }>Download</Button></Col>
     </Row>
     </CardHeader>
     <CardBody>
@@ -287,7 +292,7 @@ function BankPage(props){
     });
     if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
     if (rows2.length === 0) rows2.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-
+  
   return (
     <Card>
     <CardHeader>
@@ -297,7 +302,8 @@ function BankPage(props){
       SUBTITLE="List of all tranasactions related to the bank."
       PROFITS={-99}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(4) }>Download</Button></Col>
     </Row>
     </CardHeader>
     <Collapse isOpen={toggle1}>
@@ -360,7 +366,7 @@ function HarvestPage(props){
     });
 
     if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-
+    
   return (
     <Card>
     <CardHeader>
@@ -371,7 +377,8 @@ function HarvestPage(props){
       PROFITS={totalUSD}
       showUSD={true}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(5) }>Download</Button></Col>
     </Row>
     </CardHeader>
     <Collapse isOpen={toggle1}>
@@ -396,7 +403,7 @@ function HeroLevelUpPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.data === '')
-    return (<Card><CardBody>Loading Summon Data...  <Spinner></Spinner></CardBody></Card>);
+    return (<Card><CardBody>Loading Level-Up Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.data === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
@@ -426,7 +433,7 @@ function HeroLevelUpPage(props){
   });
       
   if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-
+  
   return (
     <Card>
     <CardHeader>
@@ -437,7 +444,8 @@ function HeroLevelUpPage(props){
       PROFITS={ totalUSD }
       showUSD={true}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(6) }>Download</Button></Col>
       </Row>
     </CardHeader>
     <Collapse isOpen={toggle1}>
@@ -523,7 +531,7 @@ function HeroSummonPage(props){
     
     if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
     if (rows2.length === 0) rows2.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-
+    
   return (
     <Card>
     <CardHeader>
@@ -534,7 +542,8 @@ function HeroSummonPage(props){
       PROFITS={totalUSD}
       showUSD={true}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(7) }>Download</Button></Col>
       </Row>
     </CardHeader>
     <Collapse isOpen={toggle1}>
@@ -612,7 +621,7 @@ function HeroPage(props){
 
       if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
       if (rowsSold.length === 0) rowsSold.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-
+  
   return (
     <Card>
     <CardHeader>
@@ -623,7 +632,8 @@ function HeroPage(props){
       PROFITS={totalUSD}
       showUSD={true}
       ></StandardHeader>
-      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(8) }>Download</Button></Col>
       </Row>
     </CardHeader>
     <Collapse isOpen={toggle1}>
@@ -649,16 +659,36 @@ function HeroPage(props){
   );
 }
 
-function OverallPage()
+function OverallPage(props)
 {
+  //const [toggle1,setToggle1] = useState(true);
+  var total = props.QuestRewardsPage + 
+  props.SwapsPage + 
+  props.ItemsPage + 
+  props.BankPage + 
+  props.HarvestPage + 
+  props.HeroPage + 
+  props.HeroLevelUpPage + 
+  props.HeroSummonPage
+
   return (
     <Card>
     <CardHeader>
       <CardTitle tag='h2'>Overall Account Status</CardTitle>
-      <CardSubtitle>A Summary of your account from yyyy-mm-dd to yyyy-mm-dd</CardSubtitle>
+      <CardSubtitle>A Summary of your account from 2021-DEC-08 to 2021-DEC-30</CardSubtitle>
     </CardHeader>
     <CardBody>
-      Hello world...
+    <Row tag='h3'><Col xs='2'>Total: </Col><Col xs='6'>{(Math.round(total * 100) / 100).toFixed(2)}</Col></Row>
+    
+    {/* <Row><Col xs='2'>QuestRewards: </Col><Col xs='6'>{props.QuestRewardsPage}</Col></Row>
+    <Row><Col xs='2'>Swaps: </Col><Col xs='6'>{props.SwapsPage}</Col></Row>
+    <Row><Col xs='2'>Items: </Col><Col xs='6'>{props.ItemsPage}</Col></Row>
+    <Row><Col xs='2'>Bank: </Col><Col xs='6'>{props.BankPage}</Col></Row>
+    <Row><Col xs='2'>Harvest: </Col><Col xs='6'>{props.HarvestPage}</Col></Row>
+    <Row><Col xs='2'>Hero: </Col><Col xs='6'>{props.HeroPage}</Col></Row>
+    <Row><Col xs='2'>HeroLevelUp: </Col><Col xs='6'>{props.HeroLevelUpPage}</Col></Row>
+    <Row><Col xs='2'>HeroSummon: </Col><Col xs='6'>{props.HeroSummonPage}</Col></Row> */}
+    
     </CardBody>
     <CardFooter></CardFooter>
     </Card>
@@ -730,6 +760,7 @@ function Dfk_Report() {
     setHeroLevelData('');
     setCrystalSummonData('');
     setHarvestData('');
+    setValueQuestRewardsPage(0);
     setCheckIfAllSearchAreDone(false);
   }
 
@@ -970,10 +1001,133 @@ function Dfk_Report() {
       })
       // eslint-disable-next-line
     }, [searchActivatedHeroSummonData]);
-  
+
+    var [ questDataCSV, setquestDataCSV] = useState([]);
+    var [ swapDataCSV, setswapDataCSV] = useState([]);
+    var [ itemDataCSV, setitemDataCSV] = useState([]);
+    var [ heroTxDataCSV, setheroTxDataCSV] = useState([]);
+    var [ bankDataCSV, setbankDataCSV] = useState([]);
+    var [ harvestDataCSV, setharvestDataCSV] = useState([]);
+    var [ heroLevelDataCSV, setheroLevelDataCSV] = useState([]);
+    var [ heroSummonDataCSV, setheroSummonDataCSV] = useState([]);
+
+    // overall-page
+    useEffect( () => {
+      if (checkIfAllSearchAreDone === true 
+        && questData !== '' 
+        && swapData !== ''
+        && itemData !== ''
+        && heroSoldData !== ''
+        && heroBuyData !== ''
+        && bankingTxData !== ''
+        && harvestData !== ''
+        && bankingTxData2 !== ''
+        && heroLevelData !== ''
+        && heroSummonData !== ''
+        && crystalSummonData !== ''
+        )
+      {
+        var totalAmountUSD = 0;
+        // 1 - quest
+        var localDataCSV = ['BLOCK_TIMESTAMP,CONTRACT_NAME,AMOUNT,AMOUNT_USD']
+        questData.data.forEach(element => {
+          totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.CONTRACT_NAME,element.CALCULATED_VALUE,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setquestDataCSV(localDataCSV);
+        // 2 - swaps
+        localDataCSV = ['BLOCK_TIMESTAMP,FROM_TOKEN,FROM_AMOUNT,TO_TOKEN,TO_AMOUNT,VALUE_USD']
+        swapData.data.forEach(element => {
+          //totalAmountUSD += element.AMOUNT_USD;
+          localDataCSV.push([element.BLOCK_TIMESTAMP
+            ,element.AMOUNT0IN > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME
+            ,element.AMOUNT0OUT > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME
+            ,element.AMOUNT0IN + element.AMOUNT1IN
+            ,element.AMOUNT0OUT + element.AMOUNT1OUT
+            ,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)
+          ].join(','))
+          });
+        setswapDataCSV(localDataCSV)
+        // 3 - item trades
+        localDataCSV = ['BLOCK_TIMESTAMP,FROM_TOKEN,FROM_AMOUNT,TO_TOKEN,TO_AMOUNT,VALUE_USD']
+        itemData.data.forEach(element => {
+          totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.FROM_TOKEN,element.FROM_AMOUNT,element.TO_TOKEN,element.TO_AMOUNT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setitemDataCSV(localDataCSV);
+
+        // 4- banking
+        localDataCSV = ['BLOCK_TIMESTAMP,JEWEL_IN,XJEWEL_OUT,AMOUNT_USD']
+        bankingTxData.data.forEach(element => {
+          //totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.JEWEL_IN,element.XJEWEL_OUT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        localDataCSV.push('BLOCK_TIMESTAMP,XJEWEL_IN,JEWEL_OUT,AMOUNT_USD')
+        bankingTxData2.data.forEach(element => {
+          //totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.XJEWEL_IN,element.JEWEL_OUT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setbankDataCSV(localDataCSV);
+
+        // 5 -harvests
+        localDataCSV = ['BLOCK_TIMESTAMP,LOCKED_JEWEL,UNLOCKED_JEWEL,LOCKED_JEWEL_USD,UNLOCKED_JEWEL_USD,AMOUNT_USD']
+        harvestData.data.forEach(element => {
+          totalAmountUSD -= element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.LOCKED_JEWEL,element.UNLOCKED_JEWEL,element.LOCKED_JEWEL_USD,element.UNLOCKED_JEWEL_USD,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setharvestDataCSV(localDataCSV)
+        
+        // 6 -hero level data
+        localDataCSV = ['BLOCK_TIMESTAMP,HERO_ID,RUNE_AMOUNT,JEWEL_AMOUNT,AMOUNT_USD']
+        heroLevelData.data.forEach(element => {
+          totalAmountUSD -= element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.HERO_ID,element.RUNE_AMOUNT,element.JEWEL_AMOUNT,(Math.round(-element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setheroLevelDataCSV(localDataCSV);
+
+        // 7 - summons
+        var crystalherolookup = []
+        heroSummonData.data.forEach(element => {
+          crystalherolookup.push([element.CRYSTAL_ID,element.HERO_ID])
+        });
+
+        localDataCSV = ['BLOCK_TIMESTAMP,CRYSTAL_ID,TEARS_AMOUNT,JEWEL_AMOUNT,HERO_ID,AMOUNT_USD'];
+        crystalSummonData.data.forEach(element => {
+          //totalAmountUSD -= element.AMOUNT_USD;
+          var found = crystalherolookup.find(x => x[0] === element.CRYSTAL_ID)
+          var hero_id = 0;
+          if (found) {hero_id = found[1]}
+          let row = [element.BLOCK_TIMESTAMP,element.CRYSTAL_ID,element.TEARS_AMOUNT,element.JEWEL_AMOUNT,hero_id,(Math.round(-element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setheroSummonDataCSV(localDataCSV);
+
+        // 8 - hero buy sell
+        localDataCSV = ['BLOCK_TIMESTAMP,TOKEN_ID,JEWEL_COST,VALUE_USD']
+        heroBuyData.data.forEach(element => {
+          totalAmountUSD -= element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.TOKEN_ID,element.JEWELS_PAID,(Math.round(-element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        heroSoldData.data.forEach(element => {
+          totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.TOKENID,element.AMOUNT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setheroTxDataCSV(localDataCSV);
+          
+        setValueQuestRewardsPage(totalAmountUSD);
+      }
+    }, [checkIfAllSearchAreDone,questData,swapData,itemData,heroBuyData,heroSoldData,bankingTxData,harvestData,bankingTxData2,heroLevelData,heroSummonData,crystalSummonData]);
+      
   const downloadFile = ({ data, fileName, fileType }) => {
     const blob = new Blob([data], { type: fileType })
-  
     const a = document.createElement('a')
     a.download = fileName
     a.href = window.URL.createObjectURL(blob)
@@ -985,64 +1139,128 @@ function Dfk_Report() {
     a.dispatchEvent(clickEvt)
     a.remove()
   }
-  
-  // const exportToJson = e => {
-  //   e.preventDefault()
-  //   downloadFile({
-  //     data: JSON.stringify(usersData.users),
-  //     fileName: 'users.json',
-  //     fileType: 'text/json',
-  //   })
-  // }
-  
-  const exportToCsv = e => {
-    e.preventDefault()
-  
-    // Headers for each column
-    let headers = ['BLOCK_TIMESTAMP,FROM_TOKEN,FROM_AMOUNT,TO_TOKEN,TO_AMOUNT,AMOUNT_USD']
-    
-    // Convert users data to a csv
-    /*
-    let usersCsv = itemData.data.reduce((acc, user) => {
-      const { id, name, surname, age } = user
-      acc.push([id, name, surname, age].join(','))
-      return acc
-    }, [])
-    */
-    /* 
-    return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.FROM_TOKEN}</Col><Col>{props.FROM_AMOUNT}</Col>
-    <Col>{props.TO_TOKEN}</Col><Col>{props.TO_AMOUNT}</Col><Col>{props.VALUE_USD}</Col></Row>)
-    */
-    let usersCsv = []
-    itemData.data.forEach( element => {
-      usersCsv.push([element.BLOCK_TIMESTAMP, element.FROM_TOKEN, element.FROM_AMOUNT, element.TO_TOKEN, element.TO_AMOUNT, element.AMOUNT_USD].join(','))
-    });
-  
-    downloadFile({
-      data: [...headers, ...usersCsv].join('\n'),
-      fileName: 'all_records.csv',
-      fileType: 'text/csv',
-    })
+   
+  const exportToCsv = (e) => {
+    console.log(e);
+    if (e === 0)
+    {
+      downloadFile({
+        data: [
+          ...questDataCSV,
+          ...swapDataCSV,
+          ...itemDataCSV,
+          ...heroTxDataCSV,
+          ...bankDataCSV,
+          ...harvestDataCSV,
+          ...heroLevelDataCSV,
+          ...heroSummonDataCSV
+        ].join('\n'),
+        fileName: 'CombinedCSV.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 1)
+    {
+      downloadFile({
+        data: questDataCSV.join('\n'),
+        fileName: 'questData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 2)
+    {
+      downloadFile({
+        data: swapDataCSV.join('\n'),
+        fileName: 'swapData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 3)
+    {
+      downloadFile({
+        data: itemDataCSV.join('\n'),
+        fileName: 'itemData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 4)
+    {
+      downloadFile({
+        data: bankDataCSV.join('\n'),
+        fileName: 'bankTxData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 5)
+    {
+      downloadFile({
+        data: harvestDataCSV.join('\n'),
+        fileName: 'harvestData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 6)
+    {
+      downloadFile({
+        data: heroLevelDataCSV.join('\n'),
+        fileName: 'heroLevelData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 7)
+    {
+      downloadFile({
+        data: heroSummonDataCSV.join('\n'),
+        fileName: 'heroSummonData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 8)
+    {
+      downloadFile({
+        data: heroTxDataCSV.join('\n'),
+        fileName: 'heroTxData.csv',
+        fileType: 'text/csv',
+      })
+    }
   }
-  
+
+  const [valueQuestRewardsPage, setValueQuestRewardsPage] = useState(0);
+  // const [valueSwapsPage, setValueSwapsPage] = useState(0);
+  // const [valueItemsPage, setValueItemsPage] = useState(0);
+  // const [valueBankPage, setValueBankPage] = useState(0);
+  // const [valueHarvestPage, setValueHarvestPage] = useState(0);
+  // const [valueHeroPage, setValueHeroPage] = useState(0);
+  // const [valueHeroLevelUpPage, setValueHeroLevelUpPage] = useState(0);
+  // const [valueHeroSummonPage, setValueHeroSummonPage] = useState(0);
+   
   return (
       <div className="content">
         <CardHeader>
           <CardTitle tag='h2'>Enter your address and press enter to see a summary of your wallet...</CardTitle>
           <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>
           <Button onClick={triggerSearchButton}>Search!</Button>
-          <Button onClick={exportToCsv} disabled={!checkIfAllSearchAreDone}>Download Generated Transcript</Button>
-          
+          <Button onClick={() => exportToCsv(0)} disabled={!checkIfAllSearchAreDone}>Download Generated Transcript</Button>
         </CardHeader>
-        <OverallPage></OverallPage>
-        <QuestRewardsPage data={questData}></QuestRewardsPage>
-        <SwapsPage data={swapData}></SwapsPage>
-        <ItemsPage data={itemData}></ItemsPage>
-        <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} ></BankPage>
-        <HarvestPage data={harvestData}></HarvestPage>
-        <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData}></HeroPage>
-        <HeroLevelUpPage data={heroLevelData}></HeroLevelUpPage>
-        <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData}></HeroSummonPage>
+        <OverallPage 
+         QuestRewardsPage={valueQuestRewardsPage}
+         SwapsPage={0}
+         ItemsPage={0}
+         BankPage={0} 
+         HarvestPage={0}
+         HeroPage={0} 
+         HeroLevelUpPage={0} 
+         HeroSummonPage={0}
+         >
+         </OverallPage>
+        <QuestRewardsPage data={questData} download={exportToCsv} ></QuestRewardsPage>
+        <SwapsPage data={swapData} download={exportToCsv}></SwapsPage>
+        <ItemsPage data={itemData} download={exportToCsv}></ItemsPage>
+        <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} download={exportToCsv}></BankPage>
+        <HarvestPage data={harvestData} download={exportToCsv}></HarvestPage>
+        <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData} download={exportToCsv}></HeroPage>
+        <HeroLevelUpPage data={heroLevelData} download={exportToCsv}></HeroLevelUpPage>
+        <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData} download={exportToCsv}></HeroSummonPage>
       </div>
   );
 }

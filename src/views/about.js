@@ -9,6 +9,7 @@ import {
   CardBody,
   CardFooter,
   CardTitle,
+  Button,
   //Row,
   Col,
 } from "reactstrap";
@@ -32,6 +33,7 @@ return (
       <CardHeader>Features... FRONTEND</CardHeader>
       <Card>
         <CardBody>
+            <Col>Summary Page</Col>
             <Col>Quest Rewards</Col>
             <Col>DEX Transactions</Col>
             <Col>Item (DFKGOLD) Transactions</Col>
@@ -41,7 +43,8 @@ return (
             <Col>Hero Level ups</Col>
             <Col>USD Calculations of all transactions</Col>
             <Col>Harvests</Col>
-            <Col>Sum of some columns.. some stuffs not too sure how to calculate yet</Col>
+            <Col>Sum Amount_USD of some columns...</Col>
+            <Col>Download as CSV</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -49,20 +52,8 @@ return (
       <CardHeader>Features... BACKEND</CardHeader>
       <Card>
         <CardBody>
-          <Col>token-price-one - historical price of one</Col>
-          <Col>token-price-jewel - historical price of jewel</Col>
-          <Col>quest-rewards - </Col>
-          <Col>hero-buy - </Col>
-          <Col>hero-level-up - </Col>
-          <Col>hero-deposit - </Col>
-          <Col>hero-sold - </Col>
-          <Col>hero-summon - </Col>
-          <Col>crystal-summon - </Col>
-          <Col>bank-deposit - </Col>
-          <Col>bank-withdraw - </Col>
-          <Col>seeds-harvests - </Col>
-          <Col>token-swaps - </Col>
-          <Col>item-txs - </Col>
+          <Col>Go to the site to see the end points </Col>
+          <Button onClick={() => window.location = 'https://dfkreport.antonyip.com'}>https://dfkreport.antonyip.com</Button>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -70,7 +61,7 @@ return (
       <CardHeader>Incomplete Features... FRONTEND</CardHeader>
       <Card>
         <CardBody>
-            <Col>Seeds/LP Stuffs</Col>
+            <Col>Seeds/LP Stuffs (Add / Remove Liquidity)</Col>
             <Col>Summon Rental Income</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
@@ -79,9 +70,8 @@ return (
       <CardHeader>Incomplete Features... BACKEND</CardHeader>
       <Card>
         <CardBody>
-            <Col>LP/Seeds</Col>
+            <Col>LP/Seeds (Add / Remove Liquidity)</Col>
             <Col>Summon Rental Income</Col>
-            <Col>Gen 0 Hero purchases.. - topics[0] = '0x4cb4935c643485980bf65dfc041fc48f0a40c62bbb328843837c786dbc98f1c5'</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
             <Col>better historical Gaia Tears price</Col>
             <Col>better historical rune prices</Col>
@@ -90,9 +80,9 @@ return (
             <Col>testing framework</Col>
             <Col>development framework</Col>
             <Col>summary of total spent in amount_usd or other currencies</Col>
-            <Col>value_usd perhaps round it to 2 decimals</Col>
-            <Col>Download Report as CSV</Col>
             <Col>use terra exchange rate to convert prices</Col>
+            <Col>Custom Prices for items</Col>
+            <Col>Ability to set hero prices in case of deviation</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
