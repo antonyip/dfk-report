@@ -71,6 +71,7 @@ return (
       <Card>
         <CardBody>
             <Col>LP/Seeds (Add / Remove Liquidity)</Col>
+            <Col>Filtering by dates...</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
             <Col>better historical Gaia Tears price</Col>
             <Col>better historical rune prices</Col>

@@ -1171,7 +1171,7 @@ function Dfk_Report() {
 
         localDataCSV = ['BLOCK_TIMESTAMP,CRYSTAL_ID,TEARS_AMOUNT,JEWEL_AMOUNT,HERO_ID,AMOUNT_USD'];
         crystalSummonData.data.forEach(element => {
-          //totalAmountUSD -= element.AMOUNT_USD;
+          totalAmountUSD -= element.AMOUNT_USD;
           var found = crystalherolookup.find(x => x[0] === element.CRYSTAL_ID)
           var hero_id = 0;
           if (found) {hero_id = found[1]}
@@ -1340,7 +1340,8 @@ function Dfk_Report() {
       <div className="content">
         <CardHeader>
           <CardTitle tag='h2'>Enter your address and press enter to see a summary of your wallet...</CardTitle>
-          <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>
+          <CardSubtitle>Querying will take about 5 minutes to generate your report...</CardSubtitle>
+          <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>          
           <Button onClick={triggerSearchButton}>Search!</Button>
           <Button onClick={() => exportToCsv(0)} disabled={!checkIfAllSearchAreDone}>Download Generated Transcript</Button>
         </CardHeader>
