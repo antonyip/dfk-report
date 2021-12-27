@@ -459,12 +459,8 @@ function HeroLevelUpPage(props){
   );
 }
 
-function CrystalRows(props){
-  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CRYSTAL_ID}</Col><Col>{props.TEARS_AMOUNT}</Col><Col>{props.JEWEL_AMOUNT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
-}
-
 function HeroSummonRows(props){
-  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CRYSTAL_ID}</Col><Col>{props.HERO_ID}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CRYSTAL_ID}</Col><Col>{props.TEARS_AMOUNT}</Col><Col>{props.JEWEL_AMOUNT}</Col><Col>{props.HERO_ID}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
 }
 
 function HeroSummonPage(props){
@@ -481,24 +477,31 @@ function HeroSummonPage(props){
     ,"TEARS_AMOUNT":80,"JEWEL_AMOUNT":66,"TX_ID":"0xebe9bbe07918be8e926b64e16bb06278514ac7b30fe80a7357c7295b6dd40861"
     ,"JEWEL_AMOUNT_USD":470.422191199,"TEAR_AMOUNT_USD":32.05944,"AMOUNT_USD":502.481631199}
     */
-  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CRYSTAL_ID</Col><Col>TEARS_AMOUNT</Col><Col>JEWEL_AMOUNT</Col><Col>AMOUNT_USD</Col></Row>
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CRYSTAL_ID</Col><Col>TEARS_AMOUNT</Col><Col>JEWEL_AMOUNT</Col><Col>HERO_ID</Col><Col>AMOUNT_USD</Col></Row>
   var rows = [];
-  var dataSearch = [];
   var id = 0;
   var totalUSD = 0;
-  props.dataCrystal.data.forEach(element => {
+  var lookup = []
 
-    dataSearch.push([element.CRYSTAL_ID, (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)]);
+  props.dataHero.data.forEach(element => {
+    lookup.push([element.CRYSTAL_ID, element.HERO_ID])
+  });
+
+  props.dataCrystal.data.forEach(element => {
+    var heroMaybe = lookup.find( x => x[0] === element.CRYSTAL_ID)
+    var hero_id = 'unsummoned';
+    if (heroMaybe) { hero_id = heroMaybe[1] }
     ++id;
     totalUSD -= element.AMOUNT_USD;
     rows.push(
-      <CrystalRows key={id}
+      <HeroSummonRows key={id}
       BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
       CRYSTAL_ID={ parseInt(element.CRYSTAL_ID,16) }
       TEARS_AMOUNT={ element.TEARS_AMOUNT }
       JEWEL_AMOUNT={ element.JEWEL_AMOUNT }
+      HERO_ID={ hero_id }
       AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
-      ></CrystalRows>
+      ></HeroSummonRows>
       )
     });
   
@@ -508,29 +511,12 @@ function HeroSummonPage(props){
     {"TX_ID":"0x22273d84b67218c7f28504588035d87b7593c4326f413bdda9a90d424bc01d21","HERO_ID":60215
     ,"CRYSTAL_ID":"0x000000000000000000000000000000000000000000000000000000000000c6fc","BLOCK_TIMESTAMP":"2021-12-08 06:56:08.000"
     */
-  var rowHeaders2 = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CRYSTAL_ID</Col><Col>HERO_ID</Col><Col>AMOUNT_USD</Col></Row>
-  var rows2 = [];
+
     
-  props.dataHero.data.forEach(element => {
-    var lookup = dataSearch.find( x => x[0] === element.CRYSTAL_ID)
-    var amount_usd = 0;
-    if (lookup !== undefined)
-    {
-      amount_usd = lookup[1];
-    }
-    ++id;
-    rows2.push(
-      <HeroSummonRows key={id}
-      BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
-      CRYSTAL_ID={ parseInt(element.CRYSTAL_ID,16) }
-      HERO_ID={ element.HERO_ID }
-      AMOUNT_USD={ amount_usd }
-      ></HeroSummonRows>
-      )
-    });
+  
     
     if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
-    if (rows2.length === 0) rows2.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+    
     
   return (
     <Card>
@@ -552,13 +538,6 @@ function HeroSummonPage(props){
     <CardBody>
       {rowHeaders}
       {rows}
-    </CardBody>
-    </Card>
-    <CardHeader>Trade Crystal for Hero</CardHeader>
-    <Card>
-    <CardBody>
-      {rowHeaders2}
-      {rows2}
     </CardBody>
     </Card>
     </Collapse>
