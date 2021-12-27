@@ -81,7 +81,7 @@ return (
         <CardBody>
             <Col>LP/Seeds</Col>
             <Col>Summon Rental Income</Col>
-            <Col>Gen 0 Hero Stuffs? Not sure where to look</Col>
+            <Col>Gen 0 Hero purchases.. - topics[0] = '0x4cb4935c643485980bf65dfc041fc48f0a40c62bbb328843837c786dbc98f1c5'</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
             <Col>better historical Gaia Tears price</Col>
             <Col>better historical rune prices</Col>

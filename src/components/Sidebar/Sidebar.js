@@ -22,7 +22,7 @@ import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
-import logo from "logo.svg";
+import logo from "dfkicon_trans.png";
 
 var ps;
 
@@ -53,15 +53,15 @@ function Sidebar(props) {
     >
       <div className="logo">
         <a
-          href="https://www.creative-tim.com"
+          href="https://defikingdoms.com/"
           className="simple-text logo-mini"
         >
           <div className="logo-img">
-            <img src={logo} alt="react-logo" />
+            <img src={logo} alt="reacta-logo" />
           </div>
         </a>
         <a
-          href="https://www.creative-tim.com"
+          href="https://defikingdoms.com/"
           className="simple-text logo-normal"
         >
           AntonYip
