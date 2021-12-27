@@ -28,8 +28,29 @@ import {
   Card,
   CardHeader,
   CardBody,
+  CardTitle,
+  Spinner,
+  CardSubtitle,
 } from "reactstrap";
 
+function StandardHeader(props){
+  return (
+    <Col xs='10'>
+      <Row>
+      <Col xs='8'>
+        <CardTitle tag='h2'>{props.TITLE}</CardTitle>
+        <CardSubtitle>{props.SUBTITLE}</CardSubtitle>
+      </Col>
+      {
+        props.showUSD === true ?
+        <Col xs='4' tag='h4'>Profits USD: { ( Math.round(props.PROFITS * 100) / 100 ).toFixed(2) }</Col>
+        :
+        <Col xs='4' tag='h4'></Col>
+      }
+      </Row>
+    </Col>
+  );
+}
 
 function QuestRewardRows(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CONTRACT_NAME}</Col><Col>{props.VALUE}</Col><Col>{props.VALUE_USD}</Col></Row>);
@@ -40,7 +61,7 @@ function QuestRewardsPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.data === '')
-    return (<Card><CardBody>Loading Quest Data...</CardBody></Card>);
+    return (<Card><CardBody>Loading Quest Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.data === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
@@ -51,8 +72,10 @@ function QuestRewardsPage(props){
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CONTRACT_NAME</Col><Col>VALUE</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   var id = 0;
+  var totalAmountUSD = 0;
   props.data.data.forEach(element => {
     ++id;
+    totalAmountUSD += element.AMOUNT_USD;
     rows.push(
       <QuestRewardRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -69,10 +92,15 @@ function QuestRewardsPage(props){
     <Card>
     <CardHeader>
     <Row>
-      <Col xs='10'>Quest Rewards - List of all tranasactions related to obtaining Quest Rewards.</Col>
+      <StandardHeader 
+      TITLE="Quest Rewards"
+      SUBTITLE="List of all tranasactions related to obtaining Quest Rewards."
+      PROFITS={totalAmountUSD}
+      showUSD={true}
+      ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
     </Row>
-     </CardHeader>
+    </CardHeader>
     <CardBody>
     <Collapse isOpen={toggle1}>
         {rowHeaders}
@@ -92,7 +120,7 @@ function SwapsPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.data === '')
-    return (<Card><CardBody>Loading Market Trade Data...</CardBody></Card>);
+    return (<Card><CardBody>Loading Market Trade Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.data === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
@@ -125,7 +153,11 @@ function SwapsPage(props){
     <Card>
     <CardHeader>
     <Row>
-      <Col xs='10'>Market Trades - List of all tranasactions related to buying and selling tokens.</Col>
+    <StandardHeader 
+      TITLE="Market/DEX Trades"
+      SUBTITLE="List of all tranasactions related to trading on the Market/DEX."
+      PROFITS={-99}
+      ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
     </Row>
     </CardHeader>
@@ -147,7 +179,7 @@ function ItemsPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.data === '')
-    return (<Card><CardBody>Loading Items Data...</CardBody></Card>);
+    return (<Card><CardBody>Loading Items Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.data === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
@@ -158,8 +190,10 @@ function ItemsPage(props){
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>FROM_TOKEN</Col><Col>FROM_AMOUNT</Col><Col>TO_TOKEN</Col><Col>TO_AMOUNT</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   var id = 0;
+  var totalUSD = 0;
   props.data.data.forEach(element => {
     ++id;
+    totalUSD+=element.AMOUNT_USD
     rows.push(
       <ItemRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -178,7 +212,12 @@ function ItemsPage(props){
     <Card>
     <CardHeader>    
     <Row>
-      <Col xs='10'>Items - List of all tranasactions related to buying and from the gold shop.</Col>
+      <StandardHeader 
+      TITLE="Items"
+      SUBTITLE="List of all tranasactions related to buying and from the gold shop."
+      PROFITS={totalUSD}
+      showUSD={true}
+      ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
     </Row>
     </CardHeader>
@@ -204,7 +243,7 @@ function BankPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.dataDeposit === '' || props.dataWithdraw === '')
-    return (<Card><CardBody>Loading Banking Data...</CardBody></Card>);
+    return (<Card><CardBody>Loading Banking Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.dataDeposit === 'error' || props.dataWithdraw === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
@@ -252,7 +291,11 @@ function BankPage(props){
     <Card>
     <CardHeader>
     <Row>
-      <Col xs='10'>Banking - List of all tranasactions related to the bank.</Col>
+    <StandardHeader 
+      TITLE="Banking"
+      SUBTITLE="List of all tranasactions related to the bank."
+      PROFITS={-99}
+      ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
     </Row>
     </CardHeader>
@@ -276,6 +319,133 @@ function BankPage(props){
   );
 }
 
+function HarvestRow(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.LOCKED_JEWEL}</Col><Col>{props.UNLOCKED_JEWEL}</Col><Col>{props.LOCKED_JEWEL_USD}</Col><Col>{props.UNLOCKED_JEWEL_USD}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+}
+
+function HarvestPage(props){
+  const [toggle1, setToggle1] = useState(false);
+
+  if (props.data === '')
+    return (<Card><CardBody>Loading Harvest Data...  <Spinner></Spinner></CardBody></Card>);
+
+  if (props.data === 'error')
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
+
+    /*
+    {"BLOCK_TIMESTAMP":"2021-12-20 08:04:08.000","TX_ID":"0x79aef63a59db8cd36e9f468564c37b50abd22a52737c9be554729f5aa4aa117c"
+    ,"UNLOCKED_JEWEL":0.07861227143,"LOCKED_JEWEL":0.05267022186,"UNLOCKED_JEWEL_USD":0.966989591
+    ,"LOCKED_JEWEL_USD":0.647883026,"AMOUNT_USD":1.614872617}
+    */
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>LOCKED_JEWEL</Col><Col>UNLOCKED_JEWEL</Col><Col>LOCKED_JEWEL_USD</Col><Col>UNLOCKED_JEWEL_USD</Col><Col>AMOUNT_USD</Col></Row>
+  var rows = [];
+  var id = 0;
+  var totalUSD = 0;
+  props.data.data.forEach(element => {
+    ++id;
+    totalUSD+=element.UNLOCKED_JEWEL_USD;
+    rows.push(
+      <HarvestRow key={id}
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      LOCKED_JEWEL={ element.LOCKED_JEWEL }
+      UNLOCKED_JEWEL={ element.UNLOCKED_JEWEL }
+      LOCKED_JEWEL_USD={ element.LOCKED_JEWEL_USD }
+      UNLOCKED_JEWEL_USD={ (Math.round(element.UNLOCKED_JEWEL_USD * 100) / 100).toFixed(2) }
+      AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
+      ></HarvestRow>
+      )
+    });
+
+    if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
+  return (
+    <Card>
+    <CardHeader>
+    <Row>
+    <StandardHeader 
+      TITLE="Harvests"
+      SUBTITLE="List of all tranasactions related to Harvest."
+      PROFITS={totalUSD}
+      showUSD={true}
+      ></StandardHeader>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+    </Row>
+    </CardHeader>
+    <Collapse isOpen={toggle1}>
+    <CardHeader>Deposits</CardHeader>
+    <Card>
+    <CardBody>
+      {rowHeaders}
+      {rows}
+      </CardBody>
+    </Card>
+    </Collapse>
+    </Card>
+  );
+}
+
+function HeroLevelRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.HERO_ID}</Col><Col>{props.RUNE_AMOUNT}</Col><Col>{props.JEWEL_AMOUNT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+}
+
+function HeroLevelUpPage(props){
+  const [toggle1, setToggle1] = useState(false);
+
+  if (props.data === '')
+    return (<Card><CardBody>Loading Summon Data...  <Spinner></Spinner></CardBody></Card>);
+
+  if (props.data === 'error')
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
+
+    // MULTILINED
+    /*
+    {"BLOCK_TIMESTAMP":"2021-12-26 10:50:35.000","TX_ID":"0x779631b6728173ad801a3afb4a9a00f66def8cdb14a69bd2f439465e95dfd6d5"
+    ,"HERO_ID":"0x0000000000000000000000000000000000000000000000000000000000008825"
+    ,"RUNE_AMOUNT":null,"JEWEL_AMOUNT":null,"RUNE_PRICE_USD":null,"JEWEL_PRICE_USD":null,"AMOUNT_USD":null}
+    */
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>HERO_ID</Col><Col>RUNE_AMOUNT</Col><Col>JEWEL_AMOUNT</Col><Col>AMOUNT_USD</Col></Row>
+  var rows = [];
+  var id = 0;
+  var totalUSD = 0;
+  props.data.data.forEach(element => {
+  ++id;
+  totalUSD -= element.AMOUNT_USD;
+  rows.push(
+    <HeroLevelRows key={id}
+    BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
+    HERO_ID={ parseInt(element.HERO_ID,16) }
+    RUNE_AMOUNT={ element.RUNE_AMOUNT }
+    JEWEL_AMOUNT={ element.JEWEL_AMOUNT }
+    AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
+    ></HeroLevelRows>
+    )
+  });
+      
+  if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
+  return (
+    <Card>
+    <CardHeader>
+      <Row>
+      <StandardHeader 
+      TITLE="Hero Level-Ups"
+      SUBTITLE="List of all tranasactions for Leveling heroes."
+      PROFITS={ totalUSD }
+      showUSD={true}
+      ></StandardHeader>
+      <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      </Row>
+    </CardHeader>
+    <Collapse isOpen={toggle1}>
+    <CardBody>
+      {rowHeaders}
+      {rows}
+    </CardBody>
+    </Collapse>
+    </Card>
+  );
+}
+
 function CrystalRows(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CRYSTAL_ID}</Col><Col>{props.TEARS_AMOUNT}</Col><Col>{props.JEWEL_AMOUNT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
 }
@@ -288,7 +458,7 @@ function HeroSummonPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.dataCrystal === '' || props.dataHero === '')
-    return (<Card><CardBody>Loading Summon Data...</CardBody></Card>);
+    return (<Card><CardBody>Loading Summon Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.dataCrystal === 'error' || props.dataHero === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
@@ -351,7 +521,11 @@ function HeroSummonPage(props){
     <Card>
     <CardHeader>
       <Row>
-      <Col xs='10'>Summons - List of all tranasactions for summoning heroes.</Col>
+      <StandardHeader 
+      TITLE="Summons"
+      SUBTITLE="List of all tranasactions for summoning heroes."
+      PROFITS={-99}
+      ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
       </Row>
     </CardHeader>
@@ -384,7 +558,7 @@ function HeroPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.dataBuy === '' || props.dataSold === '')
-    return (<Card><CardBody>Loading Heros Data...</CardBody></Card>);
+    return (<Card><CardBody>Loading Heros Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.dataBuy === 'error' || props.dataSold === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
@@ -431,7 +605,11 @@ function HeroPage(props){
     <Card>
     <CardHeader>
       <Row>
-      <Col xs='10'>Heroes - List of all tranasactions for buying and selling heroes.</Col>
+      <StandardHeader 
+      TITLE="Heroes"
+      SUBTITLE="List of all tranasactions for buying and selling heroes."
+      PROFITS={-99}
+      ></StandardHeader>
       <Col xs='2'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
       </Row>
     </CardHeader>
@@ -480,9 +658,15 @@ function Dfk_Report() {
 
   const [bankingTxData, setBankingTxData] = useState('');
   const [searchActivatedBankingTxData, setSearchActivatedBankingTxData] = useState(0);
+
+  const [harvestData, setHarvestData] = useState('');
+  const [searchActivatedHarvestData, setSearchActivatedHarvestData] = useState(0);
   
   const [bankingTxData2, setBankingTxData2] = useState('');
   const [searchActivatedBankingTxData2, setSearchActivatedBankingTxData2] = useState(0);
+
+  const [heroLevelData, setHeroLevelData] = useState('');
+  const [searchActivatedHeroLevelData, setSearchActivatedHeroLevelData] = useState(0);
 
   const [heroSummonData, setHeroSummonData] = useState('');
   const [searchActivatedHeroSummonData, setSearchActivatedHeroSummonData] = useState(0);
@@ -500,7 +684,9 @@ function Dfk_Report() {
     setSearchActivatedBankingTxData(1);
     setSearchActivatedBankingTxData2(1);
     setSearchActivatedHeroSummonData(1);
+    setSearchActivatedHeroLevelData(1);
     setSearchActivatedCrystalSummonData(1);
+    setSearchActivatedHarvestData(1);
     setQuestData('');
     setSwapData('');
     setItemData('');
@@ -509,7 +695,9 @@ function Dfk_Report() {
     setBankingTxData('');
     setBankingTxData2('');
     setHeroSummonData('');
+    setHeroLevelData('');
     setCrystalSummonData('');
+    setHarvestData('');
   }
   
   const triggerSearchButton = e => {
@@ -607,6 +795,23 @@ function Dfk_Report() {
     // eslint-disable-next-line
   }, [searchActivatedHeroSold]);
 
+  // harvests
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/seeds-harvests?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setHarvestData('error');
+      }
+      else
+      {
+        setHarvestData(res);
+      }
+      setSearchActivatedHarvestData(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedHarvestData]);
+
   // bank-deposit
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/bank-deposit?q=" + searchText )
@@ -623,7 +828,7 @@ function Dfk_Report() {
     })
     // eslint-disable-next-line
   }, [searchActivatedBankingTxData]);
-
+  
   // bank-withdraw
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/bank-withdraw?q=" + searchText )
@@ -640,7 +845,7 @@ function Dfk_Report() {
     })
     // eslint-disable-next-line
   }, [searchActivatedBankingTxData2]);
-
+  
   // crystal-summon
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/crystal-summon?q=" + searchText )
@@ -658,22 +863,39 @@ function Dfk_Report() {
     // eslint-disable-next-line
   }, [searchActivatedCrystalSummonData]);
 
-  // hero-summon
+  // hero-level
   useEffect( () => {
-    axios.get("https://dfkreport.antonyip.com/hero-summon?q=" + searchText )
+    axios.get("https://dfkreport.antonyip.com/hero-level-up?q=" + searchText )
     .then( res => {
       if (res.data === 'Invalid User Address!')
       {
-        setHeroSummonData('error');
+        setHeroLevelData('error');
       }
       else
       {
-        setHeroSummonData(res);
+        setHeroLevelData(res);
       }
-      setSearchActivatedHeroSummonData(0);
+      setSearchActivatedHeroLevelData(0);
     })
     // eslint-disable-next-line
-  }, [searchActivatedHeroSummonData]);
+  }, [searchActivatedHeroLevelData]);
+
+    // hero-summon
+    useEffect( () => {
+      axios.get("https://dfkreport.antonyip.com/hero-summon?q=" + searchText )
+      .then( res => {
+        if (res.data === 'Invalid User Address!')
+        {
+          setHeroSummonData('error');
+        }
+        else
+        {
+          setHeroSummonData(res);
+        }
+        setSearchActivatedHeroSummonData(0);
+      })
+      // eslint-disable-next-line
+    }, [searchActivatedHeroSummonData]);
   
   const downloadFile = ({ data, fileName, fileType }) => {
     const blob = new Blob([data], { type: fileType })
@@ -728,7 +950,7 @@ function Dfk_Report() {
       fileType: 'text/csv',
     })
   }
-
+  
   return (
       <div className="content">
         <CardHeader>
@@ -742,7 +964,9 @@ function Dfk_Report() {
         <SwapsPage data={swapData}></SwapsPage>
         <ItemsPage data={itemData}></ItemsPage>
         <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} ></BankPage>
+        <HarvestPage data={harvestData}></HarvestPage>
         <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData}></HeroPage>
+        <HeroLevelUpPage data={heroLevelData}></HeroLevelUpPage>
         <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData}></HeroSummonPage>
       </div>
   );

@@ -38,6 +38,10 @@ return (
             <Col>Banking/Staking Transactions</Col>
             <Col>Hero Buys and Sells</Col>
             <Col>Hero Summons</Col>
+            <Col>Hero Level ups</Col>
+            <Col>USD Calculations of all transactions</Col>
+            <Col>Harvests</Col>
+            <Col>Sum of some columns.. some stuffs not too sure how to calculate yet</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -67,10 +71,7 @@ return (
       <Card>
         <CardBody>
             <Col>Seeds/LP Stuffs</Col>
-            <Col>Harvests</Col>
-            <Col>Item TX USD Prices</Col>
-            <Col>Level ups</Col>
-            <Col>Sum of columns</Col>
+            <Col>Summon Rental Income</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -80,6 +81,7 @@ return (
         <CardBody>
             <Col>LP/Seeds</Col>
             <Col>Summon Rental Income</Col>
+            <Col>Gen 0 Hero Stuffs? Not sure where to look</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
             <Col>better historical Gaia Tears price</Col>
             <Col>better historical rune prices</Col>
