@@ -1205,7 +1205,19 @@ function Dfk_Report() {
           
         setValueQuestRewardsPage(totalAmountUSD);
       }
-    }, [checkIfAllSearchAreDone,questData,swapData,itemData,heroBuyData,heroSoldData,bankingTxData,harvestData,bankingTxData2,heroLevelData,heroSummonData,crystalSummonData]);
+    }, [checkIfAllSearchAreDone
+      ,questData
+      ,swapData
+      ,itemData
+      ,heroBuyData
+      ,heroSoldData
+      ,bankingTxData
+      ,harvestData
+      ,bankingTxData2
+      ,heroLevelData
+      ,heroSummonData
+      ,crystalSummonData
+      ,heroRentalData]);
       
   const downloadFile = ({ data, fileName, fileType }) => {
     const blob = new Blob([data], { type: fileType })
@@ -1234,7 +1246,8 @@ function Dfk_Report() {
           ...bankDataCSV,
           ...harvestDataCSV,
           ...heroLevelDataCSV,
-          ...heroSummonDataCSV
+          ...heroSummonDataCSV,
+          ...heroRentalDataCSV
         ].join('\n'),
         fileName: 'CombinedCSV.csv',
         fileType: 'text/csv',
