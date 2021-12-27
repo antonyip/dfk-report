@@ -44,7 +44,7 @@ function StandardHeader(props){
       </Col>
       {
         props.showUSD === true ?
-        <Col xs='4' tag='h4'>Profits USD: { ( Math.round(props.PROFITS * 100) / 100 ).toFixed(2) }</Col>
+        <Col xs='4' tag='h4'>Profits: ${ ( Math.round(props.PROFITS * 100) / 100 ).toFixed(2) }</Col>
         :
         <Col xs='4' tag='h4'></Col>
       }
@@ -395,6 +395,7 @@ function HarvestPage(props){
   );
 }
 
+
 function HeroLevelRows(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.HERO_ID}</Col><Col>{props.RUNE_AMOUNT}</Col><Col>{props.JEWEL_AMOUNT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
 }
@@ -638,6 +639,71 @@ function HeroPage(props){
   );
 }
 
+function HeroRentalIncomeRow(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.RENTER_ADDRESS}</Col><Col>{props.JEWEL_AMOUNT}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
+}
+
+function HeroRentalIncomePage(props){
+  const [toggle1, setToggle1] = useState(false);
+
+  if (props.data === '')
+    return (<Card><CardBody>Loading Hero Rental Data...  <Spinner></Spinner></CardBody></Card>);
+
+  if (props.data === 'error')
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
+
+    /*
+    {"BLOCK_TIMESTAMP":"2021-12-09 15:21:58.000","JEWEL_AMOUNT":28.875,"USER_ADDRESS":"0x4808e6541f88ba5f75ba9654369613c9ae19d718"
+    ,"RENTER_ADDRESS":"0x3913ab3d32368a4716d7e3378c0e0fc648e7689c","TX_ID":"0x7d3f4f15ca3bba740a62e80e981e9864bd93bf3e5cb0a0270659fc05fef38ea1"
+    ,"AMOUNT_USD":211.692094533}
+    */
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>RENTER_ADDRESS</Col><Col>JEWEL_AMOUNT</Col><Col>AMOUNT_USD</Col></Row>
+  var rows = [];
+  var id = 0;
+  var totalUSD = 0;
+  props.data.data.forEach(element => {
+    ++id;
+    totalUSD+=element.AMOUNT_USD;
+    rows.push(
+      <HeroRentalIncomeRow key={id}
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      RENTER_ADDRESS={ element.RENTER_ADDRESS }
+      JEWEL_AMOUNT={ element.JEWEL_AMOUNT }
+      AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
+      ></HeroRentalIncomeRow>
+      )
+    });
+
+    if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+    
+  return (
+    <Card>
+    <CardHeader>
+    <Row>
+    <StandardHeader 
+      TITLE="Hero Rental"
+      SUBTITLE="List of all tranasactions related to heroes rented from you to summon."
+      PROFITS={totalUSD}
+      showUSD={true}
+      ></StandardHeader>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(9) }>Download</Button></Col>
+    </Row>
+    </CardHeader>
+    <Collapse isOpen={toggle1}>
+    <CardHeader>Rental Income</CardHeader>
+    <Card>
+    <CardBody>
+      {rowHeaders}
+      {rows}
+      </CardBody>
+    </Card>
+    </Collapse>
+    <CardFooter></CardFooter>
+    </Card>
+  );
+}
+
 function OverallPage(props)
 {
   //const [toggle1,setToggle1] = useState(true);
@@ -654,10 +720,10 @@ function OverallPage(props)
     <Card>
     <CardHeader>
       <CardTitle tag='h2'>Overall Account Status</CardTitle>
-      <CardSubtitle>A Summary of your account from 2021-DEC-08 to 2021-DEC-30</CardSubtitle>
+      {/* <CardSubtitle>A Summary of your account from 2021-DEC-08 to 2021-DEC-30</CardSubtitle> */}
     </CardHeader>
     <CardBody>
-    <Row tag='h3'><Col xs='2'>Total: </Col><Col xs='6'>{(Math.round(total * 100) / 100).toFixed(2)}</Col></Row>
+    <Row tag='h3'><Col xs='2'>Total Profits: </Col><Col xs='6'>${(Math.round(total * 100) / 100).toFixed(2)}</Col></Row>
     
     {/* <Row><Col xs='2'>QuestRewards: </Col><Col xs='6'>{props.QuestRewardsPage}</Col></Row>
     <Row><Col xs='2'>Swaps: </Col><Col xs='6'>{props.SwapsPage}</Col></Row>
@@ -676,8 +742,6 @@ function OverallPage(props)
 
 
 function Dfk_Report() {
-
-  //const [activeTab, setActiveTab] = useState('1');
   const [searchText, setSearchText] = useState("0x0ba43bae4613e03492e4c17af3b014b6c3202b9d");
 
   const [questData, setQuestData] = useState('');
@@ -700,6 +764,9 @@ function Dfk_Report() {
 
   const [harvestData, setHarvestData] = useState('');
   const [searchActivatedHarvestData, setSearchActivatedHarvestData] = useState(0);
+
+  const [heroRentalData, setHeroRentalData] = useState('');
+  const [searchActivatedHeroRentalData, setSearchActivatedHeroRentalData] = useState(0);
   
   const [bankingTxData2, setBankingTxData2] = useState('');
   const [searchActivatedBankingTxData2, setSearchActivatedBankingTxData2] = useState(0);
@@ -728,6 +795,8 @@ function Dfk_Report() {
     setSearchActivatedHeroLevelData(1);
     setSearchActivatedCrystalSummonData(1);
     setSearchActivatedHarvestData(1);
+    setSearchActivatedHeroRentalData(1);
+
     setQuestData('');
     setSwapData('');
     setItemData('');
@@ -739,7 +808,9 @@ function Dfk_Report() {
     setHeroLevelData('');
     setCrystalSummonData('');
     setHarvestData('');
-    setValueQuestRewardsPage(0);
+    setHeroRentalData('');
+
+    setValueQuestRewardsPage(0); // overall page total
     setCheckIfAllSearchAreDone(false);
   }
 
@@ -756,6 +827,7 @@ function Dfk_Report() {
     if (searchActivatedHeroLevelData !== 0) return false;
     if (searchActivatedHeroSummonData !== 0) return false;
     if (searchActivatedCrystalSummonData !== 0) return false;
+    if (searchActivatedHeroRentalData !== 0) return false;
     
     if (questData === 'error' ) return false;
     if (swapData === 'error' ) return false;
@@ -768,6 +840,7 @@ function Dfk_Report() {
     if (heroLevelData === 'error' ) return false;
     if (heroSummonData === 'error' ) return false;
     if (crystalSummonData === 'error' ) return false;
+    if (heroRentalData === 'error' ) return false;
 
     setCheckIfAllSearchAreDone(true);
     return true;
@@ -981,10 +1054,29 @@ function Dfk_Report() {
       // eslint-disable-next-line
     }, [searchActivatedHeroSummonData]);
 
+    // hero-rental-income
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/hero-rent-income?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setHeroRentalData('error');
+      }
+      else
+      {
+        setHeroRentalData(res);
+        FuncCheckIfAllSearchAreDone();
+      }
+      setSearchActivatedHeroRentalData(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedHeroRentalData]);
+
     var [ questDataCSV, setquestDataCSV] = useState([]);
     var [ swapDataCSV, setswapDataCSV] = useState([]);
     var [ itemDataCSV, setitemDataCSV] = useState([]);
     var [ heroTxDataCSV, setheroTxDataCSV] = useState([]);
+    var [ heroRentalDataCSV, setHeroRentalDataCSV ] = useState([]);
     var [ bankDataCSV, setbankDataCSV] = useState([]);
     var [ harvestDataCSV, setharvestDataCSV] = useState([]);
     var [ heroLevelDataCSV, setheroLevelDataCSV] = useState([]);
@@ -1004,6 +1096,7 @@ function Dfk_Report() {
         && heroLevelData !== ''
         && heroSummonData !== ''
         && crystalSummonData !== ''
+        && heroRentalData !== ''
         )
       {
         var totalAmountUSD = 0;
@@ -1100,6 +1193,15 @@ function Dfk_Report() {
           localDataCSV.push(row)
         });
         setheroTxDataCSV(localDataCSV);
+
+        // 9 - hero rental income
+        localDataCSV = ['BLOCK_TIMESTAMP,RENTER_ADDRESS,JEWEL_AMOUNT,AMOUNT_USD']
+        heroRentalData.data.forEach(element => {
+          totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.RENTER_ADDRESS,element.JEWEL_AMOUNT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+        });
+        setHeroRentalDataCSV(localDataCSV)
           
         setValueQuestRewardsPage(totalAmountUSD);
       }
@@ -1202,6 +1304,14 @@ function Dfk_Report() {
         fileType: 'text/csv',
       })
     }
+    if (e === 9)
+    {
+      downloadFile({
+        data: heroRentalDataCSV.join('\n'),
+        fileName: 'heroRentalData.csv',
+        fileType: 'text/csv',
+      })
+    }
   }
 
   const [valueQuestRewardsPage, setValueQuestRewardsPage] = useState(0);
@@ -1240,6 +1350,7 @@ function Dfk_Report() {
         <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData} download={exportToCsv}></HeroPage>
         <HeroLevelUpPage data={heroLevelData} download={exportToCsv}></HeroLevelUpPage>
         <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData} download={exportToCsv}></HeroSummonPage>
+        <HeroRentalIncomePage data={heroRentalData} download={exportToCsv}></HeroRentalIncomePage>
       </div>
   );
 }

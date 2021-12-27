@@ -45,6 +45,7 @@ return (
             <Col>Harvests</Col>
             <Col>Sum Amount_USD of some columns...</Col>
             <Col>Download as CSV</Col>
+            <Col>Summon Rental Income</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -62,7 +63,6 @@ return (
       <Card>
         <CardBody>
             <Col>Seeds/LP Stuffs (Add / Remove Liquidity)</Col>
-            <Col>Summon Rental Income</Col>
         </CardBody>
         <CardFooter>... wish i had more time...</CardFooter>
       </Card>
@@ -71,7 +71,6 @@ return (
       <Card>
         <CardBody>
             <Col>LP/Seeds (Add / Remove Liquidity)</Col>
-            <Col>Summon Rental Income</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
             <Col>better historical Gaia Tears price</Col>
             <Col>better historical rune prices</Col>
