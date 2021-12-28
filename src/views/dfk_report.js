@@ -32,6 +32,8 @@ import {
   Spinner,
   CardSubtitle,
   CardFooter,
+  InputGroupText,
+  InputGroup,
 } from "reactstrap";
 
 function StandardHeader(props){
@@ -51,6 +53,31 @@ function StandardHeader(props){
       </Row>
     </Col>
   );
+}
+
+// returns true if ok
+function FilterDate(value, filterStart, filterEnd) {
+
+  if (filterEnd === '' || filterEnd.length !== 10) {filterEnd = '3000-01-01'}
+  if (filterStart === '' || filterStart.length !== 10 ) {filterStart = '1900-01-01'}
+
+  var dateYear = parseInt([value[0],value[1],value[2],value[3]].join(''))
+  var startDateYear = parseInt([filterStart[0],filterStart[1],filterStart[2],filterStart[3]].join(''))
+  var endDateYear = parseInt([filterEnd[0],filterEnd[1],filterEnd[2],filterEnd[3]].join(''))
+  var dateMonth = parseInt([value[5],value[6]].join(''))
+  var startDateMonth = parseInt([filterStart[5],filterStart[6]].join(''))
+  var endDateMonth = parseInt([filterEnd[5],filterEnd[6]].join(''))  
+  var dateDay = parseInt([value[8],value[9]].join(''))
+  var startDateDay = parseInt([filterStart[8],filterStart[9]].join(''))
+  var endDateDay = parseInt([filterEnd[8],filterEnd[9]].join(''))
+
+  var epoch = dateYear * 365 + dateMonth * 12 + dateDay
+  var startEpoch = startDateYear * 365 + startDateMonth * 12 + startDateDay
+  var endEpoch = endDateYear * 365 + endDateMonth * 12 + endDateDay
+
+  if (epoch >= startEpoch && epoch <= endEpoch) return true
+
+  return false
 }
 
 function QuestRewardRows(props){
@@ -75,6 +102,8 @@ function QuestRewardsPage(props){
   var id = 0;
   var totalAmountUSD = 0;
   props.data.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     ++id;
     totalAmountUSD += element.AMOUNT_USD;
     rows.push(
@@ -85,6 +114,7 @@ function QuestRewardsPage(props){
       VALUE_USD={(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)}
       ></QuestRewardRows>
       )
+    }
     });
 
   if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
@@ -139,6 +169,8 @@ function SwapsPage(props){
   var id = 0;
   props.data.data.forEach(element => {
     ++id;
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     rows.push(
       <SwapsRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -149,6 +181,7 @@ function SwapsPage(props){
       VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></SwapsRows>
       )
+    }
     });
 
   if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
@@ -262,6 +295,8 @@ function BankPage(props){
   var rows = [];
   var id = 0;
   props.dataDeposit.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     ++id;
     rows.push(
       <BankRows key={id}
@@ -271,6 +306,7 @@ function BankPage(props){
       AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></BankRows>
       )
+    }
     });
 
     /*
@@ -280,6 +316,8 @@ function BankPage(props){
   var rowHeaders2 = <Row><Col>BLOCK_TIMESTAMP</Col><Col>XJEWEL_IN</Col><Col>JEWEL_OUT</Col><Col>AMOUNT_USD</Col></Row>
   var rows2 = [];
   props.dataWithdraw.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     ++id;
     rows2.push(
       <BankRows2 key={id}
@@ -289,6 +327,7 @@ function BankPage(props){
       AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></BankRows2>
       )
+    }
     });
     if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
     if (rows2.length === 0) rows2.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
@@ -351,6 +390,8 @@ function HarvestPage(props){
   var id = 0;
   var totalUSD = 0;
   props.data.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     ++id;
     totalUSD+=element.UNLOCKED_JEWEL_USD;
     rows.push(
@@ -363,6 +404,7 @@ function HarvestPage(props){
       AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></HarvestRow>
       )
+    }
     });
 
     if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
@@ -420,6 +462,8 @@ function HeroLevelUpPage(props){
   var id = 0;
   var totalUSD = 0;
   props.data.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
   ++id;
   totalUSD -= element.AMOUNT_USD;
   rows.push(
@@ -431,6 +475,7 @@ function HeroLevelUpPage(props){
     AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
     ></HeroLevelRows>
     )
+  }
   });
       
   if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
@@ -492,6 +537,8 @@ function HeroSummonPage(props){
     var heroMaybe = lookup.find( x => x[0] === element.CRYSTAL_ID)
     var hero_id = 'unsummoned';
     if (heroMaybe) { hero_id = heroMaybe[1] }
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     ++id;
     totalUSD -= element.AMOUNT_USD;
     rows.push(
@@ -504,6 +551,7 @@ function HeroSummonPage(props){
       AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></HeroSummonRows>
       )
+    }
     });
   
 
@@ -569,6 +617,8 @@ function HeroPage(props){
   var id = 0;
   var totalUSD = 0
   props.dataBuy.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     ++id;
     totalUSD -= element.AMOUNT_USD;
     rows.push(
@@ -580,12 +630,15 @@ function HeroPage(props){
       VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></HeroRows>
       )
+    }
     });
 //{"BLOCK_TIMESTAMP":"2021-12-09 15:42:12.000","AMOUNT":144.375,"BUYER":"0x25c4bb26f5651e125c46b8092a81c6167d24f02f"
 //,"TX_ID":"0x4bcb39ac48cdbd95c3ea7d64773384c63f18564d4b53a13e233c59435424e761"
 //,"TOKENID":"0x000000000000000000000000000000000000000000000000000000000000e86b"
 //,"AMOUNT_USD":1058.460472665}
     props.dataSold.data.forEach(element => {
+      if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+      {
       ++id;
       totalUSD += element.AMOUNT_USD;
       rowsSold.push(
@@ -597,6 +650,7 @@ function HeroPage(props){
         VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
         ></HeroRows>
         )
+      }
       });
 
       if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
@@ -662,6 +716,8 @@ function HeroRentalIncomePage(props){
   var id = 0;
   var totalUSD = 0;
   props.data.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     ++id;
     totalUSD+=element.AMOUNT_USD;
     rows.push(
@@ -672,6 +728,7 @@ function HeroRentalIncomePage(props){
       AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></HeroRentalIncomeRow>
       )
+    }
     });
 
     if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
@@ -743,6 +800,9 @@ function OverallPage(props)
 
 function Dfk_Report() {
   const [searchText, setSearchText] = useState("0x0ba43bae4613e03492e4c17af3b014b6c3202b9d");
+
+  const [startDate,setStartDate] = useState('');
+  const [endDate,setEndDate] = useState('');
 
   const [questData, setQuestData] = useState('');
   const [searchActivatedQuest, setSearchActivatedQuest] = useState(0);
@@ -840,7 +900,7 @@ function Dfk_Report() {
     if (heroLevelData === 'error' ) return false;
     if (heroSummonData === 'error' ) return false;
     if (crystalSummonData === 'error' ) return false;
-    if (heroRentalData === 'error' ) return false;
+    if (heroRentalData === 'error' ) return false;    
 
     setCheckIfAllSearchAreDone(true);
     return true;
@@ -1103,14 +1163,19 @@ function Dfk_Report() {
         // 1 - quest
         var localDataCSV = ['BLOCK_TIMESTAMP,CONTRACT_NAME,AMOUNT,AMOUNT_USD']
         questData.data.forEach(element => {
-          totalAmountUSD += element.AMOUNT_USD;
-          let row = [element.BLOCK_TIMESTAMP,element.CONTRACT_NAME,element.CALCULATED_VALUE,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
-          localDataCSV.push(row)
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
+            totalAmountUSD += element.AMOUNT_USD;
+            let row = [element.BLOCK_TIMESTAMP,element.CONTRACT_NAME,element.CALCULATED_VALUE,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
+            localDataCSV.push(row)
+          }
         });
         setquestDataCSV(localDataCSV);
         // 2 - swaps
         localDataCSV = ['BLOCK_TIMESTAMP,FROM_TOKEN,FROM_AMOUNT,TO_TOKEN,TO_AMOUNT,VALUE_USD']
         swapData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           //totalAmountUSD += element.AMOUNT_USD;
           localDataCSV.push([element.BLOCK_TIMESTAMP
             ,element.AMOUNT0IN > 0 ? element.TOKEN0_NAME : element.TOKEN1_NAME
@@ -1119,47 +1184,63 @@ function Dfk_Report() {
             ,element.AMOUNT0OUT + element.AMOUNT1OUT
             ,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)
           ].join(','))
+          }
           });
         setswapDataCSV(localDataCSV)
         // 3 - item trades
         localDataCSV = ['BLOCK_TIMESTAMP,FROM_TOKEN,FROM_AMOUNT,TO_TOKEN,TO_AMOUNT,VALUE_USD']
         itemData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           totalAmountUSD += element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.FROM_TOKEN,element.FROM_AMOUNT,element.TO_TOKEN,element.TO_AMOUNT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         setitemDataCSV(localDataCSV);
 
         // 4- banking
         localDataCSV = ['BLOCK_TIMESTAMP,JEWEL_IN,XJEWEL_OUT,AMOUNT_USD']
         bankingTxData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           //totalAmountUSD += element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.JEWEL_IN,element.XJEWEL_OUT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         localDataCSV.push('BLOCK_TIMESTAMP,XJEWEL_IN,JEWEL_OUT,AMOUNT_USD')
         bankingTxData2.data.forEach(element => {
           //totalAmountUSD += element.AMOUNT_USD;
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           let row = [element.BLOCK_TIMESTAMP,element.XJEWEL_IN,element.JEWEL_OUT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         setbankDataCSV(localDataCSV);
 
         // 5 -harvests
         localDataCSV = ['BLOCK_TIMESTAMP,LOCKED_JEWEL,UNLOCKED_JEWEL,LOCKED_JEWEL_USD,UNLOCKED_JEWEL_USD,AMOUNT_USD']
         harvestData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           totalAmountUSD -= element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.LOCKED_JEWEL,element.UNLOCKED_JEWEL,element.LOCKED_JEWEL_USD,element.UNLOCKED_JEWEL_USD,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         setharvestDataCSV(localDataCSV)
         
         // 6 -hero level data
         localDataCSV = ['BLOCK_TIMESTAMP,HERO_ID,RUNE_AMOUNT,JEWEL_AMOUNT,AMOUNT_USD']
         heroLevelData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           totalAmountUSD -= element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.HERO_ID,element.RUNE_AMOUNT,element.JEWEL_AMOUNT,(Math.round(-element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         setheroLevelDataCSV(localDataCSV);
 
@@ -1171,41 +1252,55 @@ function Dfk_Report() {
 
         localDataCSV = ['BLOCK_TIMESTAMP,CRYSTAL_ID,TEARS_AMOUNT,JEWEL_AMOUNT,HERO_ID,AMOUNT_USD'];
         crystalSummonData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           totalAmountUSD -= element.AMOUNT_USD;
           var found = crystalherolookup.find(x => x[0] === element.CRYSTAL_ID)
           var hero_id = 0;
           if (found) {hero_id = found[1]}
           let row = [element.BLOCK_TIMESTAMP,element.CRYSTAL_ID,element.TEARS_AMOUNT,element.JEWEL_AMOUNT,hero_id,(Math.round(-element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         setheroSummonDataCSV(localDataCSV);
 
         // 8 - hero buy sell
         localDataCSV = ['BLOCK_TIMESTAMP,TOKEN_ID,JEWEL_COST,VALUE_USD']
         heroBuyData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           totalAmountUSD -= element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.TOKEN_ID,element.JEWELS_PAID,(Math.round(-element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         heroSoldData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           totalAmountUSD += element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.TOKENID,element.AMOUNT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         setheroTxDataCSV(localDataCSV);
 
         // 9 - hero rental income
         localDataCSV = ['BLOCK_TIMESTAMP,RENTER_ADDRESS,JEWEL_AMOUNT,AMOUNT_USD']
         heroRentalData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
           totalAmountUSD += element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.RENTER_ADDRESS,element.JEWEL_AMOUNT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
+          }
         });
         setHeroRentalDataCSV(localDataCSV)
           
         setValueQuestRewardsPage(totalAmountUSD);
       }
     }, [checkIfAllSearchAreDone
+      ,startDate
+      ,endDate
       ,questData
       ,swapData
       ,itemData
@@ -1217,7 +1312,8 @@ function Dfk_Report() {
       ,heroLevelData
       ,heroSummonData
       ,crystalSummonData
-      ,heroRentalData]);
+      ,heroRentalData
+    ]);
       
   const downloadFile = ({ data, fileName, fileType }) => {
     const blob = new Blob([data], { type: fileType })
@@ -1341,7 +1437,32 @@ function Dfk_Report() {
         <CardHeader>
           <CardTitle tag='h2'>Enter your address and press enter to see a summary of your wallet...</CardTitle>
           <CardSubtitle>Querying will take about 5 minutes to generate your report...</CardSubtitle>
-          <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>          
+          <Row>
+          <Col xs='6'>
+          <InputGroup>
+            <InputGroupText>
+              Address
+            </InputGroupText>
+            <Input placeholder="0x..." value={searchText} onKeyDown={triggerSearch} onChange={ e => { setSearchText(e.target.value.toLowerCase()) }}></Input>
+            </InputGroup>
+          </Col>
+          <Col xs='3'>
+          <InputGroup>
+            <InputGroupText>
+              Start Date
+            </InputGroupText>
+            <Input placeholder="YYYY-MM-DD" value={startDate} onChange={ e => { setStartDate(e.target.value)} }></Input>
+          </InputGroup>
+          </Col>
+          <Col xs='3'>
+          <InputGroup>
+            <InputGroupText>
+              End Date
+            </InputGroupText>
+            <Input placeholder="YYYY-MM-DD" value={endDate} onChange={ e => { setEndDate(e.target.value)} }></Input>
+          </InputGroup>
+          </Col>
+          </Row>
           <Button onClick={triggerSearchButton}>Search!</Button>
           <Button onClick={() => exportToCsv(0)} disabled={!checkIfAllSearchAreDone}>Download Generated Transcript</Button>
         </CardHeader>
@@ -1356,15 +1477,15 @@ function Dfk_Report() {
          HeroSummonPage={0}
          >
          </OverallPage>
-        <QuestRewardsPage data={questData} download={exportToCsv} ></QuestRewardsPage>
-        <SwapsPage data={swapData} download={exportToCsv}></SwapsPage>
-        <ItemsPage data={itemData} download={exportToCsv}></ItemsPage>
-        <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} download={exportToCsv}></BankPage>
-        <HarvestPage data={harvestData} download={exportToCsv}></HarvestPage>
-        <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData} download={exportToCsv}></HeroPage>
-        <HeroLevelUpPage data={heroLevelData} download={exportToCsv}></HeroLevelUpPage>
-        <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData} download={exportToCsv}></HeroSummonPage>
-        <HeroRentalIncomePage data={heroRentalData} download={exportToCsv}></HeroRentalIncomePage>
+        <QuestRewardsPage data={questData} download={exportToCsv} startDate={startDate} endDate={endDate} ></QuestRewardsPage>
+        <SwapsPage data={swapData} download={exportToCsv} startDate={startDate} endDate={endDate}></SwapsPage>
+        <ItemsPage data={itemData} download={exportToCsv} startDate={startDate} endDate={endDate}></ItemsPage>
+        <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} download={exportToCsv} startDate={startDate} endDate={endDate}></BankPage>
+        <HarvestPage data={harvestData} download={exportToCsv} startDate={startDate} endDate={endDate}></HarvestPage>
+        <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroPage>
+        <HeroLevelUpPage data={heroLevelData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroLevelUpPage>
+        <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroSummonPage>
+        <HeroRentalIncomePage data={heroRentalData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroRentalIncomePage>
       </div>
   );
 }
