@@ -13,7 +13,7 @@ import {
   Col,
 } from "reactstrap";
 
-function ExternalSite() {
+function PriceSite() {
 return (
   <div className="content">     
       <CardHeader tag='h4'>About me</CardHeader>
@@ -90,4 +90,4 @@ return (
   );
 }
 
-export default ExternalSite;
+export default PriceSite;

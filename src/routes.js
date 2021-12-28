@@ -27,6 +27,8 @@ import TableList from "views/Tables.js";
 import dfk_report from "views/dfk_report.js";
 import backend from "views/backend.js";
 import about from "views/about.js";
+import price from "views/about.js";
+import gen0 from "views/gen0.js";
 
 var routes = [
   {
@@ -48,6 +50,20 @@ var routes = [
     name: "about",
     icon: "nc-icon nc-alert-circle-i",
     component: about,
+    layout: "/admin",
+  },
+  {
+    path: "/gen0",
+    name: "gen0",
+    icon: "nc-icon nc-alert-circle-i",
+    component: gen0,
+    layout: "/admin",
+  },
+  {
+    path: "/prices",
+    name: "token prices",
+    icon: "nc-icon nc-alert-circle-i",
+    component: price,
     layout: "/admin",
   },
   {
