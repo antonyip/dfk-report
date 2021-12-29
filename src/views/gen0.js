@@ -5,18 +5,11 @@ import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
-  Input,
   Collapse,
-  Button,
   Card,
   CardHeader,
   CardBody,
-  CardTitle,
   Spinner,
-  CardSubtitle,
-  CardFooter,
-  InputGroupText,
-  InputGroup,
 } from "reactstrap";
 
 function Gen0Rows(props){
@@ -25,7 +18,7 @@ function Gen0Rows(props){
   
   function Gen0Page(props){
   
-    const [toggle1, setToggle1] = useState(false);
+    
     const [gen0Data, setGen0Data] = useState('')
 
     // hero-rental-income
@@ -47,7 +40,7 @@ function Gen0Rows(props){
     var rowHeaders = <Row><Col>CREATED_BLOCK</Col><Col>CRYSTAL_ID</Col><Col>HERO_ID</Col><Col>JEWEL_PRICE</Col></Row>
     var rows = [];
     var id = 0;
-    var totalAmountUSD = 0;
+    
     /*
     {"SUMMON_CRYSTAL_TX":"0xeed680b82dd6e43b990f53313fe031639269229223240a924a1dbb20005fb792"
     ,"CRYSTAL_ID":"0x00000000000000000000000000000000000000000000000000000000000006d6"
@@ -59,7 +52,7 @@ function Gen0Rows(props){
     {
         gen0Data.data.forEach(element => {
         
-        {
+        
         ++id;
         rows.push(
             <Gen0Rows key={id}
@@ -69,7 +62,7 @@ function Gen0Rows(props){
             JEWEL_PRICE={element.JEWEL_PRICE}
             ></Gen0Rows>
             )
-        }
+        
         });
     }
   
