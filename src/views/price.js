@@ -10,7 +10,6 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import Icons from "./Icons";
 function PriceRows(props){
   return (<Row><Col>{props.MDDATE}</Col><Col>{props.GOLD_PRICE}</Col><Col>{props.GAIA_PRICE}</Col><Col>{props.JEWEL_PRICE}</Col><Col>{props.RUNE_PRICE}</Col><Col>{props.RUNE_PRICE}</Col></Row>);
 }
@@ -78,7 +77,6 @@ function PricePage(props){
 function PriceSite() {
 return (
   <div className="content">
-    <Icons></Icons>
       <PricePage></PricePage>
   </div>
   );
