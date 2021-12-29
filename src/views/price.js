@@ -1,91 +1,85 @@
-
-
-//import axios from "axios";
-//import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 // reactstrap components
 import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
-  CardTitle,
-  Button,
+  Collapse,
+  Spinner,
+  Row,
   Col,
 } from "reactstrap";
+import Icons from "./Icons";
+function PriceRows(props){
+  return (<Row><Col>{props.MDDATE}</Col><Col>{props.GOLD_PRICE}</Col><Col>{props.GAIA_PRICE}</Col><Col>{props.JEWEL_PRICE}</Col><Col>{props.RUNE_PRICE}</Col><Col>{props.RUNE_PRICE}</Col></Row>);
+}
 
+function PricePage(props){
+
+  
+  const [gen0Data, setGen0Data] = useState('')
+
+  useEffect( () => {
+      axios.get("https://dfkreport.antonyip.com/token-price-all")
+      .then( res => {
+          setGen0Data(res);
+      })
+      // eslint-disable-next-line
+  }, [gen0Data]);
+ 
+  var rowHeaders = <Row><Col>MDDATE</Col><Col>GOLD_PRICE</Col><Col>GAIA_PRICE</Col><Col>JEWEL_PRICE</Col><Col>WONE_PRICE</Col><Col>RUNE_PRICE</Col></Row>
+  var rows = [];
+  var id = 0;
+  
+  /*
+  "MDDATE":"2021-12-29","GOLD_PRICE":0.015929,"GAIA_PRICE":0.05239124889,"JEWEL_PRICE":13.33,"WONE_PRICE":0.228427,"RUNE_PRICE":25.339030443}
+  */
+  if (gen0Data !== '')
+  {
+      gen0Data.data.forEach(element => {
+      
+      
+      ++id;
+      rows.push(
+          <PriceRows key={id}
+          MDDATE={element.MDDATE}
+          GOLD_PRICE={(element.GOLD_PRICE)}
+          GAIA_PRICE={(element.GAIA_PRICE)}
+          JEWEL_PRICE={element.JEWEL_PRICE}
+          WONE_PRICE={element.WONE_PRICE}
+          RUNE_PRICE={element.RUNE_PRICE}
+          ></PriceRows>
+          )
+      
+      });
+  }
+
+  if (gen0Data === '') rows.push(<Card key='norec'><CardBody>Loading... <Spinner></Spinner></CardBody></Card>);
+  if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+
+  return (
+    <Card>
+    <CardHeader>
+    <Row xs='12'>       
+    </Row>
+    </CardHeader>
+    <CardBody>
+    <Collapse isOpen={true}>
+        {rowHeaders}
+        {rows}
+    </Collapse>
+    </CardBody>
+    </Card>
+  );
+
+  
+}
 function PriceSite() {
 return (
-  <div className="content">     
-      <CardHeader tag='h4'>About me</CardHeader>
-      <Card>  
-        <CardBody>
-          <CardTitle>hello there, just an ordinary developer looking to build stuffs for fun..</CardTitle>
-          <Col>Most things here are experimental.. If I won the grand price, I would probably be able to finish the whole site in about ~3 months</Col>
-          <Col>The whole site consists of 3 parts..</Col>
-          <Col>1. snowflake database - Part of MetricsDAO</Col>
-          <Col>2. nodejs endpoint (https://dfkreport.antonyip.com)</Col>
-          <Col>3. this frontend webpage</Col>
-          </CardBody>
-        <CardFooter></CardFooter>
-      </Card>
-
-      <CardHeader tag='h4'>[FRONTEND] Features...</CardHeader>
-      <Card>
-        <CardBody>
-            <Col>Summary Page</Col>
-            <Col>Quest Rewards</Col>
-            <Col>DEX Transactions</Col>
-            <Col>Item (DFKGOLD) Transactions</Col>
-            <Col>Banking/Staking Transactions</Col>
-            <Col>Hero Buys and Sells</Col>
-            <Col>Hero Summons</Col>
-            <Col>Hero Level ups</Col>
-            <Col>USD Calculations of all transactions</Col>
-            <Col>Harvests</Col>
-            <Col>Sum Amount_USD of some Columns...</Col>
-            <Col>Download as CSV</Col>
-            <Col>Summon Rental Income</Col>
-            <Col>Filter By Dates</Col>
-        </CardBody>
-        <CardFooter></CardFooter>
-      </Card>
-
-      <CardHeader tag='h4'>[BACKEND] Features... </CardHeader>
-      <Card>
-        <CardBody>
-          <Col>Go to the site to see the end points </Col>
-          <Button onClick={() => window.location = 'https://dfkreport.antonyip.com'}>https://dfkreport.antonyip.com</Button>
-        </CardBody>
-        <CardFooter></CardFooter>
-      </Card>
-      
-      <CardHeader tag='h4'>[FRONTEND] Incomplete Features</CardHeader>
-      <Card>
-        <CardBody>
-            <Col>LP/Seeds Stuffs (Add / Remove Liquidity)</Col>
-        </CardBody>
-        <CardFooter></CardFooter>
-      </Card>
-
-      <CardHeader tag='h4'>[BACKEND] Incomplete Features</CardHeader>
-      <Card>
-        <CardBody>
-            <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
-            <Col>LP/Seeds (Add / Remove Liquidity)</Col>
-            <Col>Filtering by dates...</Col>
-            <Col>better historical Gaia Tears price</Col>
-            <Col>better historical rune prices</Col>
-            <Col>automation to update database tables</Col>
-            <Col>documentation</Col>
-            <Col>testing framework</Col>
-            <Col>development framework</Col>
-            <Col>summary of total spent in other currencies</Col>
-            <Col>use terra exchange rate to convert prices</Col>
-            <Col>Custom Prices for items</Col>
-            <Col>Ability to set hero prices in case of deviation</Col>
-        </CardBody>
-        <CardFooter>... wish i had more time...</CardFooter>
-      </Card>
+  <div className="content">
+    <Icons></Icons>
+      <PricePage></PricePage>
   </div>
   );
 }
