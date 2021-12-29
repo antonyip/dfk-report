@@ -11,7 +11,7 @@ import {
   Col,
 } from "reactstrap";
 function PriceRows(props){
-  return (<Row><Col>{props.MDDATE}</Col><Col>{props.GOLD_PRICE}</Col><Col>{props.GAIA_PRICE}</Col><Col>{props.JEWEL_PRICE}</Col><Col>{props.RUNE_PRICE}</Col><Col>{props.RUNE_PRICE}</Col></Row>);
+  return (<Row><Col>{props.MDDATE}</Col><Col>{props.GOLD_PRICE}</Col><Col>{props.GAIA_PRICE}</Col><Col>{props.JEWEL_PRICE}</Col><Col>{props.WONE_PRICE}</Col><Col>{props.RUNE_PRICE}</Col></Row>);
 }
 
 function PricePage(props){
