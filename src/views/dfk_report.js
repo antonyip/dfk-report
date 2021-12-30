@@ -898,7 +898,7 @@ function OverallPage(props)
 
 
 function Dfk_Report() {
-  const [searchText, setSearchText] = useState("0x0ba43bae4613e03492e4c17af3b014b6c3202b9d");
+  const [searchText, setSearchText] = useState("");
 
   const [startDate,setStartDate] = useState('');
   const [endDate,setEndDate] = useState('');
