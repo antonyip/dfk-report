@@ -1263,7 +1263,7 @@ function Dfk_Report() {
     // eslint-disable-next-line
   }, [searchActivatedSeedsAddData]);
 
-          // setSeedsRemoveData
+  // setSeedsRemoveData
   useEffect( () => {
     axios.get("https://dfkreport.antonyip.com/seeds-remove-lp?q=" + searchText )
     .then( res => {
@@ -1292,7 +1292,8 @@ function Dfk_Report() {
     var [ harvestDataCSV, setharvestDataCSV] = useState([]);
     var [ heroLevelDataCSV, setheroLevelDataCSV] = useState([]);
     var [ heroSummonDataCSV, setheroSummonDataCSV] = useState([]);
-
+    var [ seedsDataCSV, setseedsDataCSV] = useState([]);
+    
     // overall-page
     useEffect( () => {
       if (checkIfAllSearchAreDone === true 
@@ -1448,6 +1449,28 @@ function Dfk_Report() {
           }
         });
         setHeroRentalDataCSV(localDataCSV)
+
+        // 10 - seeds data seedsDataCSV
+        localDataCSV = ['BLOCK_TIMESTAMP,TOKEN_0_NAME,AMOUNT_0,TOKEN_1_NAME,AMOUNT_1,AMOUNT_USD']
+        seedsAddData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
+          //totalAmountUSD -= element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.T0_NAME,element.AMOUNT_0,element.T1_NAME,element.AMOUNT_1,(Math.round(-0 * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+          }
+        });
+        localDataCSV.push('BLOCK_TIMESTAMP,TOKEN_0_NAME,AMOUNT_0,TOKEN_1_NAME,AMOUNT_1,AMOUNT_USD')
+        seedsRemoveData.data.forEach(element => {
+          if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
+          {
+          //totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.T0_NAME,element.AMOUNT_0,element.T1_NAME,element.AMOUNT_1,(Math.round(0 * 100) / 100).toFixed(2)].join(',');
+          localDataCSV.push(row)
+          }
+        });
+        setseedsDataCSV(localDataCSV)
+        
           
         setValueQuestRewardsPage(totalAmountUSD);
       }
@@ -1495,6 +1518,7 @@ function Dfk_Report() {
           ...itemDataCSV,
           ...heroTxDataCSV,
           ...bankDataCSV,
+          ...seedsDataCSV,
           ...harvestDataCSV,
           ...heroLevelDataCSV,
           ...heroSummonDataCSV,
@@ -1573,6 +1597,14 @@ function Dfk_Report() {
       downloadFile({
         data: heroRentalDataCSV.join('\n'),
         fileName: 'heroRentalData.csv',
+        fileType: 'text/csv',
+      })
+    }
+    if (e === 10)
+    {
+      downloadFile({
+        data: seedsDataCSV.join('\n'),
+        fileName: 'seedsData.csv',
         fileType: 'text/csv',
       })
     }
