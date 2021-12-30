@@ -906,7 +906,8 @@ function OverallPage(props)
 
 
 function Dfk_Report() {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
+  const [firstTimeOnPage, setFirstTimeOnPage] = useState(true);
 
   const [startDate,setStartDate] = useState('');
   const [endDate,setEndDate] = useState('');
@@ -956,7 +957,7 @@ function Dfk_Report() {
   const [checkIfAllSearchAreDone, setCheckIfAllSearchAreDone] = useState(false);
 
   const triggerSearchFinal = e => {
-    console.log("Search Triggered");
+    setFirstTimeOnPage(false);
     setSearchActivatedQuest(1);
     setSearchActivatedSwaps(1);
     setSearchActivatedItems(1);
@@ -1674,6 +1675,12 @@ function Dfk_Report() {
          HeroSummonPage={0}
          >
          </OverallPage>
+        { firstTimeOnPage === true ? 
+        <>
+          <Card><CardHeader tag='h4'>Enter your address on top...</CardHeader><CardBody>Awaiting input...</CardBody><CardFooter></CardFooter></Card>
+        </>
+        : 
+        <>
         <QuestRewardsPage data={questData} download={exportToCsv} startDate={startDate} endDate={endDate} ></QuestRewardsPage>
         <SwapsPage data={swapData} download={exportToCsv} startDate={startDate} endDate={endDate}></SwapsPage>
         <ItemsPage data={itemData} download={exportToCsv} startDate={startDate} endDate={endDate}></ItemsPage>
@@ -1684,6 +1691,8 @@ function Dfk_Report() {
         <HeroLevelUpPage data={heroLevelData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroLevelUpPage>
         <HeroSummonPage dataCrystal={crystalSummonData} dataHero={heroSummonData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroSummonPage>
         <HeroRentalIncomePage data={heroRentalData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroRentalIncomePage>
+        </>
+        }
       </div>
   );
 }
