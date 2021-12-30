@@ -368,7 +368,7 @@ function BankPage(props){
 }
 
 function SeedsRows(props){
-  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.T0_NAME}</Col><Col>{props.AMOUNT_0}</Col><Col>{props.T1_NAME}</Col><Col>{props.AMOUNT_1}</Col><Col>{0}</Col></Row>);
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.T0_NAME}</Col><Col>{props.AMOUNT_0}</Col><Col>{props.T1_NAME}</Col><Col>{props.AMOUNT_1}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
 }
 
 function SeedsPage(props){
@@ -389,10 +389,12 @@ function SeedsPage(props){
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_0_NAME</Col><Col>AMOUNT_0</Col><Col>TOKEN_1_NAME</Col><Col>AMOUNT_1</Col><Col>AMOUNT_USD</Col></Row>
   var rows = [];
   var id = 0;
+  var totalUsd = 0;
   props.dataAdd.data.forEach(element => {
     if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
     {
     ++id;
+    totalUsd-=element.AMOUNT_USD
     rows.push(
       <SeedsRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -416,6 +418,7 @@ function SeedsPage(props){
     if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
     {
     ++id;
+    totalUsd+=element.AMOUNT_USD
     rows2.push(
       <SeedsRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -438,7 +441,8 @@ function SeedsPage(props){
     <StandardHeader 
       TITLE="Seeds"
       SUBTITLE="List of all tranasactions related to the creating and splitting of seeds."
-      PROFITS={-99}
+      PROFITS={totalUsd}
+      showUSD={true}
       ></StandardHeader>
       <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
       <Col xs='1'><Button onClick={() => props.download(10) }>Download</Button></Col>
@@ -1455,8 +1459,8 @@ function Dfk_Report() {
         seedsAddData.data.forEach(element => {
           if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
           {
-          //totalAmountUSD -= element.AMOUNT_USD;
-          let row = [element.BLOCK_TIMESTAMP,element.T0_NAME,element.AMOUNT_0,element.T1_NAME,element.AMOUNT_1,(Math.round(-0 * 100) / 100).toFixed(2)].join(',');
+          totalAmountUSD -= element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.T0_NAME,element.AMOUNT_0,element.T1_NAME,element.AMOUNT_1,(Math.round(-element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
           }
         });
@@ -1464,8 +1468,8 @@ function Dfk_Report() {
         seedsRemoveData.data.forEach(element => {
           if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
           {
-          //totalAmountUSD += element.AMOUNT_USD;
-          let row = [element.BLOCK_TIMESTAMP,element.T0_NAME,element.AMOUNT_0,element.T1_NAME,element.AMOUNT_1,(Math.round(0 * 100) / 100).toFixed(2)].join(',');
+          totalAmountUSD += element.AMOUNT_USD;
+          let row = [element.BLOCK_TIMESTAMP,element.T0_NAME,element.AMOUNT_0,element.T1_NAME,element.AMOUNT_1,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
           }
         });
