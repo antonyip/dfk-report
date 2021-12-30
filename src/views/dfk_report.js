@@ -367,6 +367,105 @@ function BankPage(props){
   );
 }
 
+function SeedsRows(props){
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.T0_NAME}</Col><Col>{props.AMOUNT_0}</Col><Col>{props.T1_NAME}</Col><Col>{props.AMOUNT_1}</Col><Col>{0}</Col></Row>);
+}
+
+function SeedsPage(props){
+  const [toggle1, setToggle1] = useState(false);
+
+  if (props.dataAdd === '' || props.dataRemove === '')
+    return (<Card><CardBody>Loading Seeds Data...  <Spinner></Spinner></CardBody></Card>);
+
+  if (props.dataAdd === 'error' || props.dataRemove === 'error')
+    return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
+
+    /*
+    {"BLOCK_TIMESTAMP":"2021-12-19 06:25:28.000","TX_ID":"0x7a742b32b17df0c94c7d1279f39597869358658bbadc8a15ea68190432929657"
+    ,"AMOUNT_0":2.023784523,"AMOUNT_1":99.6958464,"LP_ADDRESS":"0xeb579ddcd49a7beb3f205c9ff6006bb6390f138f"
+    ,"T0_ADDRESS":"0x72cb10c6bfa5624dd07ef608027e366bd690048f"
+    ,"T1_ADDRESS":"0xcf664087a5bb0237a0bad6742852ec6c8d69a27a","T0_NAME":"Jewels","T1_NAME":"Wrapped ONE"}
+    */
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_0_NAME</Col><Col>AMOUNT_0</Col><Col>TOKEN_1_NAME</Col><Col>AMOUNT_1</Col><Col>AMOUNT_USD</Col></Row>
+  var rows = [];
+  var id = 0;
+  props.dataAdd.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
+    ++id;
+    rows.push(
+      <SeedsRows key={id}
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      T0_NAME={ element.T0_NAME }
+      AMOUNT_0={ element.AMOUNT_0 }
+      T1_NAME={ element.T1_NAME }
+      AMOUNT_1={ element.AMOUNT_1 }
+      AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
+      ></SeedsRows>
+      )
+    }
+    });
+
+    /*
+    [{"BLOCK_TIMESTAMP":"2021-12-22 22:45:47.000","TX_ID":"0x879855de258fa4a08522433e1cdabc59923f2ebbc6d092cea6b3e223daa6557c"
+    ,"XJEWEL_IN":0.001639404922,"JEWEL_OUT":0.001,"AMOUNT_USD":0.01312701974}]
+    */
+  var rowHeaders2 = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_0_NAME</Col><Col>AMOUNT_0</Col><Col>TOKEN_1_NAME</Col><Col>AMOUNT_1</Col><Col>AMOUNT_USD</Col></Row>
+  var rows2 = [];
+  props.dataRemove.data.forEach(element => {
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
+    ++id;
+    rows2.push(
+      <SeedsRows key={id}
+      BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
+      T0_NAME={ element.T0_NAME }
+      AMOUNT_0={ element.AMOUNT_0 }
+      T1_NAME={ element.T1_NAME }
+      AMOUNT_1={ element.AMOUNT_1 }
+      AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
+      ></SeedsRows>
+      )
+    }
+    });
+    if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+    if (rows2.length === 0) rows2.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
+  
+  return (
+    <Card>
+    <CardHeader>
+    <Row>
+    <StandardHeader 
+      TITLE="Seeds"
+      SUBTITLE="List of all tranasactions related to the creating and splitting of seeds."
+      PROFITS={-99}
+      ></StandardHeader>
+      <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
+      <Col xs='1'><Button onClick={() => props.download(10) }>Download</Button></Col>
+    </Row>
+    </CardHeader>
+    <Collapse isOpen={toggle1}>
+    <CardHeader>Create Seed</CardHeader>
+    <Card>
+    <CardBody>
+      {rowHeaders}
+      {rows}
+      </CardBody>
+    </Card>
+    <CardHeader>Split Seed</CardHeader>
+    <Card>
+      <CardBody>
+      {rowHeaders2}
+      {rows2}
+      </CardBody>
+    </Card>
+    </Collapse>
+    <CardFooter></CardFooter>
+    </Card>
+    
+  );
+}
+
 function HarvestRow(props){
   return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.LOCKED_JEWEL}</Col><Col>{props.UNLOCKED_JEWEL}</Col><Col>{props.LOCKED_JEWEL_USD}</Col><Col>{props.UNLOCKED_JEWEL_USD}</Col><Col>{props.AMOUNT_USD}</Col></Row>);
 }
@@ -840,6 +939,12 @@ function Dfk_Report() {
   const [crystalSummonData, setCrystalSummonData] = useState('');
   const [searchActivatedCrystalSummonData, setSearchActivatedCrystalSummonData] = useState(0);
 
+  const [seedsAddData, setSeedsAddData] = useState('');
+  const [searchActivatedSeedsAddData, setSearchActivatedSeedsAddData] = useState(0);
+
+  const [seedsRemoveData, setSeedsRemoveData] = useState('');
+  const [searchActivatedSeedsRemoveData, setSearchActivatedSeedsRemoveData] = useState(0);
+
   const [checkIfAllSearchAreDone, setCheckIfAllSearchAreDone] = useState(false);
 
   const triggerSearchFinal = e => {
@@ -856,6 +961,8 @@ function Dfk_Report() {
     setSearchActivatedCrystalSummonData(1);
     setSearchActivatedHarvestData(1);
     setSearchActivatedHeroRentalData(1);
+    setSearchActivatedSeedsAddData(1);
+    setSearchActivatedSeedsRemoveData(1);
 
     setQuestData('');
     setSwapData('');
@@ -869,6 +976,8 @@ function Dfk_Report() {
     setCrystalSummonData('');
     setHarvestData('');
     setHeroRentalData('');
+    setSeedsAddData('');
+    setSeedsRemoveData('');
 
     setValueQuestRewardsPage(0); // overall page total
     setCheckIfAllSearchAreDone(false);
@@ -888,6 +997,8 @@ function Dfk_Report() {
     if (searchActivatedHeroSummonData !== 0) return false;
     if (searchActivatedCrystalSummonData !== 0) return false;
     if (searchActivatedHeroRentalData !== 0) return false;
+    if (searchActivatedSeedsAddData !== 0) return false;
+    if (searchActivatedSeedsRemoveData !== 0) return false;
     
     if (questData === 'error' ) return false;
     if (swapData === 'error' ) return false;
@@ -900,7 +1011,9 @@ function Dfk_Report() {
     if (heroLevelData === 'error' ) return false;
     if (heroSummonData === 'error' ) return false;
     if (crystalSummonData === 'error' ) return false;
-    if (heroRentalData === 'error' ) return false;    
+    if (heroRentalData === 'error' ) return false;
+    if (seedsAddData === 'error' ) return false;
+    if (seedsRemoveData === 'error' ) return false;
 
     setCheckIfAllSearchAreDone(true);
     return true;
@@ -1132,6 +1245,44 @@ function Dfk_Report() {
     // eslint-disable-next-line
   }, [searchActivatedHeroRentalData]);
 
+  // setSeedsAddData
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/seeds-add-lp?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setSeedsAddData('error');
+      }
+      else
+      {
+        setSeedsAddData(res);
+        FuncCheckIfAllSearchAreDone();
+      }
+      setSearchActivatedSeedsAddData(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedSeedsAddData]);
+
+          // setSeedsRemoveData
+  useEffect( () => {
+    axios.get("https://dfkreport.antonyip.com/seeds-remove-lp?q=" + searchText )
+    .then( res => {
+      if (res.data === 'Invalid User Address!')
+      {
+        setSeedsRemoveData('error');
+      }
+      else
+      {
+        setSeedsRemoveData(res);
+        FuncCheckIfAllSearchAreDone();
+      }
+      setSearchActivatedSeedsRemoveData(0);
+    })
+    // eslint-disable-next-line
+  }, [searchActivatedSeedsRemoveData]);
+
+  
+
     var [ questDataCSV, setquestDataCSV] = useState([]);
     var [ swapDataCSV, setswapDataCSV] = useState([]);
     var [ itemDataCSV, setitemDataCSV] = useState([]);
@@ -1157,6 +1308,8 @@ function Dfk_Report() {
         && heroSummonData !== ''
         && crystalSummonData !== ''
         && heroRentalData !== ''
+        && seedsAddData !== ''
+        && seedsRemoveData !== ''
         )
       {
         var totalAmountUSD = 0;
@@ -1313,6 +1466,8 @@ function Dfk_Report() {
       ,heroSummonData
       ,crystalSummonData
       ,heroRentalData
+      ,seedsAddData
+      ,seedsRemoveData
     ]);
       
   const downloadFile = ({ data, fileName, fileType }) => {
@@ -1481,6 +1636,7 @@ function Dfk_Report() {
         <SwapsPage data={swapData} download={exportToCsv} startDate={startDate} endDate={endDate}></SwapsPage>
         <ItemsPage data={itemData} download={exportToCsv} startDate={startDate} endDate={endDate}></ItemsPage>
         <BankPage dataDeposit={bankingTxData} dataWithdraw={bankingTxData2} download={exportToCsv} startDate={startDate} endDate={endDate}></BankPage>
+        <SeedsPage dataAdd={seedsAddData} dataRemove={seedsRemoveData} download={exportToCsv} startDate={startDate} endDate={endDate}></SeedsPage>
         <HarvestPage data={harvestData} download={exportToCsv} startDate={startDate} endDate={endDate}></HarvestPage>
         <HeroPage dataBuy={heroBuyData} dataSold={heroSoldData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroPage>
         <HeroLevelUpPage data={heroLevelData} download={exportToCsv} startDate={startDate} endDate={endDate}></HeroLevelUpPage>
