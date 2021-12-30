@@ -29,6 +29,15 @@ return (
         <CardFooter></CardFooter>
       </Card>
 
+      <CardHeader tag='h4'>[BUGS] - How to report bugs...</CardHeader>
+      <Card>  
+        <CardBody>
+          <Col>Please help me by creating an issue on the github page so I get an email and you can track its progress...</Col>
+          <Button onClick={() => window.location = 'https://github.com/antonyip/dfk-report/issues'}>https://github.com/antonyip/dfk-report/issues</Button>
+          </CardBody>
+        <CardFooter></CardFooter>
+      </Card>
+
       <CardHeader tag='h4'>[FRONTEND] Features...</CardHeader>
       <Card>
         <CardBody>
