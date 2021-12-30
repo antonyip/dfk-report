@@ -20,7 +20,7 @@ return (
       <Card>  
         <CardBody>
           <CardTitle>hello there, just an ordinary developer looking to build stuffs for fun..</CardTitle>
-          <Col>Most things here are experimental.. If I won the grand price, I would probably be able to finish the whole site in about ~3 months</Col>
+          <Col>Most things here are experimental.. Please consider voting for me if you liked it...</Col>
           <Col>The whole site consists of 3 parts..</Col>
           <Col>1. snowflake database - Part of MetricsDAO</Col>
           <Col>2. nodejs endpoint (https://dfkreport.antonyip.com)</Col>
@@ -49,12 +49,13 @@ return (
             <Col>Hero Buys and Sells</Col>
             <Col>Hero Summons</Col>
             <Col>Hero Level ups</Col>
-            <Col>USD Calculations of all transactions</Col>
+            <Col>USD Calculations (profits) of all transactions</Col>
             <Col>Harvests</Col>
-            <Col>Sum Amount_USD of some Columns...</Col>
+            <Col>Sum Amount_USD of some Categories...</Col>
             <Col>Download as CSV</Col>
             <Col>Summon Rental Income</Col>
             <Col>Filter By Dates</Col>
+            <Col>LP/Seeds Stuffs (Add / Remove Liquidity)</Col>
         </CardBody>
         <CardFooter></CardFooter>
       </Card>
@@ -71,7 +72,8 @@ return (
       <CardHeader tag='h4'>[FRONTEND] Incomplete Features</CardHeader>
       <Card>
         <CardBody>
-            <Col>LP/Seeds Stuffs (Add / Remove Liquidity)</Col>
+            <Col>Sending tokens to other addresses (Heroes/Jewels/Items/Seeds)</Col>
+            <Col>Getting tokens from other addresses (Heroes/Jewels/Items/Seeds)</Col>
         </CardBody>
         <CardFooter></CardFooter>
       </Card>
@@ -79,8 +81,9 @@ return (
       <CardHeader tag='h4'>[BACKEND] Incomplete Features</CardHeader>
       <Card>
         <CardBody>
+            <Col>Sending tokens to other addresses (Heroes/Jewels/Items/Seeds)</Col>
+            <Col>Getting tokens from other addresses (Heroes/Jewels/Items/Seeds)</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
-            <Col>LP/Seeds (Add / Remove Liquidity)</Col>
             <Col>Filtering by dates...</Col>
             <Col>better historical Gaia Tears price</Col>
             <Col>better historical rune prices</Col>
