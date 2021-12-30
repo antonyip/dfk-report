@@ -294,10 +294,12 @@ function BankPage(props){
   var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>JEWEL_IN</Col><Col>XJEWEL_OUT</Col><Col>AMOUNT_USD</Col></Row>
   var rows = [];
   var id = 0;
+  var totalUSD = 0;
   props.dataDeposit.data.forEach(element => {
     if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
     {
     ++id;
+    totalUSD -= element.AMOUNT_USD;
     rows.push(
       <BankRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -319,6 +321,7 @@ function BankPage(props){
     if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
     {
     ++id;
+    totalUSD += element.AMOUNT_USD;
     rows2.push(
       <BankRows2 key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
@@ -339,7 +342,8 @@ function BankPage(props){
     <StandardHeader 
       TITLE="Banking"
       SUBTITLE="List of all tranasactions related to the bank."
-      PROFITS={-99}
+      PROFITS={totalUSD}
+      showUSD={true}
       ></StandardHeader>
       <Col xs='1'><Button onClick={() => toggle1 ? setToggle1(false) : setToggle1(true) }>Expand</Button></Col>
       <Col xs='1'><Button onClick={() => props.download(4) }>Download</Button></Col>
@@ -518,7 +522,7 @@ function HarvestPage(props){
     <Row>
     <StandardHeader 
       TITLE="Harvests"
-      SUBTITLE="List of all tranasactions related to Harvest."
+      SUBTITLE="Tranasactions related to Harvesting. (Only Unlocked Jewel are considered in the profits)"
       PROFITS={totalUSD}
       showUSD={true}
       ></StandardHeader>
@@ -1359,17 +1363,19 @@ function Dfk_Report() {
 
         // 4- banking
         localDataCSV = ['BLOCK_TIMESTAMP,JEWEL_IN,XJEWEL_OUT,AMOUNT_USD']
+        // deposits
         bankingTxData.data.forEach(element => {
           if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
           {
-          //totalAmountUSD += element.AMOUNT_USD;
+          totalAmountUSD -= element.AMOUNT_USD;
           let row = [element.BLOCK_TIMESTAMP,element.JEWEL_IN,element.XJEWEL_OUT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
           localDataCSV.push(row)
           }
         });
         localDataCSV.push('BLOCK_TIMESTAMP,XJEWEL_IN,JEWEL_OUT,AMOUNT_USD')
+        // withdrawals
         bankingTxData2.data.forEach(element => {
-          //totalAmountUSD += element.AMOUNT_USD;
+          totalAmountUSD += element.AMOUNT_USD;
           if (true === FilterDate(element.BLOCK_TIMESTAMP, startDate, endDate))
           {
           let row = [element.BLOCK_TIMESTAMP,element.XJEWEL_IN,element.JEWEL_OUT,(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)].join(',');
