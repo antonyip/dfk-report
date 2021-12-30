@@ -1677,7 +1677,7 @@ function Dfk_Report() {
          </OverallPage>
         { firstTimeOnPage === true ? 
         <>
-          <Card><CardHeader tag='h4'>Enter your address on top...</CardHeader><CardBody>Awaiting input...</CardBody><CardFooter></CardFooter></Card>
+          <CardHeader tag='h4'>Enter your address on top...</CardHeader><Card><CardBody><Col>Awaiting input...</Col><Col>...or you can use my account to play with my site: 0x0ba43bae4613e03492e4c17af3b014b6c3202b9d</Col><Col>Tips are welcomed too...</Col></CardBody><CardFooter></CardFooter></Card>
         </>
         : 
         <>
