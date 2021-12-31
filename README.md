@@ -16,4 +16,4 @@ This application will:
 - `nvm use 14`
 - `npm install`
 - `npm start`
-change things
+- change web site code and save to see the changes in the browser

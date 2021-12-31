@@ -231,6 +231,8 @@ function ItemsPage(props){
   var totalUSD = 0;
   props.data.data.forEach(element => {
     ++id;
+    if (true === FilterDate(element.BLOCK_TIMESTAMP, props.startDate, props.endDate))
+    {
     totalUSD+=element.AMOUNT_USD
     rows.push(
       <ItemRows key={id}
@@ -242,6 +244,7 @@ function ItemsPage(props){
       VALUE_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
       ></ItemRows>
       )
+    }
     });
 
   if (rows.length === 0) rows.push(<Card key='norec'><CardBody>No Records Found...</CardBody></Card>);
