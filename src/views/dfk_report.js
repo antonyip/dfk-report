@@ -81,7 +81,7 @@ function FilterDate(value, filterStart, filterEnd) {
 }
 
 function QuestRewardRows(props){
-  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.CONTRACT_NAME}</Col><Col>{props.VALUE}</Col><Col>{props.VALUE_USD}</Col></Row>);
+  return (<Row><Col>{props.BLOCK_TIMESTAMP}</Col><Col>{props.TOKEN_NAME}</Col><Col>{props.VALUE}</Col><Col>{props.VALUE_USD}</Col></Row>);
 }
 
 function QuestRewardsPage(props){
@@ -97,7 +97,7 @@ function QuestRewardsPage(props){
 //,"CONTRACT_NAME":"Serendale_Gaia Tears","FROM_ADDRESS":"0x0000000000000000000000000000000000000000"
 //,"TO_ADDRESS":"0x7ad760d9402df0f78786ca0b323a911cb1b6ee41","L.EVENT_INPUTS:VALUE":4,"CALCULATED_VALUE":4
 //,"TX_ID":"0x457ce826b25a8f45b6ab02dc87bb1bed52b0e3c0ffbbe8e98bdfd40c68db7031","AMOUNT_USD":0.7923936523}
-  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>CONTRACT_NAME</Col><Col>VALUE</Col><Col>VALUE_USD</Col></Row>
+  var rowHeaders = <Row><Col>BLOCK_TIMESTAMP</Col><Col>TOKEN_NAME</Col><Col>VALUE</Col><Col>VALUE_USD</Col></Row>
   var rows = [];
   var id = 0;
   var totalAmountUSD = 0;
@@ -109,7 +109,7 @@ function QuestRewardsPage(props){
     rows.push(
       <QuestRewardRows key={id}
       BLOCK_TIMESTAMP={element.BLOCK_TIMESTAMP}
-      CONTRACT_NAME={element.CONTRACT_NAME}
+      TOKEN_NAME={element.TOKEN_NAME}
       VALUE={element.CALCULATED_VALUE}
       VALUE_USD={(Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2)}
       ></QuestRewardRows>
