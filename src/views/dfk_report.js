@@ -1680,7 +1680,9 @@ function Dfk_Report() {
          </OverallPage>
         { firstTimeOnPage === true ? 
         <>
-          <CardHeader tag='h4'>Enter your address on top...</CardHeader><Card><CardBody><Col>Awaiting input...</Col><Col>...or you can use my account to play with my site: 0x0ba43bae4613e03492e4c17af3b014b6c3202b9d</Col><Col>Tips are welcomed too...</Col></CardBody><CardFooter></CardFooter></Card>
+          <CardHeader tag='h4'>Enter your address on top...</CardHeader><Card><CardBody><Col>Awaiting input...</Col><Col>...or you can use my account to play with my site: 0x0ba43bae4613e03492e4c17af3b014b6c3202b9d</Col><Col>Tips are welcomed too...</Col>
+          <Col>Or a vote? https://gov.harmony.one/#/defikingdoms/proposal/QmPS7qh9LsLyunhZcDCCrvyBJS8hXPhx4UYzNY7QaQqcGb</Col>
+          </CardBody><CardFooter></CardFooter></Card>
         </>
         : 
         <>
