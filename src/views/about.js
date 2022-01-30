@@ -85,9 +85,6 @@ return (
             <Col>Getting tokens from other addresses (Heroes/Jewels/Items/Seeds)</Col>
             <Col>backfill data, currently backend only has data since 8 Dec 2021</Col>
             <Col>Filtering by dates...</Col>
-            <Col>better historical Gaia Tears price</Col>
-            <Col>better historical rune prices</Col>
-            <Col>automation to update database tables</Col>
             <Col>documentation</Col>
             <Col>testing framework</Col>
             <Col>development framework</Col>

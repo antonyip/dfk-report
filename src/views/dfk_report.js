@@ -714,7 +714,7 @@ function HeroPage(props){
   const [toggle1, setToggle1] = useState(false);
 
   if (props.dataBuy === '' || props.dataSold === '')
-    return (<Card><CardBody>Loading Heros Data...  <Spinner></Spinner></CardBody></Card>);
+    return (<Card><CardBody>Loading Heroes Data...  <Spinner></Spinner></CardBody></Card>);
 
   if (props.dataBuy === 'error' || props.dataSold === 'error')
     return (<Card><CardBody>Wait! That's not a EVM address!</CardBody></Card>);
