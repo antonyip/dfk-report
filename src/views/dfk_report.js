@@ -579,7 +579,7 @@ function HeroLevelUpPage(props){
   rows.push(
     <HeroLevelRows key={id}
     BLOCK_TIMESTAMP={ element.BLOCK_TIMESTAMP }
-    HERO_ID={ parseInt(element.HERO_ID,16) }
+    HERO_ID={ element.HERO_ID }
     RUNE_AMOUNT={ element.RUNE_AMOUNT }
     JEWEL_AMOUNT={ element.JEWEL_AMOUNT }
     AMOUNT_USD={ (Math.round(element.AMOUNT_USD * 100) / 100).toFixed(2) }
